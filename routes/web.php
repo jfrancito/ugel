@@ -56,8 +56,8 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/modificar-opcion/{idopcion}/{idregistro}', 'GestionMenuController@actionModificarOpcion');
 
 
-	Route::any('/gestion-apafa-conei/{idopcion}', 'GestionApafaConeiController@actionListarApafaConei');
-	Route::any('/agregar-requerimiento-apafa-conei/{idopcion}', 'GestionApafaConeiController@actionAgregarApafaConei');
+	Route::any('/gestion-apafa/{idopcion}', 'GestionApafaConeiController@actionListarApafa');
+	Route::any('/agregar-requerimiento-apafa/{idopcion}', 'GestionApafaConeiController@actionAgregarApafa');
 	Route::any('/ajax-buscar-dni-ugel', 'GestionApafaConeiController@actionBuscardni');
 
 

@@ -346,6 +346,17 @@ th {
   src: url('../lib/bootstrap/dist/fonts/glyphicons-halflings-regular.eot');
   src: url('../lib/bootstrap/dist/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../lib/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../lib/bootstrap/dist/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../lib/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../lib/bootstrap/dist/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
+
+.login-top{
+  background-image: url("../img/fondoinicio.jpg");
+  /* Full height */
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .glyphicon {
   position: relative;
   top: 1px;

@@ -15,7 +15,7 @@
               <div class="panel panel-default panel-border-color panel-border-color-success">
                 <div class="panel-heading">{{ $titulo }}
                   <div class="tools tooltiptop">
-                    <a href="{{ url('/agregar-requerimiento-apafa-conei/'.$idopcion) }}" class="tooltipcss">
+                    <a href="{{ url('/agregar-requerimiento-apafa/'.$idopcion) }}" class="tooltipcss">
                       <span class="tooltiptext">Crear Requerimiento APAFA y CONEI</span>
                       <span class="icon mdi mdi-plus-circle-o"></span>
                     </a>

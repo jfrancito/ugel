@@ -26,20 +26,20 @@ class GestionApafaConeiController extends Controller
 {
     use GeneralesTraits;
     use ApafaConeiTraits;
-    public function actionListarApafaConei($idopcion)
+    public function actionListarApafa($idopcion)
     {
 
         /******************* validar url **********************/
         $validarurl = $this->funciones->getUrl($idopcion,'Ver');
         if($validarurl <> 'true'){return $validarurl;}
         /******************************************************/
-        View::share('titulo','Lista Requerimiento APAFA Y CONEI');
+        View::share('titulo','Lista Requerimiento APAFA');
         // $codempresa = Session::get('empresas')->id;
         $user_id        =   Session::get('usuario')->id;
         $listadatos     =   $this->con_lista_requerimiento();
         $funcion        =   $this;
 
-        return View::make('requerimiento/listaapafaconei',
+        return View::make('requerimiento/listaapafa',
                          [
                             'listadatos'        =>  $listadatos,
                             'funcion'           =>  $funcion,
@@ -49,13 +49,13 @@ class GestionApafaConeiController extends Controller
 
 
 
-    public function actionAgregarApafaConei($idopcion,Request $request)
+    public function actionAgregarApafa($idopcion,Request $request)
     {
         /******************* validar url **********************/
         $validarurl = $this->funciones->getUrl($idopcion,'Anadir');
         if($validarurl <> 'true'){return $validarurl;}
         /******************************************************/
-        View::share('titulo','Agregar Requerimiento APAFA Y CONEI');
+        View::share('titulo','Agregar Requerimiento APAFA');
         if($_POST)
         {
 
@@ -197,7 +197,7 @@ class GestionApafaConeiController extends Controller
             }
 
 
-            return Redirect::to('/gestion-apafa-conei/'.$idopcion)->with('bienhecho', 'Requerimiento '.$codigo.' registrado con exito');
+            return Redirect::to('/gestion-apafa/'.$idopcion)->with('bienhecho', 'Requerimiento '.$codigo.' registrado con exito');
 
         }else{
 

@@ -30,7 +30,8 @@
 					                <div class="panel-body">
 					                  <p> PLATAFORMA PARA REGISTRO DE CONEI Y APAFA DE INSTITUCIONES EDUCATIVAS PÚBLICAS</p>
 
-					                  <a class="btn btn-rounded btn-space btn-success" href="{{ url('agregar-requerimiento-apafa-conei/oj') }}">Crear Requerimiento</a>
+					                  <a class="btn btn-rounded btn-space btn-success" href="{{ url('agregar-requerimiento-apafa/oj') }}">Crear Requerimiento APAFA</a>
+					                  <a class="btn btn-rounded btn-space btn-success" href="{{ url('agregar-requerimiento-conei/oj') }}">Crear Requerimiento CONEI</a>
 					                </div>
 					              </div>
 					            </div>

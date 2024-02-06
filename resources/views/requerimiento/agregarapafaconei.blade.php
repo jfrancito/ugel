@@ -17,14 +17,14 @@
     <div class="row">
       <div class="col-md-12">
         <div class="panel panel-default panel-border-color panel-border-color-primary">
-          <div class="panel-heading panel-heading-divider">APAFA Y CONEI<span class="panel-subtitle">Crear un nuevo requerimiento APAFA Y CONEI</span></div>
+          <div class="panel-heading panel-heading-divider">APAFA <span class="panel-subtitle">Crear un nuevo requerimiento APAFA </span></div>
           <div class="panel-body">
 
             <div class="col-sm-12">
               <div class="panel panel-default">
                 <form method="POST" action="{{ url('/agregar-requerimiento-apafa-conei/'.$idopcion) }}" style="border-radius: 0px;" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    @include('requerimiento.form.registrorequerimiento')
+                    @include('requerimiento.form.registrorequerimientoapafa')
                 </form>
               </div>
             </div>
