@@ -187,6 +187,7 @@ class UserController extends Controller {
 			$cabecera->name = $request['name'];
 			$cabecera->password = Crypt::encrypt($request['password']);
 			$cabecera->rol_id = $request['rol_id'];
+            $cabecera->institucion_id  =   '1CIX00000001';
 			$cabecera->fecha_crea = $this->fechaactual;
 			$cabecera->usuario_crea = Session::get('usuario')->id;
 			$cabecera->save();
