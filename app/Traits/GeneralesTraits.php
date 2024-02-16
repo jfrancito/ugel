@@ -64,23 +64,7 @@ trait GeneralesTraits
 		$id = ($descripcion!=='') ? Categoria::where('tipo_categoria','TIPO_COMPRA')->where('descripcion',$descripcion)->first()->id:'';
 		return $id;
 	}	
-	// public function obtenerIGV()
-	// {
-	//     // Realiza la solicitud HTTP a la API de la SUNAT
-	//     $response = Http::get('https://api.sunat.gob.pe/descarga/jcr:85E7995C-7C22-48F3-B196-63E0EAF220F8/actualizacionIGV.json');
 
-	//     if ($response->ok()) {
-	//         // Procesa la respuesta JSON
-	//         $data = $response->json();
-
-	//         // Accede al valor del IGV actual
-	//         $igvValor = $data['valor_igv'];
-
-	//         return "El valor actual del IGV es: $igvValor";
-	//     } else {
-	//         return "No se pudo obtener el valor del IGV.";
-	//     }
-	// }
 
 	public function ge_validarSizeArchivos($files,$arr_archivos,$lote,$limite,$unidad)
 	{
@@ -161,6 +145,27 @@ trait GeneralesTraits
 						->toArray();
 		return [''=>'SELECCIONE DEPARTAMENTO']+$datos;
 	}
+
+	private function gn_generacion_combo_tabla($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado) {
+		
+		$array 							= 	DB::table($tabla)
+        									->where('activo','=',1)
+        									->where('tipoestado','=',$tipoestado)
+		        							->pluck($atributo2,$atributo1)
+											->toArray();
+		if($titulo==''){
+			$combo  					= 	$array;
+		}else{
+			if($todo=='TODO'){
+				$combo  				= 	array('' => $titulo , $todo => $todo) + $array;
+			}else{
+				$combo  				= 	array('' => $titulo) + $array;
+			}
+		}
+
+	 	return  $combo;					 			
+	}
+
 
 	private function gn_combo_provincias($departamento_id)
 	{

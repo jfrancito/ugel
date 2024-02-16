@@ -87,6 +87,14 @@ div.files {
 	border-radius:10px;
 }
 
+div.filesapafa {
+   	background: #eee;
+	padding: 1rem;
+	margin:1rem 0;
+	border-radius:10px;
+}
+
+
 div.container {
    	width: 100%;
 	padding: 0 2rem;

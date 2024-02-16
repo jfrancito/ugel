@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
 use App\Modelos\Requerimiento;
+use App\Modelos\Conei;
+
 
 use View;
 use Session;
@@ -22,5 +24,12 @@ trait ApafaConeiTraits
 		$listadatos 	= 	Requerimiento::get();
 	 	return  $listadatos;
 	}
+
+
+	private function con_lista_conei() {
+		$listadatos 	= 	Conei::get();
+	 	return  $listadatos;
+	}
+
 
 }

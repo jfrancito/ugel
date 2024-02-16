@@ -11,19 +11,19 @@
 @section('section')
 
 
-<div class="be-content apafaconei">
+<div class="be-content conei">
   <div class="main-content container-fluid">
     <!--Basic forms-->
     <div class="row">
       <div class="col-md-12">
         <div class="panel panel-default panel-border-color panel-border-color-primary">
-          <div class="panel-heading panel-heading-divider"><span class="panel-subtitle">Crear un nuevo requerimiento APAFA </span></div>
+          <div class="panel-heading panel-heading-divider"><span class="panel-subtitle">Crear un nuevo requerimiento CONEI </span></div>
           <div class="panel-body">
             <div class="col-sm-12">
               <div class="panel panel-default">
                 <form method="POST" action="{{ url('/agregar-requerimiento-apafa-conei/'.$idopcion) }}" style="border-radius: 0px;" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    @include('requerimiento.form.registrorequerimientoapafa')
+                    @include('requerimiento.form.registrorequerimientoconei')
                 </form>
               </div>
             </div>
@@ -32,6 +32,8 @@
       </div>
     </div>
   </div>
+
+  @include('requerimiento.modal.mconeiapafa')
 </div>  
 
 @stop
@@ -83,6 +85,6 @@
 
   </script>
   <script src="{{ asset('public/js/archivos.js?v='.$version) }}" type="text/javascript"></script>
-  <script src="{{ asset('public/js/requerimiento/requerimiento.js?v='.$version) }}" type="text/javascript"></script>
+  <script src="{{ asset('public/js/requerimiento/conei.js?v='.$version) }}" type="text/javascript"></script>
 
 @stop

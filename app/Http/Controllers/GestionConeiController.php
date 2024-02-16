@@ -11,6 +11,9 @@ use App\Modelos\Requerimiento;
 use App\Modelos\Institucion;
 use App\Modelos\Director;
 use App\Modelos\Archivo;
+use App\Modelos\Conei;
+
+
 
 use App\User;
 use Illuminate\Support\Facades\Crypt;
@@ -22,27 +25,26 @@ use App\Traits\GeneralesTraits;
 use App\Traits\ApafaConeiTraits;
 use Hashids;
 use SplFileInfo;
-class GestionApafaConeiController extends Controller
+
+class GestionConeiController extends Controller
 {
     use GeneralesTraits;
     use ApafaConeiTraits;
 
-
-
-    public function actionListarApafa($idopcion)
+    public function actionListarConei($idopcion)
     {
 
         /******************* validar url **********************/
         $validarurl = $this->funciones->getUrl($idopcion,'Ver');
         if($validarurl <> 'true'){return $validarurl;}
         /******************************************************/
-        View::share('titulo','Lista Requerimiento APAFA');
-        // $codempresa = Session::get('empresas')->id;
+        View::share('titulo','Lista Requerimiento CONEI');
+
         $user_id        =   Session::get('usuario')->id;
-        $listadatos     =   $this->con_lista_requerimiento();
+        $listadatos     =   $this->con_lista_conei();
         $funcion        =   $this;
 
-        return View::make('requerimiento/listaapafa',
+        return View::make('requerimiento/listaconei',
                          [
                             'listadatos'        =>  $listadatos,
                             'funcion'           =>  $funcion,
@@ -51,8 +53,44 @@ class GestionApafaConeiController extends Controller
     }
 
 
+    public function actionModalRegistro(Request $request)
+    {
 
-    public function actionAgregarApafa($idopcion,Request $request)
+        $data_td                =   $request['data_td'];
+        $data_dni               =   $request['data_dni'];
+        $data_nombre            =   $request['data_nombre'];
+        $data_titulo            =   $request['data_titulo'];
+        $data_nombre_visible    =   $request['data_nombre_visible'];
+
+
+
+        $funcion       =   $this;
+        $combotd       =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+        $selecttd      =   'TIDO00000001';
+
+
+        return View::make('requerimiento/modal/ajax/amregistro',
+                         [
+                            'data_td'           =>  $data_td,
+                            'data_dni'          =>  $data_dni,
+                            'data_nombre'       =>  $data_nombre,
+                            'data_titulo'       =>  $data_titulo,
+                            'data_nombre_visible'       =>  $data_nombre_visible,
+                            
+                            'combotd'           =>  $combotd,
+                            'selecttd'          =>  $selecttd,
+                            'funcion'           =>  $funcion,
+                            'ajax'              =>  true
+                         ]);
+    }
+
+
+
+
+
+
+
+    public function actionAgregarConei($idopcion,Request $request)
     {
         /******************* validar url **********************/
         $validarurl = $this->funciones->getUrl($idopcion,'Anadir');
@@ -210,7 +248,7 @@ class GestionApafaConeiController extends Controller
             $combotd        =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
             $selecttd       =   'TIDO00000001';
 
-            return View::make('requerimiento.agregarapafaconei',
+            return View::make('requerimiento.agregarconei',
                         [
                             'idopcion'          =>  $idopcion,
                             'institucion'       =>  $institucion,
@@ -219,42 +257,6 @@ class GestionApafaConeiController extends Controller
                             'selecttd'          =>  $selecttd,
                         ]);
         }
-    }
-
-
-
-    public function actionBuscardni(Request $request)
-    {
-
-        $dni                =   $request['dni'];
-
-
-        $curl               =   curl_init();
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://ugelhuanta.gob.pe/transparencia/apafaconei/consulta_reniec.php',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => array('dni'=>$dni)
-        ));
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        $string = $response;
-        // Encontrar el string entre corchetes
-        $inicio = strpos($string, '[');
-        $fin = strrpos($string, ']');
-        $substring = substr($string, $inicio, $fin - $inicio + 1);
-        // Decodificar el JSON
-        //$data = json_decode($substring, true);
-        // Imprimir los datos
-        print_r($substring);
-
-
     }
 
 

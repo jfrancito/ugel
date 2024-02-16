@@ -1,17 +1,20 @@
 $(document).ready(function(){
 
     var carpeta = $("#carpeta").val();
+
+
+    $(".apafaconei").on('click','.btn-next', function(e) {
+        $('.nav-tabs .apafa').tab('show');
+    });
+
     $(".apafaconei").on('click','.btn-buscar_dni', function(e) {
         event.preventDefault();
         var data_dni                =   $(this).attr('data_dni');
         var data_nombre             =   $(this).attr('data_nombre');
-        var data_apellidopaterno    =   $(this).attr('data_apellidopaterno');
-        var data_apellidomaterno    =   $(this).attr('data_apellidomaterno');
-
         var dni                     =   $('#'+data_dni).val();
 
         var _token                  =   $('#token').val();
-        actualizar_ajax_dni(_token,carpeta,dni,data_nombre,data_apellidopaterno,data_apellidomaterno);
+        actualizar_ajax_dni(_token,carpeta,dni,data_nombre);
 
 
     });
@@ -33,10 +36,8 @@ $(document).ready(function(){
                 var nombrea      = array[1];
                 var apellidopa   = array[2];
                 var apellidoma   = array[3];
-
-                $('#'+nombre).val(nombrea);
-                $('#'+apellidopaterno).val(apellidopa);
-                $('#'+apellidomaterno).val(apellidoma);            
+                $('#'+nombre).val(nombrea+' '+apellidopa+' '+apellidoma);
+            
             },
             error: function (data) {
                 cerrarcargando();

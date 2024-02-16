@@ -60,6 +60,13 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/agregar-requerimiento-apafa/{idopcion}', 'GestionApafaConeiController@actionAgregarApafa');
 	Route::any('/ajax-buscar-dni-ugel', 'GestionApafaConeiController@actionBuscardni');
 
+	Route::any('/gestion-conei/{idopcion}', 'GestionConeiController@actionListarConei');
+	Route::any('/agregar-requerimiento-conei/{idopcion}', 'GestionConeiController@actionAgregarConei');
+	Route::any('/ajax-modal-registro', 'GestionConeiController@actionModalRegistro');
+
+
+
+
 
 	/* SUBIR DOCENTE Y INTITUCION */
 	Route::any('/gestion-de-institucion-docente/{idopcion}', 'CargarDatosInstitucionController@actionCargarDatos');
