@@ -141,8 +141,8 @@ class GestionConeiController extends Controller
             $i_nombre_otrorepresentatecomunidad         =   $request['i_nombre_otrorepresentatecomunidad'];
 
 
-            $idrequerimiento                            =   $this->funciones->getCreateIdMaestra('requerimientos');
-            $codigo                                     =   $this->funciones->generar_codigo('requerimientos',8);
+            $idrequerimiento                            =   $this->funciones->getCreateIdMaestra('coneis');
+            $codigo                                     =   $this->funciones->generar_codigo('coneis',8);
 
             $cabecera                                   =   new Conei;
             $cabecera->id                               =   $idrequerimiento;
