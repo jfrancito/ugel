@@ -2,20 +2,33 @@
   <thead>
     <tr>
       <th>CODIGO REQ.</th>
-      <th>USUARIO CREA</th>
+      <th>DIRECTOR</th>
       <th>TELEFONO</th>
       <th>CORREO ELECTRONICO</th>
       <th>FECHA CREA</th>
+      <th>ESTADO</th>
+
     </tr>
   </thead>
   <tbody>
     @foreach($listadatos as $index => $item)
       <tr data_requerimiento_id = "{{$item->id}}">
         <td>{{$item->codigo}}</td>
-        <td>{{$item->nombre_director}} {{$item->apellidopaterno_director}} {{$item->apellidomaterno_director}}</td>
-        <td>{{$item->telefono_director}}</td>
-        <td>{{$item->correo_director}}</td>
+        <td>{{$item->nombres_director_institucion}}</td>
+        <td>{{$item->telefono_director_institucion}}</td>
+        <td>{{$item->correo_director_institucion}}</td>
         <td>{{$item->fecha_crea}}</td>
+        <td>
+          @if($item->estado_id == 'ESRE00000001') 
+              <span class="badge badge-default">{{$item->estado_nombre}}</span> 
+          @else
+            @if($item->estado_id == 'ESRE00000002') 
+                <span class="badge badge-primary">{{$item->estado_nombre}}</span> 
+            @else
+                <span class="badge badge-primary">{{$item->estado_nombre}}</span> 
+            @endif
+          @endif
+        </td>
       </tr>                    
     @endforeach
   </tbody>

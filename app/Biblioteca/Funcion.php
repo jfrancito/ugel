@@ -4,6 +4,7 @@ namespace App\Biblioteca;
 
 use App\User;
 use App\Modelos\Rolopcion;
+use App\Modelos\Estado;
 use Hashids;
 use Illuminate\Support\Facades\DB;
 use Redirect;
@@ -11,6 +12,15 @@ use Session;
 use table;
 
 class Funcion {
+
+	public function estado_nombre($id) {
+		$nombre = '';
+		$estado = Estado::where('id', '=', $id)->first();
+		if(count($estado)>0){
+			$nombre = $estado->nombre;
+		}
+		return $nombre;
+	}
 
 
 	public function tabla_usuario($usuario_id) {

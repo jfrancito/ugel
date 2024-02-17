@@ -21,7 +21,7 @@
           <div class="panel-body">
             <div class="col-sm-12">
               <div class="panel panel-default">
-                <form method="POST" action="{{ url('/agregar-requerimiento-apafa-conei/'.$idopcion) }}" style="border-radius: 0px;" enctype="multipart/form-data">
+                <form method="POST" action="{{ url('/agregar-requerimiento-conei/'.$idopcion) }}" style="border-radius: 0px;" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     @include('requerimiento.form.registrorequerimientoconei')
                 </form>

@@ -10,7 +10,7 @@
 
             <div class="col-sm-6">
               <div class="form-group">
-                <label class="control-label"><b>Tipo Documento <small class="">({{$data_titulo}})</small> : </b></label>
+                <label class="control-label"><b>Tipo Documento : </b></label>
                 {!! Form::select( 'tdg', $combotd, $selecttd,
                                   [
                                     'class'       => 'select3 form-control control input-xs combo' ,
@@ -20,7 +20,7 @@
             </div>
             <div class="col-sm-6">
               <div class="input-group my-group">
-                  <label class="control-label"><b>Documento <small class="">({{$data_titulo}})</small> : </b></label>
+                  <label class="control-label"><b>Documento : </b></label>
                   <input  type="text"
                           id="documentog" 
                           name='documentog'                        
@@ -66,7 +66,7 @@
           data_dni = '{{$data_dni}}'
           data_nombre = '{{$data_nombre}}'
           data_nombre_visible = '{{$data_nombre_visible}}'
-          
+
   				>
   	Asignar
   </button>

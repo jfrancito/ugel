@@ -70,39 +70,83 @@ div.files ul li {
     padding: 1rem 0;
     padding-right: 2rem;
     position: relative;
-    font-size: 19px !important;
+    font-size: 15px !important;
 }
 
 div.files ul {
    	list-style:none;
-	padding:0;
+   	padding-left: 5px;
+   	padding-right: 5px;
 	max-height:150px;
 	overflow:auto;
 }
 
+
+div.archivito ul li i {
+	cursor:pointer;
+	position:absolute;
+	top:50%;
+	right:0;
+	transform:translatey(-50%);
+}
+
+div.archivito ul li {
+    padding: 1rem 0;
+    padding-right: 2rem;
+    position: relative;
+    font-size: 15px !important;
+}
+
+div.archivito ul {
+   	list-style:none;
+   	padding-left: 5px;
+   	padding-right: 5px;
+	max-height:150px;
+	overflow:auto;
+}
+
+
 div.files {
-   	background: #eee;
-	padding: 1rem;
-	margin:1rem 0;
+   	background: #34a853;
+   	color: #fff;
 	border-radius:10px;
 }
 
 div.filesapafa {
-   	background: #eee;
-	padding: 1rem;
-	margin:1rem 0;
+   	background: #34a853;
+   	color: #fff;
 	border-radius:10px;
 }
 
+div.files03 {
+   	background: #34a853;
+   	color: #fff;
+	border-radius:10px;
+}
 
 div.container {
    	width: 100%;
 	padding: 0 2rem;
 }
 
-
+div.files .mdi-delete{
+	color: #d9534f;
+	border-radius: 5px;
+}
 
 span.file-size {
-	color: #999;
+	color: #fff;
+	padding-left: 0.5rem;
+}
+
+
+
+div.archivito .mdi-delete{
+	color: #d9534f;
+	border-radius: 5px;
+}
+
+span.file-size {
+	color: #fff;
 	padding-left: 0.5rem;
 }

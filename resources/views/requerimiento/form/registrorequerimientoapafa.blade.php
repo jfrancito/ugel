@@ -95,6 +95,7 @@
 
       <fieldset>
         <legend>CONSEJO DIRECTIVO </legend>
+        
             <div class="col-sm-3">
               <div class="form-group">
                 <label class="control-label"><b>Tipo Documento <small class="">(Presidente)</small> : </b></label>
