@@ -6,6 +6,10 @@ use App\Modelos\Grupoopcion;
 use App\Modelos\Opcion;
 use App\Modelos\Rol;
 use App\Modelos\RolOpcion;
+use App\Modelos\Institucion;
+use App\Modelos\Director;
+
+
 use App\User;
 
 use Illuminate\Http\Request;
@@ -82,9 +86,22 @@ class UserController extends Controller {
 						->toArray();
 
 
+
+					$tinstitucion 	= 	Institucion::where('id','=',$tusuario->institucion_id)
+										->where('activo', '=', 1)
+										->first();
+					$tdireccion  	= 	Director::where('id','=',$tusuario->institucion_id)
+										->where('activo', '=', 1)
+										->first();
+
+
+
 					Session::put('usuario', $tusuario);
 					Session::put('listamenu', $listamenu);
 					Session::put('listaopciones', $listaopciones);
+					Session::put('institucion', $tinstitucion);
+					Session::put('direccion', $tdireccion);
+
 
 					return Redirect::to('bienvenido');
 
@@ -104,6 +121,8 @@ class UserController extends Controller {
 		Session::forget('usuario');
 		Session::forget('listamenu');
 		Session::forget('listaopciones');
+		Session::forget('institucion');
+		Session::forget('direccion');
 		return Redirect::to('/login');	
 
 	}

@@ -12,7 +12,7 @@
             <input type="hidden" name="institucion_id" id = 'institucion_id' value='{{$institucion->id}}'>
             <div class="col-sm-3">
               <div class="form-group">
-                <label class="control-label"><b>CODIGO INSTITUTO <small class="">(II.EE.)</small> : </b></label>
+                <label class="control-label"><b>CODIGO LOCAL <small class="">(II.EE.)</small> : </b></label>
                 <p>{{$institucion->codigo}}</p>
               </div>
             </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="col-sm-6">
               <div class="form-group">
-                <label class="control-label"><b>DEPARTAMENTO <small class="">(II.EE.)</small> : </b></label>
+                <label class="control-label"><b>DEPARTAMENTO /PROVINCIA / DISTRITO <small class="">(II.EE.)</small> : </b></label>
                 <p>{{strtoupper($institucion->departamento)}} - {{strtoupper($institucion->departamento)}} - {{strtoupper($institucion->distrito)}}</p>
 
               </div>
