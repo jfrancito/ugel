@@ -1,3 +1,32 @@
+.color_amarillo{
+  color: #FFCC00 !important;
+}
+.cursiva{
+  font-style: italic;
+}
+.color_azul{
+  background: #177bbb !important;
+}
+.cblanco{
+  color: #ffffff !important;
+}
+
+.color_rojo{
+  color: #E74C3C !important;
+}
+
+
+.center{
+  text-align: center;
+}
+.my-card
+{
+    position:absolute;
+    left:40%;
+    top:-20px;
+    border-radius:50%;
+}
+
 .be-top-header{
   background: #177bbb;
     color: #fff;
@@ -60,9 +89,15 @@ legend {
 
 
 .obligatorio{
-	color: #d9534f;
+	color: #E74C3C;
 	font-weight: bold;
 }
+
+.opcional{
+  color: #646464;
+  font-weight: bold;
+}
+
 .activo1{
 	background-color: #f2f2f2 !important;
 }

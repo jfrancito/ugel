@@ -27,13 +27,15 @@
     <div class="be-wrapper be-login">
       <div class="be-content ajaxpersonal">  
         <div class="main-content container-fluid">
-          <div class="splash-container">
+          <div class="splash-container" style="margin: 25px auto;">
             <div class="panel panel-default panel-border-color panel-border-color-primary">
               <div class="panel-heading">
                 
-              <img src="{{ asset('public/img/ugel.jpg') }}" alt="logo" width="300" height="150" class="logo-img">
+              <img src="{{ asset('public/img/ugel.jpg') }}" alt="logo" width="250" height="130" class="logo-img">
               <!-- <strong class="splash-description" style="font-size: 23px;font-style: italic;">META</strong> -->
-              <span class="splash-description">Por favor ingrese su información de usuario.</span>
+              <span class="splash-description">
+                <b>PLATAFORMA PARA REGISTRO DE CONEI Y APAFA DE INSTITUCIONES EDUCATIVAS PÚBLICAS DEL ÁMBITO DE UGEL CHICLAYO</b>
+              </span>
               </div>
               <div class="panel-body">
 

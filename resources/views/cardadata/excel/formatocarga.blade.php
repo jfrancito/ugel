@@ -7,6 +7,7 @@
                       <td>CODIGO_LOCAL</td>
                       <td>NOMBRE_IIEE</td>
                       <td>DIRECTOR</td>
+                      <td>DIRECTOR_DNI</td>
                       <td>TELEFONO</td>
                       <td>CORREO_ELECTRONICO</td>
                       <td>DIRECCION_IIEE</td>

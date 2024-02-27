@@ -110,6 +110,8 @@ class CargarDatosInstitucionController extends Controller
                             if ($item->codigo_local == null){$mensaje ='CODIGO LOCAL VACIO';throw new Exception($mensaje);}
                             if ($item->nombre_iiee == null){$mensaje ='NOMBRE IIEE VACIO';throw new Exception($mensaje);}
                             if ($item->director == null){$mensaje ='DIRECTOR VACIO';throw new Exception($mensaje);}
+                            if ($item->director_dni == null){$mensaje ='DNI DIRECTOR VACIO';throw new Exception($mensaje);}
+
                             if ($item->direccion_iiee == null){$mensaje ='DIRECCION IIEE VACIO';throw new Exception($mensaje);}
                             //if ($item->localidad == null){$mensaje ='LOCALIDAD VACIO';throw new Exception($mensaje);}
                             //if ($item->centro_poblado == null){$mensaje ='CENTRO POBLADO VACIO';throw new Exception($mensaje);}
@@ -143,6 +145,7 @@ class CargarDatosInstitucionController extends Controller
                                 $iddirector                                 =   $this->funciones->getCreateIdMaestra('directores');
                                 $director                                   =   new Director;
                                 $director->id                               =   $iddirector;
+                                $director->dni                              =   $item->director_dni;
                                 $director->nombres                          =   $item->director;
                                 $director->telefono                         =   $item->telefono;
                                 $director->correo                           =   $item->correo_electronico;            
@@ -239,7 +242,7 @@ class CargarDatosInstitucionController extends Controller
                 $sheet->loadView('cardadata/excel/formatocarga')
                         ->with('funcion',$funcion);
 
-                $sheet->cells('A1:L1', function($cells) {
+                $sheet->cells('A1:M1', function($cells) {
                    $cells->setFontColor('#000000');
                    $cells->setAlignment('center');
                    $cells->setValignment('center');
@@ -252,7 +255,7 @@ class CargarDatosInstitucionController extends Controller
 
 
                                     });
-                $sheet->getStyle('A1:L1', $sheet->getHighestRow())->getAlignment()->setWrapText(true);
+                $sheet->getStyle('A1:M1', $sheet->getHighestRow())->getAlignment()->setWrapText(true);
 
                 $sheet->setWidth(array(
                     'A'     =>  '20',
@@ -266,7 +269,8 @@ class CargarDatosInstitucionController extends Controller
                     'I'     =>  '20',
                     'J'     =>  '20',
                     'K'     =>  '20',
-                    'L'     =>  '20'
+                    'L'     =>  '20',
+                    'M'     =>  '20'
                 ));
 
 

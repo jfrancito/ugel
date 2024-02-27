@@ -14,9 +14,9 @@
               <div class="panel panel-default panel-border-color panel-border-color-success">
                 <div class="panel-heading">{{ $titulo }}
                   <div class="tools tooltiptop">
-                    <a href="{{ url('/agregar-requerimiento-conei/'.$idopcion) }}" class="tooltipcss">
-                      <span class="tooltiptext">Crear Requerimiento CONEI</span>
-                      <span class="icon mdi mdi-plus-circle-o"></span>
+                    <a href="{{ url('/agregar-requerimiento-conei/'.$idopcion) }}" class="btn btn-space btn-primary tooltipcss">
+                      <span class="tooltiptext">Crear Conei</span>
+                      Crear Conei                    
                     </a>
                   </div>
                 </div>

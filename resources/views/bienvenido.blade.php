@@ -4,44 +4,42 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset('public/lib/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}" />
 		<link rel="stylesheet" type="text/css" href="{{ asset('public/lib/jqvmap/jqvmap.min.css') }} "/>
 		<link rel="stylesheet" type="text/css" href="{{ asset('public/lib/datetimepicker/css/bootstrap-datetimepicker.min.css') }}" />
-
-<style type="text/css">
-.my-card
-{
-    position:absolute;
-    left:40%;
-    top:-20px;
-    border-radius:50%;
-}	
-
-</style>
 @stop
-
 
 @section('section')
 	<div class="be-content contenido" style="height: 100vh;">
 		<div class="main-content container-fluid">
 				<div class='container'>
 					<div class="row">
-						<div class="col-md-12">
-					            <div class="col-md-4">
-					              <div class="panel panel-contrast">
-					                <div class="panel-heading panel-heading-contrast">REQUERIMIENTO<span class="panel-subtitle">CONEI Y APAFA</span></div>
-					                <div class="panel-body">
-					                  <p> PLATAFORMA PARA REGISTRO DE CONEI Y APAFA DE INSTITUCIONES EDUCATIVAS PÚBLICAS</p>
 
-					                  <a class="btn btn-rounded btn-space btn-success" href="{{ url('agregar-requerimiento-apafa/oj') }}">Crear Requerimiento APAFA</a>
-					                  <a class="btn btn-rounded btn-space btn-success" href="{{ url('agregar-requerimiento-conei/oj') }}">Crear Requerimiento CONEI</a>
+						<div class="col-md-12">
+					            <div class="col-md-5">
+					              <div class="panel panel-contrast">
+					                <div class="panel-heading panel-heading-contrast color_azul cblanco" >DIRECTOR<span class="panel-subtitle cblanco">DATOS PERSONALES</span></div>
+					                <div class="panel-body ">
+
+					                  	<h4 class="center"><b> {{Session::get('direccion')->dni}}</b></h4>
+					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>DNI</b></h6>
+
+					                  	<h4 class="center"><b> {{Session::get('direccion')->nombres}}</b></h4>
+					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>NOMBRES</b></h6>
+
+					                  	<h4 class="center"><b> {{Session::get('direccion')->telefono}}</b></h4>
+					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>TELEFONO</b></h6>
+
+					                  	<h4 class="center"><b> {{Session::get('direccion')->correo}}</b></h4>
+					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>CORREO</b></h6>					                  	
 					                </div>
 					              </div>
 					            </div>
+					    </div>
+
+
 					</div>
 			</div>
 		</div>
 	</div>
-
 @stop 
-
 @section('script')
 
 		<script src="{{ asset('public/lib/jquery-flot/jquery.flot.js') }}" type="text/javascript"></script>
@@ -54,8 +52,6 @@
 		<script src="{{ asset('public/lib/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('public/lib/jqvmap/jquery.vmap.min.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('public/lib/jqvmap/maps/jquery.vmap.world.js') }}" type="text/javascript"></script>
-		{{-- <script src="{{ asset('public/js/app-dashboard.js') }}" type="text/javascript"></script> --}}
-
 
 		<script type="text/javascript">
 			$(document).ready(function(){

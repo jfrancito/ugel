@@ -1,100 +1,15 @@
 <div class="tab-container">
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#informacion" data-toggle="tab"><b> INFORMACION</b></a></li>
-    <li><a href="#conei" class="conei" data-toggle="tab"><b> CONEI </b></a></li>
+    <li class="active"><a href="#conei" class="conei" data-toggle="tab"><b> CONEI </b></a></li>
+    <li><a href="#archivo" class="conei" data-toggle="tab"><b> ARCHIVO </b></a></li>
   </ul>
   <div class="tab-content">
-    <div id="informacion" class="tab-pane active cont">
 
-      <fieldset>
-        <legend>DATOS DE LA II.EE.</legend>
-
-            <input type="hidden" name="institucion_id" id = 'institucion_id' value='{{$institucion->id}}'>
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label class="control-label"><b>CODIGO LOCAL <small class="">(II.EE.)</small> : </b></label>
-                <p>{{$institucion->codigo}}</p>
-              </div>
-            </div>
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label class="control-label"><b>NOMBRE DE LA II.EE. <small class="">(II.EE.)</small> : </b></label>
-                <p>{{strtoupper($institucion->nombre)}}</p>
-
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="control-label"><b>DEPARTAMENTO /PROVINCIA / DISTRITO <small class="">(II.EE.)</small> : </b></label>
-                <p>{{strtoupper($institucion->departamento)}} - {{strtoupper($institucion->departamento)}} - {{strtoupper($institucion->distrito)}}</p>
-
-              </div>
-            </div>
-      </fieldset>
-      <fieldset>
-        <legend>DATOS DEL DIRECTOR</legend>
-
-            <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
-
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label class="control-label"><b>NOMBRES <small class="">(Director)</small> : </b></label>
-                <input  type="text"
-                        id="nombre_director" name='nombre_director' 
-                        value="{{$director->nombres}}"                        
-                        placeholder="NOMBRES"
-                        required = ""
-                        maxlength="300"                     
-                        autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
-                @include('error.erroresvalidate', [ 'id' => $errors->has('nombre_director')  , 
-                                              'error' => $errors->first('nombre_director', ':message') , 
-                                              'data' => '1'])
-              </div>
-            </div>
-
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label class="control-label"><b>TELEFONO <small class="">(Director)</small> : </b></label>
-                <input  type="text"
-                        id="telefono_director" name='telefono_director' 
-                        value="{{$director->telefono}}"                    
-                        placeholder="TELEFONO"
-                        required = ""
-                        maxlength="50"                     
-                        autocomplete="off" class="form-control input-sm telefono_director" data-aw="2"/>
-                @include('error.erroresvalidate', [ 'id' => $errors->has('telefono_director')  , 
-                                              'error' => $errors->first('telefono_director', ':message') , 
-                                              'data' => '2'])
-              </div>
-            </div>
-
-            <div class="col-sm-3">
-              <div class="form-group">
-                <label class="control-label"><b>CORREO ELECTRONICO <small class="">(Director)</small> : </b></label>
-                <input  type="text"
-                        id="correo_director" name='correo_director' 
-                        value="{{$director->correo}}"                     
-                        placeholder="CORREO ELECTRONICO"
-                        required = ""
-                        maxlength="50"                     
-                        autocomplete="off" class="form-control input-sm correo_director" data-aw="3"/>
-                @include('error.erroresvalidate', [ 'id' => $errors->has('correo_director')  , 
-                                              'error' => $errors->first('correo_director', ':message') , 
-                                              'data' => '3'])
-              </div>
-            </div>
-      </fieldset>
-      <br>
-      <div style="text-align: right;">
-        <button type="button" class="btn btn-space btn-success btn-next">Siguiente</button>
-      </div>
-    </div>
-    <div id="conei" class="tab-pane cont">
-
-
-
+    <div id="conei" class="tab-pane active cont">
       <fieldset>
         <legend>CONEI </legend>
+            <input type="hidden" name="institucion_id" id = 'institucion_id' value='{{$institucion->id}}'>
+            <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
 
             <div class="col-sm-6">
               <div class="input-group my-group">
@@ -211,13 +126,12 @@
             <div class="col-sm-6">
               <div class="input-group my-group">
 
-                  <label class="control-label"><b>REPRESENTANTE DE ADMINISTRATIVO : <small class="obligatorio">(*) Obligatorio</small></b></label>
+                  <label class="control-label"><b>REPRESENTANTE DE ADMINISTRATIVO : <small class="opcional">(**) Opcional</small></b></label>
 
                   <input  type="text"
                           id="representanteadministrativo_nombres" name='representanteadministrativo_nombres' 
                           value="{{ old('representanteadministrativo_nombres') }}"                        
-                          placeholder="REPRESENTANTE DE ADMINISTRATIVO"
-                          required = ""                   
+                          placeholder="REPRESENTANTE DE ADMINISTRATIVO"                
                           autocomplete="off" class="form-control input-sm representanteadministrativo_nombres" data-aw="4" readonly/>
 
                   @include('error.erroresvalidate', [ 'id' => $errors->has('representanteadministrativo_nombres')  , 
@@ -285,13 +199,12 @@
             <div class="col-sm-6">
               <div class="input-group my-group">
 
-                  <label class="control-label"><b>REPRESENTANTE DE ESTUDIANTE : <small class="obligatorio">(*) Obligatorio</small></b></label>
+                  <label class="control-label"><b>REPRESENTANTE DE ESTUDIANTE : <small class="opcional">(**) Opcional</small></b></label>
 
                   <input  type="text"
                           id="representanteestudiante_nombres" name='representanteestudiante_nombres' 
                           value="{{ old('representanteestudiante_nombres') }}"                        
-                          placeholder="REPRESENTANTE DE ESTUDIANTE"
-                          required = ""                   
+                          placeholder="REPRESENTANTE DE ESTUDIANTE"                  
                           autocomplete="off" class="form-control input-sm representanteestudiante_nombres" data-aw="4" readonly/>
 
                   @include('error.erroresvalidate', [ 'id' => $errors->has('representanteestudiante_nombres')  , 
@@ -321,13 +234,12 @@
             <div class="col-sm-6">
               <div class="input-group my-group">
 
-                  <label class="control-label"><b>REPRESENTANTE DE EX ALUMNO : <small class="obligatorio">(*) Obligatorio</small></b></label>
+                  <label class="control-label"><b>REPRESENTANTE DE EX ALUMNO : <small class="opcional">(**) Opcional</small></b></label>
 
                   <input  type="text"
                           id="representanteexalumno_nombres" name='representanteexalumno_nombres' 
                           value="{{ old('representanteexalumno_nombres') }}"                        
-                          placeholder="REPRESENTANTE DE EX ALUMNO"
-                          required = ""                   
+                          placeholder="REPRESENTANTE DE EX ALUMNO"                  
                           autocomplete="off" class="form-control input-sm representanteexalumno_nombres" data-aw="4" readonly/>
 
                   @include('error.erroresvalidate', [ 'id' => $errors->has('representanteexalumno_nombres')  , 
@@ -388,13 +300,14 @@
 
               </div>
             </div>
-
-
-
-
-
       </fieldset>
+      <br><br>
+      <div style="text-align: right;">
+        <button type="button" class="btn btn-space btn-success btn-next">Siguiente</button>
+      </div>
+    </div>
 
+    <div id="archivo" class="tab-pane cont">
 
       <fieldset>
         <legend>ARCHIVOS</legend>
@@ -492,9 +405,7 @@
 
                     </tbody>
                   </table>
-
       </fieldset>
-
 
       <div class="row xs-pt-15">
         <div class="col-xs-6">
@@ -508,6 +419,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
