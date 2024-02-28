@@ -10,7 +10,7 @@
         <li><div class="page-title"><span>{{Session::get('institucion')->nombre}}</span></div></li>
 
         <li class="dropdown">
-          <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><img src="{{ asset('public/img/avatar.png') }}" alt="Avatar"><span class="user-name">{{Session::get('usuario')->nombre}}</span></a>
+          <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><img src="{{ asset('public/img/institucion.png') }}" alt="Avatar"><span class="user-name">{{Session::get('usuario')->nombre}}</span></a>
           <ul role="menu" class="dropdown-menu">
             <li>
               <div class="user-info color_azul" >

@@ -14,26 +14,40 @@
 
 						<div class="col-md-12">
 					            <div class="col-md-5">
-					              <div class="panel panel-contrast">
-					                <div class="panel-heading panel-heading-contrast color_azul cblanco" >DIRECTOR<span class="panel-subtitle cblanco">DATOS PERSONALES</span></div>
+					              <div class="panel panel-contrast color_azul" style="margin-bottom:0px">
 					                <div class="panel-body ">
-
-					                  	<h4 class="center"><b> {{Session::get('direccion')->dni}}</b></h4>
-					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>DNI</b></h6>
-
-					                  	<h4 class="center"><b> {{Session::get('direccion')->nombres}}</b></h4>
-					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>NOMBRES</b></h6>
-
-					                  	<h4 class="center"><b> {{Session::get('direccion')->telefono}}</b></h4>
-					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>TELEFONO</b></h6>
-
-					                  	<h4 class="center"><b> {{Session::get('direccion')->correo}}</b></h4>
-					                  	<h6 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>CORREO</b></h6>					                  	
+					                	<h3 class="cblanco cursiva">INSTITUCION : </h3>
+					                  	<h3 class="center cblanco"><b> {{Session::get('institucion')->codigo}}</b></h3>
+					                  	<h5 class="center color_amarillo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>CODIGO LOCAL</b></h5>
+					                  	<h3 class="center cblanco"><b> {{Session::get('institucion')->nombre}}</b></h3>
+					                  	<h5 class="center color_amarillo cursiva" style="margin-bottom:0px;margin-top: 0px;">
+					                  		<b>{{Session::get('institucion')->departamento}} | {{Session::get('institucion')->provincia}} | {{Session::get('institucion')->distrito}}</b>
+					                  	</h5>
+				      
 					                </div>
 					              </div>
 					            </div>
 					    </div>
+						<div class="col-md-12">
+					            <div class="col-md-5">
+					              <div class="panel panel-contrast">
+					                <div class="panel-body ">
+					                	<h3 class="cursiva">DIRECTOR : </h3>
+					                  	<h3 class="center"><b> {{Session::get('direccion')->dni}}</b></h3>
+					                  	<h5 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>DNI</b></h5>
 
+					                  	<h3 class="center"><b> {{Session::get('direccion')->nombres}}</b></h3>
+					                  	<h5 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>NOMBRES</b></h5>
+
+					                  	<h3 class="center"><b> {{Session::get('direccion')->telefono}}</b></h3>
+					                  	<h5 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>TELEFONO</b></h5>
+
+					                  	<h3 class="center"><b> {{Session::get('direccion')->correo}}</b></h3>
+					                  	<h5 class="center color_rojo cursiva" style="margin-bottom:0px;margin-top: 0px;"><b>CORREO</b></h5>					                  	
+					                </div>
+					              </div>
+					            </div>
+					    </div>
 
 					</div>
 			</div>
