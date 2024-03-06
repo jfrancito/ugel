@@ -53,6 +53,187 @@ class GestionConeiController extends Controller
                             'idopcion'          =>  $idopcion,
                          ]);
     }
+    public function actionEliminarFilaTablaOI(Request $request)
+    {
+
+        $fila                                =   $request['fila'];
+        $array_detalle_producto_request      =   json_decode($request['array_detalle_producto'],true);
+        $array_detalle_producto              =   array();
+
+        //eliminar la fila del array
+        foreach ($array_detalle_producto_request as $key => $item) {
+            if((int)$item['fila'] == $fila) {
+                unset($array_detalle_producto_request[$key]);
+            }
+        }
+
+        $cont = 1;
+        foreach ($array_detalle_producto_request as $key => $item) {
+            $array_detalle_producto_request[$key]['fila'] = $cont;
+            $cont = $cont +1;
+        }
+
+        if(count($array_detalle_producto_request)>0){
+            foreach ($array_detalle_producto_request as $key => $item) {
+                array_push($array_detalle_producto,$item);
+            }
+        }
+
+        $funcion                =   $this;
+
+        return View::make('requerimiento/ajax/alistaoiconei',
+                         [
+                            'array_detalle_producto'    =>  $array_detalle_producto,
+                            'funcion'                   =>  $funcion,
+                            'ajax'                      =>  true
+                         ]);
+    }
+
+
+    public function actionModalConfirmarRegistro(Request $request)
+    {
+
+        $fila                                       =   $request['fila'];
+        $institucion_id                             =   $request['institucion_id'];
+        $director_id                                =   $request['director_id'];
+        $institucion                                =   Institucion::where('id','=',$institucion_id)->first();
+        $director                                   =   Director::where('id','=',$director_id)->where('activo','=','1')->first();
+
+        $i_tipodocumento_director                   =   $request['i_tipodocumento_director'];
+        $i_dni_director                             =   $request['i_dni_director'];
+        $i_nombre_director                          =   $request['i_nombre_director'];
+
+        $i_tipodocumento_subdirector                =   $request['i_tipodocumento_subdirector'];
+        $i_dni_subdirector                          =   $request['i_dni_subdirector'];
+        $i_nombre_subdirector                       =   $request['i_nombre_subdirector'];
+
+        $i_tipodocumento_representantedocente       =   $request['i_tipodocumento_representantedocente'];
+        $i_dni_representantedocente                 =   $request['i_dni_representantedocente'];
+        $i_nombre_representantedocente              =   $request['i_nombre_representantedocente'];
+
+        $i_tipodocumento_representanteadministrativo=   $request['i_tipodocumento_representanteadministrativo'];
+        $i_dni_representanteadministrativo          =   $request['i_dni_representanteadministrativo'];
+        $i_nombre_representanteadministrativo       =   $request['i_nombre_representanteadministrativo'];
+
+        $i_tipodocumento_representanteapafa         =   $request['i_tipodocumento_representanteapafa'];
+        $i_dni_representanteapafa                   =   $request['i_dni_representanteapafa'];
+        $i_nombre_representanteapafa                =   $request['i_nombre_representanteapafa'];
+
+        $i_tipodocumento_representanteestudiante    =   $request['i_tipodocumento_representanteestudiante'];
+        $i_dni_representanteestudiante              =   $request['i_dni_representanteestudiante'];
+        $i_nombre_representanteestudiante           =   $request['i_nombre_representanteestudiante'];
+
+        $i_tipodocumento_representanteexalumno      =   $request['i_tipodocumento_representanteexalumno'];
+        $i_dni_representanteexalumno                =   $request['i_dni_representanteexalumno'];
+        $i_nombre_representanteexalumno             =   $request['i_nombre_representanteexalumno'];
+
+        $i_tipodocumento_otrorepresentatecomunidad  =   $request['i_tipodocumento_otrorepresentatecomunidad'];
+        $i_dni_otrorepresentatecomunidad            =   $request['i_dni_otrorepresentatecomunidad'];
+        $i_nombre_otrorepresentatecomunidad         =   $request['i_nombre_otrorepresentatecomunidad'];
+
+        $periodo                                    =   $request['periodo'];
+        $array_detalle_producto_request      =   json_decode($request['array_detalle_producto'],true);
+        $array_detalle_producto              =   array();
+        if(count($array_detalle_producto_request)>0){
+            foreach ($array_detalle_producto_request as $key => $item) {
+                array_push($array_detalle_producto,$item);
+            }
+        }
+
+        $funcion                                    =   $this;
+        //dd($array_detalle_producto);
+
+        return View::make('requerimiento//modal/ajax/alistacertificado',
+                         [
+                            'array_detalle_producto'                        =>  $array_detalle_producto,
+
+                            'i_tipodocumento_director'                      =>  $i_tipodocumento_director,
+                            'i_dni_director'                                =>  $i_dni_director,
+                            'i_nombre_director'                             =>  $i_nombre_director,
+
+                            'i_tipodocumento_subdirector'                   =>  $i_tipodocumento_subdirector,
+                            'i_dni_subdirector'                             =>  $i_dni_subdirector,
+                            'i_nombre_subdirector'                          =>  $i_nombre_subdirector,
+
+                            'i_tipodocumento_representantedocente'          =>  $i_tipodocumento_representantedocente,
+                            'i_dni_representantedocente'                    =>  $i_dni_representantedocente,
+                            'i_nombre_representantedocente'                 =>  $i_nombre_representantedocente,
+
+                            'i_tipodocumento_representanteadministrativo'   =>  $i_tipodocumento_representanteadministrativo,
+                            'i_dni_representanteadministrativo'             =>  $i_dni_representanteadministrativo,
+                            'i_nombre_representanteadministrativo'          =>  $i_nombre_representanteadministrativo,
+
+                            'i_tipodocumento_representanteapafa'            =>  $i_tipodocumento_representanteapafa,
+                            'i_dni_representanteapafa'                      =>  $i_dni_representanteapafa,
+                            'i_nombre_representanteapafa'                   =>  $i_nombre_representanteapafa,
+
+                            'i_tipodocumento_representanteestudiante'       =>  $i_tipodocumento_representanteestudiante,
+                            'i_dni_representanteestudiante'                 =>  $i_dni_representanteestudiante,
+                            'i_nombre_representanteestudiante'              =>  $i_nombre_representanteestudiante,
+
+                            'i_tipodocumento_representanteexalumno'         =>  $i_tipodocumento_representanteexalumno,
+                            'i_dni_representanteexalumno'                   =>  $i_dni_representanteexalumno,
+                            'i_nombre_representanteexalumno'                =>  $i_nombre_representanteexalumno,
+                            
+                            'i_tipodocumento_otrorepresentatecomunidad'     =>  $i_tipodocumento_otrorepresentatecomunidad,
+                            'i_dni_otrorepresentatecomunidad'               =>  $i_dni_otrorepresentatecomunidad,
+                            'i_nombre_otrorepresentatecomunidad'            =>  $i_nombre_otrorepresentatecomunidad,
+
+                            'institucion'                                   =>  $institucion,
+                            'director'                                      =>  $director,
+
+                            'funcion'                   =>  $funcion,
+                            'ajax'                      =>  true
+                         ]);
+    }
+
+
+
+
+
+
+
+    public function actionListaTablaOI(Request $request)
+    {
+
+        $tdg                                =   $request['tdg'];
+        $tdgtexto                           =   $request['tdgtexto'];
+        $documentog                         =   $request['documentog'];
+        $nombresg                           =   $request['nombresg'];
+        $dcargoni                           =   $request['dcargoni'];
+        $array_detalle_producto_request     =   json_decode($request['array_detalle_producto'],true);
+        $array_detalle_producto             =   array();
+
+        $fila                               =   count($array_detalle_producto_request) + 1;
+
+
+        $arraynuevo                         =   array(
+                                                    "fila"          => $fila,
+                                                    "tdg"           => $tdg,
+                                                    "tdgtexto"      => $tdgtexto,
+                                                    "documentog"    => $documentog,
+                                                    "nombresg"      => $nombresg,
+                                                    "dcargoni"      => $dcargoni
+                                                );
+
+        array_push($array_detalle_producto,$arraynuevo);
+
+        if(count($array_detalle_producto_request)>0){
+            foreach ($array_detalle_producto_request as $key => $item) {
+                array_push($array_detalle_producto,$item);
+            }
+        }
+
+        $funcion                =   $this;
+
+        return View::make('requerimiento/ajax/alistaoiconei',
+                         [
+                            'array_detalle_producto'    =>  $array_detalle_producto,
+                            'funcion'                   =>  $funcion,
+                            'ajax'                      =>  true
+                         ]);
+    }
+
 
 
     public function actionModalRegistro(Request $request)
@@ -87,7 +268,21 @@ class GestionConeiController extends Controller
     }
 
 
+    public function actionModalRegistroOI(Request $request)
+    {
 
+        $funcion       =   $this;
+        $combotd       =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+        $selecttd      =   'TIDO00000001';
+
+        return View::make('requerimiento/modal/ajax/amregistrooi',
+                         [
+                            'combotd'           =>  $combotd,
+                            'selecttd'          =>  $selecttd,
+                            'funcion'           =>  $funcion,
+                            'ajax'              =>  true
+                         ]);
+    }
 
 
 
@@ -387,13 +582,19 @@ class GestionConeiController extends Controller
             $director       =   Director::where('institucion_id','=',$institucion_id)->where('activo','=','1')->first();
             $combotd        =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
             $selecttd       =   'TIDO00000001';
+            $array_detalle_producto = array();
+            $comboperiodo   =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione Periodo','','APAFA_CONEI_PERIODO');
+
 
             return View::make('requerimiento.agregarconei',
                         [
+
+                            'array_detalle_producto'                => $array_detalle_producto,
                             'idopcion'          =>  $idopcion,
                             'institucion'       =>  $institucion,
                             'director'          =>  $director,
                             'combotd'           =>  $combotd,
+                            'comboperiodo'      =>  $comboperiodo,
                             'selecttd'          =>  $selecttd,
                         ]);
         }

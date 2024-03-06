@@ -2,7 +2,7 @@
 <nav class="navbar navbar-default navbar-fixed-top be-top-header {{Session::get('color_meta')}}">
   <div class="container-fluid">
     <div class="navbar-header"> 
-      <div class="color_amarillo"><b>Sistema Gestion Administrativo</b></div>
+      <div class="color_amarillo"><b>SISTEMA DE APAFA Y CONEI</b></div>
     </div>
 
     <div class="be-right-navbar {{Session::get('color_meta')}}">
@@ -10,7 +10,9 @@
         <li><div class="page-title"><span>{{Session::get('institucion')->nombre}}</span></div></li>
 
         <li class="dropdown">
-          <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><img src="{{ asset('public/img/institucion.png') }}" alt="Avatar"><span class="user-name">{{Session::get('usuario')->nombre}}</span></a>
+          <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">
+            <img src="{{ asset('public/img/institucion1.jpg') }}" alt="Avatar">
+            <span class="user-name">{{Session::get('usuario')->nombre}}</span></a>
           <ul role="menu" class="dropdown-menu">
             <li>
               <div class="user-info color_azul" >

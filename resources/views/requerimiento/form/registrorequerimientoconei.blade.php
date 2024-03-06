@@ -1,16 +1,28 @@
 <div class="tab-container">
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#conei" class="conei" data-toggle="tab"><b> CONEI </b></a></li>
-    <li><a href="#archivo" class="conei" data-toggle="tab"><b> ARCHIVO </b></a></li>
+    <li class="active"><a href="#conei" class="conei" data-toggle="tab"><b> INTEGRANTES </b></a></li>
+    <li class='disabled'><a href="#archivo" class="conei" data-toggle="tab"><b> EXPEDIENTES </b></a></li>
   </ul>
   <div class="tab-content">
-
     <div id="conei" class="tab-pane active cont">
       <fieldset>
-        <legend>CONEI </legend>
+        <legend>PERIODO CONEI </legend>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label"><b>Periodo : </b></label>
+                {!! Form::select( 'periodo', $comboperiodo, array(),
+                                  [
+                                    'class'       => 'select2 form-control control input-xs',
+                                    'id'          => 'periodo',
+                                    'required'    =>  'required'
+                                  ]) !!}
+              </div>
+            </div>
+      </fieldset>
+      <fieldset>
+        <legend>INTEGRANTES </legend>
             <input type="hidden" name="institucion_id" id = 'institucion_id' value='{{$institucion->id}}'>
             <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
-
             <div class="col-sm-6">
               <div class="input-group my-group">
 
@@ -46,8 +58,6 @@
 
               </div>
             </div>
-
-
             <div class="col-sm-6">
               <div class="input-group my-group">
 
@@ -121,43 +131,6 @@
               </div>
             </div>
 
-
-
-            <div class="col-sm-6">
-              <div class="input-group my-group">
-
-                  <label class="control-label"><b>REPRESENTANTE DE ADMINISTRATIVO : <small class="opcional">(**) Opcional</small></b></label>
-
-                  <input  type="text"
-                          id="representanteadministrativo_nombres" name='representanteadministrativo_nombres' 
-                          value="{{ old('representanteadministrativo_nombres') }}"                        
-                          placeholder="REPRESENTANTE DE ADMINISTRATIVO"                
-                          autocomplete="off" class="form-control input-sm representanteadministrativo_nombres" data-aw="4" readonly/>
-
-                  @include('error.erroresvalidate', [ 'id' => $errors->has('representanteadministrativo_nombres')  , 
-                                                'error' => $errors->first('representanteadministrativo_nombres', ':message') , 
-                                                'data' => '4'])
-
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary modal-registro"
-                            data_td     = 'i_tipodocumento_representanteadministrativo'
-                            data_dni    = 'i_dni_representanteadministrativo'
-                            data_nombre = 'i_nombre_representanteadministrativo'
-                            data_nombre_visible = 'representanteadministrativo_nombres'
-                            data_titulo = 'REPRESENTANTE DE ADMINISTRATIVO'
-                            type="button" 
-                            style="margin-top: 26px;height: 38px;">
-                            Buscar</button>
-                  </span>
-
-                  <input type="hidden" name="i_tipodocumento_representanteadministrativo" id = 'i_tipodocumento_representanteadministrativo'>
-                  <input type="hidden" name="i_dni_representanteadministrativo" id = 'i_dni_representanteadministrativo'>
-                  <input type="hidden" name="i_nombre_representanteadministrativo" id = 'i_nombre_representanteadministrativo'>
-
-              </div>
-            </div>
-
-
             <div class="col-sm-6">
               <div class="input-group my-group">
 
@@ -193,7 +166,76 @@
               </div>
             </div>
 
+            <div class="col-sm-6">
+              <div class="input-group my-group">
 
+                  <label class="control-label"><b>OTRO REPRESENTANTE DE LA COMUNIDAD : <small class="obligatorio">(*) Obligatorio</small></b></label>
+
+                  <input  type="text"
+                          id="otrorepresentatecomunidad_nombres" name='otrorepresentatecomunidad_nombres' 
+                          value="{{ old('otrorepresentatecomunidad_nombres') }}"                        
+                          placeholder="OTRO REPRESENTANTE DE LA COMUNIDAD"
+                          required = ""                   
+                          autocomplete="off" class="form-control input-sm otrorepresentatecomunidad_nombres" data-aw="4" readonly/>
+
+                  @include('error.erroresvalidate', [ 'id' => $errors->has('otrorepresentatecomunidad_nombres')  , 
+                                                'error' => $errors->first('otrorepresentatecomunidad_nombres', ':message') , 
+                                                'data' => '4'])
+
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary modal-registro"
+                            data_td     = 'i_tipodocumento_otrorepresentatecomunidad'
+                            data_dni    = 'i_dni_otrorepresentatecomunidad'
+                            data_nombre = 'i_nombre_otrorepresentatecomunidad'
+                            data_nombre_visible = 'otrorepresentatecomunidad_nombres'
+                            data_titulo = 'OTRO REPRESENTANTE DE LA COMUNIDAD'
+                            type="button" 
+                            style="margin-top: 26px;height: 38px;">
+                            Buscar</button>
+                  </span>
+
+                  <input type="hidden" name="i_tipodocumento_otrorepresentatecomunidad" id = 'i_tipodocumento_otrorepresentatecomunidad'>
+                  <input type="hidden" name="i_dni_otrorepresentatecomunidad" id = 'i_dni_otrorepresentatecomunidad'>
+                  <input type="hidden" name="i_nombre_otrorepresentatecomunidad" id = 'i_nombre_otrorepresentatecomunidad'>
+
+              </div>
+            </div>
+
+
+
+            <div class="col-sm-6">
+              <div class="input-group my-group">
+
+                  <label class="control-label"><b>REPRESENTANTE DE ADMINISTRATIVO : <small class="opcional">(**) Opcional</small></b></label>
+
+                  <input  type="text"
+                          id="representanteadministrativo_nombres" name='representanteadministrativo_nombres' 
+                          value="{{ old('representanteadministrativo_nombres') }}"                        
+                          placeholder="REPRESENTANTE DE ADMINISTRATIVO"                
+                          autocomplete="off" class="form-control input-sm representanteadministrativo_nombres" data-aw="4" readonly/>
+
+                  @include('error.erroresvalidate', [ 'id' => $errors->has('representanteadministrativo_nombres')  , 
+                                                'error' => $errors->first('representanteadministrativo_nombres', ':message') , 
+                                                'data' => '4'])
+
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary modal-registro"
+                            data_td     = 'i_tipodocumento_representanteadministrativo'
+                            data_dni    = 'i_dni_representanteadministrativo'
+                            data_nombre = 'i_nombre_representanteadministrativo'
+                            data_nombre_visible = 'representanteadministrativo_nombres'
+                            data_titulo = 'REPRESENTANTE DE ADMINISTRATIVO'
+                            type="button" 
+                            style="margin-top: 26px;height: 38px;">
+                            Buscar</button>
+                  </span>
+
+                  <input type="hidden" name="i_tipodocumento_representanteadministrativo" id = 'i_tipodocumento_representanteadministrativo'>
+                  <input type="hidden" name="i_dni_representanteadministrativo" id = 'i_dni_representanteadministrativo'>
+                  <input type="hidden" name="i_nombre_representanteadministrativo" id = 'i_nombre_representanteadministrativo'>
+
+              </div>
+            </div>
 
 
             <div class="col-sm-6">
@@ -264,43 +306,17 @@
 
               </div>
             </div>
-
-
-            <div class="col-sm-6">
-              <div class="input-group my-group">
-
-                  <label class="control-label"><b>OTRO REPRESENTANTE DE LA COMUNIDAD : <small class="obligatorio">(*) Obligatorio</small></b></label>
-
-                  <input  type="text"
-                          id="otrorepresentatecomunidad_nombres" name='otrorepresentatecomunidad_nombres' 
-                          value="{{ old('otrorepresentatecomunidad_nombres') }}"                        
-                          placeholder="OTRO REPRESENTANTE DE LA COMUNIDAD"
-                          required = ""                   
-                          autocomplete="off" class="form-control input-sm otrorepresentatecomunidad_nombres" data-aw="4" readonly/>
-
-                  @include('error.erroresvalidate', [ 'id' => $errors->has('otrorepresentatecomunidad_nombres')  , 
-                                                'error' => $errors->first('otrorepresentatecomunidad_nombres', ':message') , 
-                                                'data' => '4'])
-
-                  <span class="input-group-btn">
-                    <button class="btn btn-primary modal-registro"
-                            data_td     = 'i_tipodocumento_otrorepresentatecomunidad'
-                            data_dni    = 'i_dni_otrorepresentatecomunidad'
-                            data_nombre = 'i_nombre_otrorepresentatecomunidad'
-                            data_nombre_visible = 'otrorepresentatecomunidad_nombres'
-                            data_titulo = 'OTRO REPRESENTANTE DE LA COMUNIDAD'
-                            type="button" 
-                            style="margin-top: 26px;height: 38px;">
-                            Buscar</button>
-                  </span>
-
-                  <input type="hidden" name="i_tipodocumento_otrorepresentatecomunidad" id = 'i_tipodocumento_otrorepresentatecomunidad'>
-                  <input type="hidden" name="i_dni_otrorepresentatecomunidad" id = 'i_dni_otrorepresentatecomunidad'>
-                  <input type="hidden" name="i_nombre_otrorepresentatecomunidad" id = 'i_nombre_otrorepresentatecomunidad'>
-
-              </div>
+      </fieldset>
+      <fieldset>
+        <legend>OTROS INTEGRANTES </legend>
+            <div class = 'listaajaxoi'>
+              @include('requerimiento.ajax.alistaoiconei')
             </div>
       </fieldset>
+
+
+
+
       <br><br>
       <div style="text-align: right;">
         <button type="button" class="btn btn-space btn-success btn-next">Siguiente</button>

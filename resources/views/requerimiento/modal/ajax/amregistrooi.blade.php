@@ -1,7 +1,7 @@
 <div class="modal-header">
 	<button type="button" data-dismiss="modal" aria-hidden="true" class="close modal-close"><span class="mdi mdi-close"></span></button>
 	<h3 class="modal-title">
-		 {{$data_titulo}}
+		 OTROS INTEGRANTES
 	</h3>
 </div>
 <div class="modal-body">
@@ -11,10 +11,10 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label"><b>Tipo Documento : </b></label>
-                {!! Form::select( 'tdg', $combotd, $selecttd,
+                {!! Form::select( 'tdgoi', $combotd, $selecttd,
                                   [
                                     'class'       => 'select3 form-control control input-xs combo ctipodocumento',
-                                    'id'          => 'tdg',
+                                    'id'          => 'tdgoi',
                                   ]) !!}
               </div>
             </div>
@@ -22,17 +22,17 @@
               <div class="input-group my-group">
                   <label class="control-label"><b>Documento : </b></label>
                   <input  type="text"
-                          id="documentog" 
-                          name='documentog'                        
+                          id="documentogoi" 
+                          name='documentogoi'                        
                           placeholder="DOCUMENTO"
                           required = ""
                           maxlength="10"                     
                           autocomplete="off" class="form-control input-sm"/>
 
                     <span class="input-group-btn">
-                      <button class="btn btn-primary btn_buscar_dni"
-                              data_dni_m = 'documentog'
-                              data_nombre_m = 'nombresg'
+                      <button class="btn btn-primary btn_buscar_dni_oi"
+                              data_dni_m = 'documentogoi'
+                              data_nombre_m = 'nombresgoi'
                               type="button" 
                               style="margin-top: 26px;height: 37px;">
                               Buscar Reniec</button>
@@ -40,17 +40,29 @@
               </div>
             </div>
 
-            <div class="col-sm-12">
+            <div class="col-sm-6">
               <div class="form-group">
-                <label class="control-label"><b>NOMBRES <small class="">({{$data_titulo}})</small> : </b></label>
+                <label class="control-label"><b>NOMBRES <small class="">(OTROS INTEGRANTES)</small> : </b></label>
                 <input  type="text"
-                        id="nombresg" 
-                        name='nombresg'                        
+                        id="nombresgoi" 
+                        name='nombresgoi'                        
                         placeholder="NOMBRES"
                         required = ""
                         maxlength="300"                     
                         autocomplete="off" class="form-control input-sm"/>
 
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label"><b>CARGO  : </b></label>
+                <input  type="text"
+                        id="cargo" 
+                        name='cargo'                        
+                        placeholder="CARGO"
+                        required = ""
+                        maxlength="300"                     
+                        autocomplete="off" class="form-control input-sm"/>
               </div>
             </div>
 		    </div>
@@ -61,12 +73,7 @@
 
 <div class="modal-footer">
   <button type="submit" 
-  				data-dismiss="modal" class="btn btn-success btn_asignar_nombre"
-  				data_td = '{{$data_td}}'
-          data_dni = '{{$data_dni}}'
-          data_nombre = '{{$data_nombre}}'
-          data_nombre_visible = '{{$data_nombre_visible}}'
-
+  				data-dismiss="modal" class="btn btn-success btn_asignar_nombre_oi"
   				>
   	Asignar
   </button>

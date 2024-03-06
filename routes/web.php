@@ -63,7 +63,10 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/gestion-conei/{idopcion}', 'GestionConeiController@actionListarConei');
 	Route::any('/agregar-requerimiento-conei/{idopcion}', 'GestionConeiController@actionAgregarConei');
 	Route::any('/ajax-modal-registro', 'GestionConeiController@actionModalRegistro');
-
+	Route::any('/ajax-modal-registro-oi', 'GestionConeiController@actionModalRegistroOI');
+	Route::any('/ajax-lista-tabla-oi', 'GestionConeiController@actionListaTablaOI');
+	Route::any('/ajax-elminar-fila-tabla-oi', 'GestionConeiController@actionEliminarFilaTablaOI');
+	Route::any('/ajax-modal-confirmar-registro', 'GestionConeiController@actionModalConfirmarRegistro');
 
 
 
