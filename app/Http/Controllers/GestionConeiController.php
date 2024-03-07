@@ -13,8 +13,7 @@ use App\Modelos\Director;
 use App\Modelos\Archivo;
 use App\Modelos\Conei;
 use App\Modelos\Estado;
-
-
+use App\Modelos\OtroIntegranteConei;
 
 
 use App\User;
@@ -88,8 +87,6 @@ class GestionConeiController extends Controller
                             'ajax'                      =>  true
                          ]);
     }
-
-
     public function actionModalConfirmarRegistro(Request $request)
     {
 
@@ -187,12 +184,6 @@ class GestionConeiController extends Controller
                          ]);
     }
 
-
-
-
-
-
-
     public function actionListaTablaOI(Request $request)
     {
 
@@ -234,8 +225,6 @@ class GestionConeiController extends Controller
                          ]);
     }
 
-
-
     public function actionModalRegistro(Request $request)
     {
 
@@ -267,7 +256,6 @@ class GestionConeiController extends Controller
                          ]);
     }
 
-
     public function actionModalRegistroOI(Request $request)
     {
 
@@ -285,8 +273,6 @@ class GestionConeiController extends Controller
     }
 
 
-
-
     public function actionAgregarConei($idopcion,Request $request)
     {
         /******************* validar url **********************/
@@ -299,7 +285,8 @@ class GestionConeiController extends Controller
 
 
             $institucion_id                             =   $request['institucion_id'];
-            $director_id                                =   $request['director_id'];   
+            $director_id                                =   $request['director_id'];
+            $periodo_id                                 =   $request['periodo'];
 
             $nombre_director                            =   $request['nombre_director'];
             $telefono_director                          =   $request['telefono_director'];
@@ -343,11 +330,8 @@ class GestionConeiController extends Controller
             $cabecera->id                               =   $idrequerimiento;
             $cabecera->codigo                           =   $codigo;
             $cabecera->institucion_id                   =   $institucion_id;
-
             $cabecera->director_id                      =   $director_id;            
-            $cabecera->nombres_director_institucion     =   $nombre_director;
-            $cabecera->telefono_director_institucion    =   $telefono_director;
-            $cabecera->correo_director_institucion      =   $correo_director;
+
 
 
             $tipo_documento_nombre                      =   $this->funciones->estado_nombre($i_tipodocumento_director);
@@ -399,6 +383,10 @@ class GestionConeiController extends Controller
             $cabecera->tipo_documento_reorc_nombre      =   $tipo_documento_nombre;
             $cabecera->documento_reorc                  =   $i_dni_otrorepresentatecomunidad;
             $cabecera->nombres_reorc                    =   $i_nombre_otrorepresentatecomunidad;
+
+            $cabecera->periodo_id                       =   $periodo_id;
+            $cabecera->periodo_nombre                   =   $this->funciones->estado_nombre($periodo_id);;
+
             $cabecera->estado_id                        =   'ESRE00000001';
             $cabecera->estado_nombre                    =   'GENERADO';
             $cabecera->fecha_crea                       =   $this->fechaactual;
@@ -440,6 +428,14 @@ class GestionConeiController extends Controller
                     $dcontrol->url_archivo      =   $urlmedio;
                     $dcontrol->area_id          =   '';
                     $dcontrol->area_nombre      =   '';
+
+                    $dcontrol->periodo_id       =   '';
+                    $dcontrol->periodo_nombre   =   '';
+
+                    $dcontrol->codigo_doc       =   '001';
+                    $dcontrol->nombre_doc       =   'Resolución de Reconocimiento del CONEI de la Institución Educativa.';
+
+
                     $dcontrol->usuario_nombre   =   $usuario->nombre;
                     $dcontrol->tipo_archivo     =   'requerimiento_conei';
                     $dcontrol->fecha_crea       =   $this->fechaactual;
@@ -480,6 +476,14 @@ class GestionConeiController extends Controller
                     $dcontrol->url_archivo      =   $urlmedio;
                     $dcontrol->area_id          =   '';
                     $dcontrol->area_nombre      =   '';
+
+                    $dcontrol->periodo_id       =   '';
+                    $dcontrol->periodo_nombre   =   '';
+
+                    $dcontrol->codigo_doc       =   '002';
+                    $dcontrol->nombre_doc       =   'Actas de Instalación de los miembros del CONEI.';
+
+
                     $dcontrol->usuario_nombre   =   $usuario->nombre;
                     $dcontrol->tipo_archivo     =   'requerimiento_conei';
                     $dcontrol->fecha_crea       =   $this->fechaactual;
@@ -521,6 +525,14 @@ class GestionConeiController extends Controller
                     $dcontrol->url_archivo      =   $urlmedio;
                     $dcontrol->area_id          =   '';
                     $dcontrol->area_nombre      =   '';
+
+                    $dcontrol->periodo_id       =   '';
+                    $dcontrol->periodo_nombre   =   '';
+
+                    $dcontrol->codigo_doc       =   '003';
+                    $dcontrol->nombre_doc       =   'Copia de DNI de los integrantes del CONEI.';
+
+
                     $dcontrol->usuario_nombre   =   $usuario->nombre;
                     $dcontrol->tipo_archivo     =   'requerimiento_conei';
                     $dcontrol->fecha_crea       =   $this->fechaactual;
@@ -562,6 +574,14 @@ class GestionConeiController extends Controller
                     $dcontrol->url_archivo      =   $urlmedio;
                     $dcontrol->area_id          =   '';
                     $dcontrol->area_nombre      =   '';
+
+                    $dcontrol->periodo_id       =   '';
+                    $dcontrol->periodo_nombre   =   '';
+
+                    $dcontrol->codigo_doc       =   '004';
+                    $dcontrol->nombre_doc       =   'Declaración Jurada Simple de antecedentes judiciales y policiales de los integrantes.';
+
+
                     $dcontrol->usuario_nombre   =   $usuario->nombre;
                     $dcontrol->tipo_archivo     =   'requerimiento_conei';
                     $dcontrol->fecha_crea       =   $this->fechaactual;
@@ -569,6 +589,61 @@ class GestionConeiController extends Controller
                     $dcontrol->save();
                 }
             }
+
+
+
+            $periodo_ultimo                             =   $request['periodo_ultimo'];
+
+
+
+            //05
+            $files05                                    =   $request['upload05'];
+            if(!is_null($files05)){
+                foreach($files05 as $file){
+
+                    $listadetalledoc            =   Archivo::where('referencia_id','=',$idrequerimiento)
+                                                    ->get();
+                    $rutafile                   =   storage_path('app/').$this->pathFiles.$codigo.'/';
+                    $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
+                    $numero                     =   count($listadetalledoc)+1;
+                    $nombre                     =   $codigo.'-'.$numero.'-'.$file->getClientOriginalName();
+
+                    $rutadondeguardar           =   $this->pathFiles.$codigo.'/';
+                    $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
+
+                    $nombreoriginal             =   $file->getClientOriginalName();
+                    $info                       =   new SplFileInfo($nombreoriginal);
+                    $extension                  =   $info->getExtension();
+
+                    copy($file->getRealPath(),$rutafile.$nombre);
+                    $idarchivo                  =   $this->funciones->getCreateIdMaestra('archivos');
+
+                    $dcontrol                   =   new Archivo;
+                    $dcontrol->id               =   $idarchivo;
+                    $dcontrol->size             =   filesize($file);
+                    $dcontrol->extension        =   $extension;
+                    $dcontrol->lote             =   $codigo;
+                    $dcontrol->referencia_id    =   $idrequerimiento;
+                    $dcontrol->nombre_archivo   =   $nombre;
+                    $dcontrol->url_archivo      =   $urlmedio;
+                    $dcontrol->area_id          =   '';
+                    $dcontrol->area_nombre      =   '';
+
+
+                    $dcontrol->periodo_id       =   $periodo_ultimo;
+                    $dcontrol->periodo_nombre   =   $this->funciones->estado_nombre($periodo_ultimo);;
+
+                    $dcontrol->codigo_doc       =   '005';
+                    $dcontrol->nombre_doc       =   'Ultimo Certificado';
+
+                    $dcontrol->usuario_nombre   =   $usuario->nombre;
+                    $dcontrol->tipo_archivo     =   'requerimiento_conei';
+                    $dcontrol->fecha_crea       =   $this->fechaactual;
+                    $dcontrol->usuario_crea     =   Session::get('usuario')->id;
+                    $dcontrol->save();
+                }
+            }
+
 
 
 

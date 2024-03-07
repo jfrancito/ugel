@@ -131,6 +131,9 @@
 <div class="modal-footer">
 
 	<button type="button" data-dismiss="modal" class="btn btn-default btn-space modal-close">Cerrar</button>
+	<button type="submit" data-dismiss="modal" class="btn btn-success btn-confirmar">Confirmar</button>
+
+
 </div>
 
 

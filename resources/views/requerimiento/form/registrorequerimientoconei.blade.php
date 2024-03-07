@@ -333,6 +333,7 @@
                     <thead>
                       <tr>
                         <th>Requisito</th>
+                        <th>Periodo</th>
                         <th>Seleccionar</th>
                         <th>Archivo</th>
                       </tr>
@@ -341,7 +342,7 @@
 
                       <tr>
                         <td>Resolución de Reconocimiento del CONEI de la Institución Educativa.</td>
-
+                        <td></td>
                         <td>
                           
                             <label class="labelarchivos" for="uploadapafa">
@@ -362,7 +363,7 @@
 
                       <tr>
                         <td>Actas de Instalación de los miembros del CONEI.</td>
-
+                        <td></td>
                         <td>
                           <label class="labelarchivos" for="upload">
                             <input type="file" id="upload" name='upload[]' accept=".doc,.docx,.xls,.xlsx,.pppt,.pptx,.pdf,image/*,video/*,.mp3,audio/wav,.txt" required>
@@ -380,7 +381,7 @@
 
                       <tr>
                         <td>Copia de DNI de los integrantes del CONEI.</td>
-
+                        <td></td>
                         <td>
                           
                             <label class="labelarchivos" for="upload03">
@@ -399,6 +400,7 @@
 
                       <tr>
                         <td>Declaración Jurada Simple de antecedentes judiciales y policiales de los integrantes.</td>
+                        <td></td>
                         <td>
                           
                             <label class="labelarchivos" for="upload04">
@@ -416,8 +418,31 @@
                       </tr>
 
 
+                      <tr>
+                        <td>Ultimo Certificado</td>
+                        <td>               
+                          {!! Form::select( 'periodo_ultimo', $comboperiodo, array(),
+                                  [
+                                    'class'       => 'select2 form-control control input-xs',
+                                    'id'          => 'periodo_ultimo',
+                                    'required'    =>  'required'
+                          ]) !!}
+                        </td>
+                        <td>
+                          
+                            <label class="labelarchivos" for="upload05">
+                              <input type="file" id="upload05" name='upload05[]' accept=".doc,.docx,.xls,.xlsx,.pppt,.pptx,.pdf,image/*,video/*,.mp3,audio/wav,.txt" required>
+                              Selecionar archivo
+                            </label>
 
-
+                        </td>
+                        <td>
+                          <div class="files files05">
+                            <ul id='larchivos05' class="larchivos05"></ul>
+                            <input type="hidden" name="archivos" id='archivos' value="">
+                          </div>
+                        </td>
+                      </tr>
 
                     </tbody>
                   </table>

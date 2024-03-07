@@ -32,7 +32,7 @@ class Controller extends BaseController {
 	public $apronado;
 	public $emitido;
 	public $evaluado;
-	public $pathFiles='requerimiento/';
+	public $pathFiles='requerimiento_conei/';
 
 	public function __construct() {
 		$this->funciones 		= new Funcion();

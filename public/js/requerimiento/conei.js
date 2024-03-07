@@ -111,12 +111,11 @@ $(document).ready(function(){
 
     });
 
-
-
-
-
-
-
+    $(".conei").on('click','.btn-confirmar', function() {
+        event.preventDefault();
+        $('.nav-tabs a[href="#archivo"]').tab('show');
+        $('#modal-conei-apafa').niftyModal('hide');
+    });
 
 
     $(".conei").on('change','#tdg', function() {
