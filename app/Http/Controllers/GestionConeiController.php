@@ -32,6 +32,72 @@ class GestionConeiController extends Controller
     use GeneralesTraits;
     use ApafaConeiTraits;
 
+
+    public function actionDescargarArchivosRequerimiento($idopcion,$idregistro,$idarchivo)
+    {
+
+        /******************* validar url **********************/
+        $validarurl = $this->funciones->getUrl($idopcion,'Eliminar');
+        if($validarurl <> 'true'){return $validarurl;}
+        /******************************************************/
+        $registro_id = $this->funciones->decodificarmaestra($idarchivo);
+        $user_id    = Session::get('usuario')->id;
+
+        View::share('titulo','Eliminar Archivos del Requerimiento');
+
+        
+
+        try{
+            // DB::beginTransaction();
+            $archivo                =   Archivo::where('id','=',$registro_id)->first();
+            $storagePath            = storage_path('app\\'.$this->pathFiles.$archivo->lote.'\\'.$archivo->nombre_archivo);
+            if(is_file($storagePath))
+            {       
+                    // return Response::download($rutaArchivo);
+                    return response()->download($storagePath);
+            }
+            
+            // DB::commit();
+        }catch(\Exception $ex){
+            // DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            dd('archivo no encontrado');
+
+        }
+        
+    }
+
+
+    public function actionDetalleConei($idopcion, $idconei, Request $request) {
+
+        View::share('titulo','DETALLE CONEI');
+        $idconei    =   $this->funciones->decodificarmaestra($idconei);
+        $conei      =    Conei::where('id','=',$idconei)
+                        ->first();
+        $institucion=   Institucion::where('id','=',$conei->institucion_id)->first();
+        $director   =   Director::where('id','=',$conei->director_id)->first();
+        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->get();
+        $larchivos  =   Archivo::where('referencia_id','=',$idconei)->get();
+
+        $funcion    =   $this;
+
+
+        return View::make('requerimiento/verdetalleconei',
+                         [
+                            'conei'             =>  $conei,
+                            'institucion'       =>  $institucion,
+                            'director'          =>  $director,
+                            'listaoic'          =>  $listaoic,
+                            'larchivos'         =>  $larchivos,
+                            'unidad'            =>  $this->unidadmb,
+                            'funcion'           =>  $funcion,
+                            'idopcion'          =>  $idopcion,
+                         ]);
+    }
+
+
+
     public function actionListarConei($idopcion)
     {
 
@@ -395,6 +461,29 @@ class GestionConeiController extends Controller
 
             $usuario                                    =   User::where('id',Session::get('usuario')->id)->first();
             
+
+
+            $array_detalle_producto_request     =   json_decode($request['array_detalle_producto'],true);
+            foreach($array_detalle_producto_request as $item => $row) {
+
+                $idoi                      =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
+
+                $oi                        =   new OtroIntegranteConei;
+                $oi->id                    =   $idoi;
+                $oi->conei_id              =   $idrequerimiento;
+                $oi->tipo_documento        =   $row['tdg'];
+                $oi->tipo_documento_nombre =   $row['tdgtexto']; 
+                $oi->documento             =   $row['documentog'];
+                $oi->nombres               =   $row['nombresg']; 
+                $oi->cargo                 =   $row['dcargoni']; 
+                $oi->fecha_crea            =   $this->fechaactual;
+                $oi->usuario_crea          =   Session::get('usuario')->id;
+
+                $oi->save(); 
+
+            }
+
+
             //01
             $files                                      =   $request['upload'];
             if(!is_null($files)){

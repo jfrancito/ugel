@@ -12,4 +12,9 @@ class Conei extends Model
 	public $incrementing = false;
 	public $keyType = 'string';
 
+    public function director()
+    {
+        return $this->belongsTo('App\Modelos\Director', 'director_id', 'id');
+    }
+
 }

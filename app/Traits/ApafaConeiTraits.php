@@ -27,7 +27,8 @@ trait ApafaConeiTraits
 
 
 	private function con_lista_conei() {
-		$listadatos 	= 	Conei::get();
+		$listadatos 	= 	Conei::where('director_id','=',Session::get('direccion')->id)
+							->get();
 	 	return  $listadatos;
 	}
 
