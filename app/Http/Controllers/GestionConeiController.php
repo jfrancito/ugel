@@ -36,16 +36,10 @@ class GestionConeiController extends Controller
     public function actionDescargarArchivosRequerimiento($idopcion,$idregistro,$idarchivo)
     {
 
-        /******************* validar url **********************/
-        $validarurl = $this->funciones->getUrl($idopcion,'Eliminar');
-        if($validarurl <> 'true'){return $validarurl;}
-        /******************************************************/
         $registro_id = $this->funciones->decodificarmaestra($idarchivo);
         $user_id    = Session::get('usuario')->id;
 
         View::share('titulo','Eliminar Archivos del Requerimiento');
-
-        
 
         try{
             // DB::beginTransaction();

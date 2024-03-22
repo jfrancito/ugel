@@ -206,7 +206,7 @@
             <div class="col-sm-6">
               <div class="input-group my-group">
 
-                  <label class="control-label"><b>REPRESENTANTE DE ADMINISTRATIVO : <small class="opcional">(**) Opcional</small></b></label>
+                  <label class="control-label"><b>REPRESENTANTE DE ADMINISTRATIVO : <small class="opcional"></small></b></label>
 
                   <input  type="text"
                           id="representanteadministrativo_nombres" name='representanteadministrativo_nombres' 
@@ -241,7 +241,7 @@
             <div class="col-sm-6">
               <div class="input-group my-group">
 
-                  <label class="control-label"><b>REPRESENTANTE DE ESTUDIANTE : <small class="opcional">(**) Opcional</small></b></label>
+                  <label class="control-label"><b>REPRESENTANTE DE ESTUDIANTE : <small class="opcional"></small></b></label>
 
                   <input  type="text"
                           id="representanteestudiante_nombres" name='representanteestudiante_nombres' 
@@ -276,7 +276,7 @@
             <div class="col-sm-6">
               <div class="input-group my-group">
 
-                  <label class="control-label"><b>REPRESENTANTE DE EX ALUMNO : <small class="opcional">(**) Opcional</small></b></label>
+                  <label class="control-label"><b>REPRESENTANTE DE EX ALUMNO : <small class="opcional"></small></b></label>
 
                   <input  type="text"
                           id="representanteexalumno_nombres" name='representanteexalumno_nombres' 
