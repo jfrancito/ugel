@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Crypt;
 use App\Modelos\WEBCuentaContable;
 use App\Modelos\ALMProducto;
 use App\Modelos\Categoria;
+use App\Modelos\Estado;
+use App\Modelos\Conei;
+
 
 use App\Modelos\Requerimiento;
 use App\Modelos\Archivo;
@@ -149,6 +152,33 @@ trait GeneralesTraits
 	private function gn_generacion_combo_tabla($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado) {
 		
 		$array 							= 	DB::table($tabla)
+        									->where('activo','=',1)
+        									->where('tipoestado','=',$tipoestado)
+		        							->pluck($atributo2,$atributo1)
+											->toArray();
+		if($titulo==''){
+			$combo  					= 	$array;
+		}else{
+			if($todo=='TODO'){
+				$combo  				= 	array('' => $titulo , $todo => $todo) + $array;
+			}else{
+				$combo  				= 	array('' => $titulo) + $array;
+			}
+		}
+
+	 	return  $combo;					 			
+	}
+
+
+	private function gn_generacion_estados_sobrantes($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado) {
+		
+		$periodo_array 					=   Conei::where('institucion_id','=',Session::get('usuario')->institucion_id)
+			    							->where('periodo_id','<>','ESRE00000003')
+											->pluck('periodo_id')
+											->toArray();
+
+		$array 							= 	DB::table($tabla)
+											->whereNotIn('id',$periodo_array)
         									->where('activo','=',1)
         									->where('tipoestado','=',$tipoestado)
 		        							->pluck($atributo2,$atributo1)

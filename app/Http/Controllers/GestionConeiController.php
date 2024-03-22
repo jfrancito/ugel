@@ -741,8 +741,8 @@ class GestionConeiController extends Controller
             $combotd        =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
             $selecttd       =   'TIDO00000001';
             $array_detalle_producto = array();
-            $comboperiodo   =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione Periodo','','APAFA_CONEI_PERIODO');
-
+            
+            $comboperiodo   =   $this->gn_generacion_estados_sobrantes('estados','id','nombre','Seleccione Periodo','','APAFA_CONEI_PERIODO');
 
             return View::make('requerimiento.agregarconei',
                         [
