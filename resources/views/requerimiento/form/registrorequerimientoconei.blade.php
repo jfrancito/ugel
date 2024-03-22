@@ -455,7 +455,7 @@
         </div>
         <div class="col-xs-6">
           <p class="text-right">
-            <button type="submit" class="btn btn-space btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-space btn-primary btn-guardar-conei">Guardar</button>
           </p>
         </div>
       </div>

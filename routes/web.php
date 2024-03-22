@@ -60,6 +60,10 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/agregar-requerimiento-apafa/{idopcion}', 'GestionApafaConeiController@actionAgregarApafa');
 	Route::any('/ajax-buscar-dni-ugel', 'GestionApafaConeiController@actionBuscardni');
 
+	Route::any('/buscar-dni-01/{dni}', 'GestionApafaConeiController@actionBuscardni01');
+	Route::any('/buscar-dni-02/{dni}', 'GestionApafaConeiController@actionBuscardni02');
+
+
 	Route::any('/gestion-conei/{idopcion}', 'GestionConeiController@actionListarConei');
 	Route::any('/agregar-requerimiento-conei/{idopcion}', 'GestionConeiController@actionAgregarConei');
 	Route::any('/ajax-modal-registro', 'GestionConeiController@actionModalRegistro');
@@ -76,7 +80,6 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/subir-excel-cargar-datos/{idopcion}', 'CargarDatosInstitucionController@actionCargarDato');
 	// Route::any('/formato-excel-produccion-cargar-datos-produccion/{idopcion}', 'CargarDatosProduccionController@actionDescargarFormatoProduccionExcel');
 	// Route::any('/formato-excel-departamentos-cargar-datos-produccion/{idopcion}', 'CargarDatosProduccionController@actionDescargarFormatoDepartamentosExcel');
-
 
 
 });
