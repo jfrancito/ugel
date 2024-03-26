@@ -9,8 +9,29 @@ $(document).ready(function(){
       }
     });
 
+    $(".conei").on('click','.btn-guardar-conei', function() {
 
-// btn-guardar-conei
+
+        // $.confirm({
+        //     title: '¿Confirma el Registro?',
+        //     content: 'CONEI',
+        //     buttons: {
+        //         confirmar: function () {
+        //             return true;
+        //         },
+        //         cancelar: function () {
+        //             $.alert('Se cancelo el registro');
+        //             return false;
+        //         }
+        //     }
+        // });
+
+        // return true;
+
+    });
+
+
+// 
 
 
 

@@ -81,6 +81,14 @@ Route::group(['middleware' => ['authaw']], function () {
 	// Route::any('/formato-excel-produccion-cargar-datos-produccion/{idopcion}', 'CargarDatosProduccionController@actionDescargarFormatoProduccionExcel');
 	// Route::any('/formato-excel-departamentos-cargar-datos-produccion/{idopcion}', 'CargarDatosProduccionController@actionDescargarFormatoDepartamentosExcel');
 
+	/* SUBIR CERTIFICADOS */
+	Route::any('/gestion-de-registro-certificado/{idopcion}', 'GestionCertificadoController@actionListarCertificados');
+	Route::any('/agregar-certificado/{idopcion}', 'GestionCertificadoController@actionAgregarCertificado');
+	Route::any('/ajax-combo-periodo-xinstitucion', 'GestionCertificadoController@actionAjaxComboPeriodoxInstitucion');
+	Route::any('/descargar-archivo-certificado/{idcertificado}/{idarchivo}', 'GestionCertificadoController@actionDescargarArchivosCertificado');
+
+
+
 
 });
 

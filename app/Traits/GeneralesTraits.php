@@ -170,6 +170,29 @@ trait GeneralesTraits
 	}
 
 
+
+	private function gn_generacion_combo_tabla_not_array($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado,$array) {
+		
+		$array 							= 	DB::table($tabla)
+        									->where('activo','=',1)
+        									->whereNotIn('id',$array)
+        									->where('tipoestado','=',$tipoestado)
+		        							->pluck($atributo2,$atributo1)
+											->toArray();
+		if($titulo==''){
+			$combo  					= 	$array;
+		}else{
+			if($todo=='TODO'){
+				$combo  				= 	array('' => $titulo , $todo => $todo) + $array;
+			}else{
+				$combo  				= 	array('' => $titulo) + $array;
+			}
+		}
+
+	 	return  $combo;					 			
+	}
+
+
 	private function gn_generacion_estados_sobrantes($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado) {
 		
 		$periodo_array 					=   Conei::where('institucion_id','=',Session::get('usuario')->institucion_id)

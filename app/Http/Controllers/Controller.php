@@ -33,6 +33,8 @@ class Controller extends BaseController {
 	public $emitido;
 	public $evaluado;
 	public $pathFiles='requerimiento_conei/';
+	public $pathFilesCer='certificado_conei/';
+
 
 	public function __construct() {
 		$this->funciones 		= new Funcion();
