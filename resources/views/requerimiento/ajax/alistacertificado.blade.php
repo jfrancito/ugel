@@ -1,6 +1,7 @@
 <table id="nso" class="table table-striped table-borderless table-hover td-color-borde td-padding-7 listatabla">
   <thead>
     <tr>
+      <th>ITEM</th>
       <th>CODIGO.</th>
       <th>INSTITUCION</th>
       <th>PERIODO</th>
@@ -12,6 +13,7 @@
   <tbody>
     @foreach($listadatos as $index => $item)
       <tr data_certificado_id = "{{$item->id}}">
+        <td>{{$index +1}}</td>
         <td>{{$item->codigo}}</td>
         <td>{{$item->institucion->nombre}}</td>
         <td>{{$item->periodo->nombre}}</td>
@@ -27,6 +29,13 @@
                   Descargar
                 </a>  
               </li>
+              <li>
+                <a href="{{ url('/modificar-certificado/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
+                  Modificar
+                </a>  
+              </li>
+
+
             </ul>
           </div>
         </td>

@@ -154,6 +154,7 @@ trait GeneralesTraits
 		$array 							= 	DB::table($tabla)
         									->where('activo','=',1)
         									->where('tipoestado','=',$tipoestado)
+        									->orderby('codigo','desc')
 		        							->pluck($atributo2,$atributo1)
 											->toArray();
 		if($titulo==''){
@@ -177,6 +178,7 @@ trait GeneralesTraits
         									->where('activo','=',1)
         									->whereNotIn('id',$array)
         									->where('tipoestado','=',$tipoestado)
+        									->orderby('codigo','desc')
 		        							->pluck($atributo2,$atributo1)
 											->toArray();
 		if($titulo==''){
