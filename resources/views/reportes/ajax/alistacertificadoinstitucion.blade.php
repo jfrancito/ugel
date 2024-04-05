@@ -3,7 +3,7 @@
           <div class="row">
             <div class="col-xs-12 col-md-4">
               <div class="panel panel-default" style="background-color: #eeefff;">
-                <div class="panel-heading panel-heading-divider xs-pb-15">Certificados x Periodos</div>
+                <div class="panel-heading panel-heading-divider xs-pb-15">Certificados por Periodos</div>
                 <div class="panel-body xs-pt-25">
                   @foreach($listacertificadoperiod as $index => $item)
                     <div class="row user-progress user-progress-small">
@@ -18,7 +18,7 @@
             </div>
             <div class="col-xs-12 col-md-4">
               <div class="widget be-loading" style="background-color: #eeefff;">
-                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados x Periodos</div>
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados por Periodos</div>
 
                 <div class="widget-chart-container" >
                   <div id="top-sales" style="height: 100px;"></div>
