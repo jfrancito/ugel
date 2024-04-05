@@ -6,7 +6,7 @@
                 <div class="panel-heading panel-heading-divider xs-pb-15">Certificados por Periodos</div>
                 <div class="panel-body xs-pt-25">
                   @foreach($listacertificadoperiod as $index => $item)
-                    <div class="row user-progress user-progress-small">
+                    <div class="row user-progress user-progress-small" style="margin-bottom: 15px !important;">
                       <div class="col-md-5"><span class="title"><b>{{$item->periodo->nombre}}</b></span></div>
                       <div class="col-md-7"><span class="badge badge-primary">{{$item->cantidad}}</span>
                           
