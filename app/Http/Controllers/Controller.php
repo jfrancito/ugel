@@ -17,6 +17,12 @@ class Controller extends BaseController {
 
 	public $funciones;
 
+
+	public $anio;
+	public $mes;
+	public $dia;
+
+
 	public $inicio;
 	public $fin;
 	public $hoy;
@@ -39,12 +45,17 @@ class Controller extends BaseController {
 	public function __construct() {
 		$this->funciones 		= new Funcion();
 		$this->unidadmb 		= 2;
+		$anio = date("Y");
+		$mes = date("n");
+		$dia = date("d");
+		$this->anio 			= $anio;
+		$this->mes 				= $mes;
+		$this->dia 				= $dia;
 		$this->maxsize 			= pow(1024,$this->unidadmb)*20;
 		$fecha 					= new DateTime();
 		$fecha->modify('first day of this month');
 		$this->inicio 			= date_format(date_create($fecha->format('Y-m-d')), 'd-m-Y');
 		$this->fin 				= date_format(date_create(date('Y-m-d')), 'd-m-Y');
-
 		$this->prefijomaestro 	= $this->funciones->prefijomaestra();
 		$this->fechaactual 		= date('Ymd H:i:s');
 		$this->hoy 				= date_format(date_create(date('Ymd h:i:s')), 'Ymd h:i:s');

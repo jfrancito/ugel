@@ -88,6 +88,10 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/descargar-archivo-certificado/{idcertificado}/{idarchivo}', 'GestionCertificadoController@actionDescargarArchivosCertificado');
 	Route::any('/modificar-certificado/{idopcion}/{idcertificado}', 'GestionCertificadoController@actionModificarCertificado');
 
+	Route::any('/gestion-de-instituciones-certificado/{idopcion}', 'ReporteCertificadoController@actionListarCertificadosInstituciones');
+	Route::any('/ajax-lista-instituciones-certificado', 'ReporteCertificadoController@actionAjaxListarInstitucionCertificado');
+
+
 
 
 });

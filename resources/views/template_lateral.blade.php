@@ -24,6 +24,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/jquery-confirm.min.css') }} "/>
 
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/style.css?v='.$version) }} "/>
+
+    
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/meta.css?v='.$version) }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/ugel.css?v='.$version) }} " />
   </head>
