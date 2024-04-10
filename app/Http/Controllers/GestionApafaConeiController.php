@@ -228,36 +228,53 @@ class GestionApafaConeiController extends Controller
 
         $dni                =   $request['dni'];
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://sistemas.pronied.gob.pe/maestroback/api/persona/v1/consulta-tipo-documento',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS =>'{
-          "dato": {
-            "tipodocumento": "TPDC003",
-            "numerodocumento": '.$dni.',
-            "appid": "MIMANTENIMIENTO"
-          }
-        }',
-          CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json',
-            'Cookie: cookiesession1=678A8C49JKMNOPQRSTUV01234567D4C5'
-          ),
-        ));
+        // $curl = curl_init();
+        // curl_setopt_array($curl, array(
+        //   CURLOPT_URL => 'https://sistemas.pronied.gob.pe/maestroback/api/persona/v1/consulta-tipo-documento',
+        //   CURLOPT_RETURNTRANSFER => true,
+        //   CURLOPT_ENCODING => '',
+        //   CURLOPT_MAXREDIRS => 10,
+        //   CURLOPT_TIMEOUT => 0,
+        //   CURLOPT_FOLLOWLOCATION => true,
+        //   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        //   CURLOPT_CUSTOMREQUEST => 'POST',
+        //   CURLOPT_POSTFIELDS =>'{
+        //   "dato": {
+        //     "tipodocumento": "TPDC003",
+        //     "numerodocumento": '.$dni.',
+        //     "appid": "MIMANTENIMIENTO"
+        //   }
+        // }',
+        //   CURLOPT_HTTPHEADER => array(
+        //     'Content-Type: application/json',
+        //     'Cookie: cookiesession1=678A8C49JKMNOPQRSTUV01234567D4C5'
+        //   ),
+        // ));
 
-        $response = curl_exec($curl);
-        curl_close($curl);
-        $arraydata = json_decode($response, true);
-        $existe = $arraydata['estado'];
+        // $response = curl_exec($curl);
+        // curl_close($curl);
+        // $arraydata = json_decode($response, true);
+        // $existe = $arraydata['estado'];
 
-        if($existe == 1){
-            $substring = '["'.$dni.'","'.$arraydata['dato']['nombres'].'","'.$arraydata['dato']['apellidopaterno'].'","'.$arraydata['dato']['apellidomaterno'].'"]';
+        // if($existe == 1){
+        //     $substring = '["'.$dni.'","'.$arraydata['dato']['nombres'].'","'.$arraydata['dato']['apellidopaterno'].'","'.$arraydata['dato']['apellidomaterno'].'"]';
+        // }else{
+        //     $substring = '[null,null,null,null]';
+        // }
+
+        // print_r($substring);
+
+
+        $json = array();    
+        $url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        header('Content-Type: text/html; charset =utf-8');
+        $json = file_get_contents($url, true);
+        $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
+        $persona = json_decode($json, true);
+
+
+        if($persona['coError'] == '0000'){
+            $substring = '["'.$dni.'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
         }else{
             $substring = '[null,null,null,null]';
         }
@@ -267,7 +284,11 @@ class GestionApafaConeiController extends Controller
 
 
 
+
+
     }
+
+
 
 
 
@@ -341,6 +362,20 @@ class GestionApafaConeiController extends Controller
 
     }
 
+
+
+    public function actionBuscardni03($dni)
+    {
+
+        $json = array();    
+        $url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        header('Content-Type: text/html; charset =utf-8');
+        $json = file_get_contents($url, true);
+        $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
+        $persona = json_decode($json, true);
+
+        dd($persona);
+    }
 
 
 

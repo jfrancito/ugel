@@ -62,7 +62,7 @@ Route::group(['middleware' => ['authaw']], function () {
 
 	Route::any('/buscar-dni-01/{dni}', 'GestionApafaConeiController@actionBuscardni01');
 	Route::any('/buscar-dni-02/{dni}', 'GestionApafaConeiController@actionBuscardni02');
-
+	Route::any('/buscar-dni-03/{dni}', 'GestionApafaConeiController@actionBuscardni03');
 
 	Route::any('/gestion-conei/{idopcion}', 'GestionConeiController@actionListarConei');
 	Route::any('/agregar-requerimiento-conei/{idopcion}', 'GestionConeiController@actionAgregarConei');
