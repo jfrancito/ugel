@@ -338,8 +338,16 @@ class GestionCertificadoController extends Controller
 
         }else{
 
-            $datos              =   DB::table('instituciones')->where('activo','=',1)
-                                    ->where('id','<>','1CIX00000001')->pluck('nombre','id')->toArray();
+            $datos              =   DB::table('instituciones')
+                                    ->where('activo','=',1)
+                                    ->where('id','<>','1CIX00000001')
+                                    ->select(DB::raw("codigo+' - '+nombre+' - '+nivel as nombres,id"))
+                                    ->pluck('nombres','id')
+                                    ->toArray();
+
+
+            //dd($datos);
+
             $comboinstituciones =   array('' => "Seleccione Categoria") + $datos;
             $selectinstituciones=   '';
             $comboperiodo       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO');

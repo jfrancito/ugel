@@ -142,6 +142,16 @@ $(document).ready(function(){
     });
 
 
+    $(".conei").on('change','#tdgoi', function() {
+        var tdg        =   $(this).val();
+        if(tdg =='TIDO00000001'){ 
+            $(".btn_buscar_dni_oi").css("display", "block");
+        }else{
+            $(".btn_buscar_dni_oi").css("display", "none");
+        } 
+    });
+
+
     $(".conei").on('change','#tdg', function() {
         var tdg        =   $(this).val();
         if(tdg =='TIDO00000001'){ 
@@ -150,6 +160,8 @@ $(document).ready(function(){
             $(".btn_buscar_dni").css("display", "none");
         } 
     });
+
+
 
     $(".conei").on('click','.modal-registro', function() {
         event.preventDefault();
@@ -216,6 +228,25 @@ $(document).ready(function(){
 
 
     });
+
+
+    $(".conei").on('click','.btn-limpiar', function(e) {
+
+        event.preventDefault();
+
+        var data_td                 =   $(this).attr('data_td');
+        var data_dni                =   $(this).attr('data_dni');
+        var data_nombre             =   $(this).attr('data_nombre');
+        var data_nombre_visible     =   $(this).attr('data_nombre_visible');
+
+        $('#'+data_td).val("");
+        $('#'+data_dni).val("");
+        $('#'+data_nombre).val("");
+        $('#'+data_nombre_visible).val("");
+
+
+    });
+
 
     $(".conei").on('click','.btn_asignar_nombre', function(e) {
 

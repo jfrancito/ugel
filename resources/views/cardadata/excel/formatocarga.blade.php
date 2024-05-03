@@ -6,6 +6,7 @@
                       <td>CODIGO_MODULAR</td>
                       <td>CODIGO_LOCAL</td>
                       <td>NOMBRE_IIEE</td>
+                      <td>NIVEL</td>
                       <td>DIRECTOR</td>
                       <td>DIRECTOR_DNI</td>
                       <td>TELEFONO</td>

@@ -109,6 +109,9 @@ class CargarDatosInstitucionController extends Controller
                             if ($item->codigo_modular == null){$mensaje ='CODIGO MODULAR VACIO';throw new Exception($mensaje);}
                             if ($item->codigo_local == null){$mensaje ='CODIGO LOCAL VACIO';throw new Exception($mensaje);}
                             if ($item->nombre_iiee == null){$mensaje ='NOMBRE IIEE VACIO';throw new Exception($mensaje);}
+                            if ($item->nivel == null){$mensaje ='NIVEL VACIO';throw new Exception($mensaje);}
+
+
                             if ($item->director == null){$mensaje ='DIRECTOR VACIO';throw new Exception($mensaje);}
                             if ($item->director_dni == null){$mensaje ='DNI DIRECTOR VACIO';throw new Exception($mensaje);}
 
@@ -130,7 +133,8 @@ class CargarDatosInstitucionController extends Controller
                                 $cabecera->id                               =   $idinstitucion;
                                 $cabecera->codigo                           =   $item->codigo_local;
                                 $cabecera->codigomodular                    =   $item->codigo_modular;
-                                $cabecera->nombre                           =   $item->nombre_iiee;            
+                                $cabecera->nombre                           =   $item->nombre_iiee;
+                                $cabecera->nivel                            =   $item->nivel;  
                                 $cabecera->direccion                        =   $item->direccion_iiee;
                                 $cabecera->departamento                     =   $item->departamento;
                                 $cabecera->provincia                        =   $item->departamento;
@@ -172,7 +176,9 @@ class CargarDatosInstitucionController extends Controller
                                 //INSTITUCIONES
                                 $institucion->codigo                        =   $item->codigo_local;
                                 $institucion->codigomodular                 =   $item->codigo_modular;
-                                $institucion->nombre                        =   $item->nombre_iiee;            
+                                $institucion->nombre                        =   $item->nombre_iiee; 
+                                $institucion->nivel                         =   $item->nivel;  
+
                                 $institucion->direccion                     =   $item->director;
                                 $institucion->departamento                  =   $item->departamento;
                                 $institucion->provincia                     =   $item->departamento;
@@ -242,7 +248,7 @@ class CargarDatosInstitucionController extends Controller
                 $sheet->loadView('cardadata/excel/formatocarga')
                         ->with('funcion',$funcion);
 
-                $sheet->cells('A1:M1', function($cells) {
+                $sheet->cells('A1:N1', function($cells) {
                    $cells->setFontColor('#000000');
                    $cells->setAlignment('center');
                    $cells->setValignment('center');
@@ -255,7 +261,7 @@ class CargarDatosInstitucionController extends Controller
 
 
                                     });
-                $sheet->getStyle('A1:M1', $sheet->getHighestRow())->getAlignment()->setWrapText(true);
+                $sheet->getStyle('A1:N1', $sheet->getHighestRow())->getAlignment()->setWrapText(true);
 
                 $sheet->setWidth(array(
                     'A'     =>  '20',
@@ -270,7 +276,9 @@ class CargarDatosInstitucionController extends Controller
                     'J'     =>  '20',
                     'K'     =>  '20',
                     'L'     =>  '20',
-                    'M'     =>  '20'
+                    'M'     =>  '20',
+                    'N'     =>  '20'
+
                 ));
 
 

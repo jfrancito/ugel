@@ -2,6 +2,10 @@
   color: #FFCC00 !important;
 }
 
+.color_azulclaro{
+  color: #9dbbcf !important;
+}
+
 .fileinput-cancel-button{
   display: none;
 }
@@ -40,9 +44,14 @@
   background: #177bbb !important;
 }
 .bciid h3{
-  margin-bottom: 0px !important;
+  margin-bottom: 6px !important;
   margin-top: 5px !important;
+  font-size: 24px;
 }
+.bciid h5{
+    font-size: 18px;
+}
+
 .right{
   text-align: right !important;
 }
@@ -56,6 +65,10 @@
 .color_rojo{
   color: #E74C3C !important;
 }
+.color_gris{
+  color: #7e7372 !important;
+}
+
 
 
 .center{

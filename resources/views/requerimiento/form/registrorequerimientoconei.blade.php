@@ -218,6 +218,18 @@
                                                 'error' => $errors->first('representanteadministrativo_nombres', ':message') , 
                                                 'data' => '4'])
 
+
+                  <span class="input-group-btn">
+                    <button class="btn btn-danger btn-limpiar"
+                            data_td     = 'i_tipodocumento_representanteadministrativo'
+                            data_dni    = 'i_dni_representanteadministrativo'
+                            data_nombre = 'i_nombre_representanteadministrativo'
+                            data_nombre_visible = 'representanteadministrativo_nombres'
+                            type="button" 
+                            style="margin-top: 26px;height: 38px;border-radius: 0px;">
+                            Limpiar</button>
+                  </span>
+
                   <span class="input-group-btn">
                     <button class="btn btn-primary modal-registro"
                             data_td     = 'i_tipodocumento_representanteadministrativo'
@@ -226,7 +238,7 @@
                             data_nombre_visible = 'representanteadministrativo_nombres'
                             data_titulo = 'REPRESENTANTE DE ADMINISTRATIVO'
                             type="button" 
-                            style="margin-top: 26px;height: 38px;">
+                            style="margin-top: 26px;height: 38px;border-radius: 0px;">
                             Buscar</button>
                   </span>
 
@@ -254,6 +266,17 @@
                                                 'data' => '4'])
 
                   <span class="input-group-btn">
+                    <button class="btn btn-danger btn-limpiar"
+                            data_td     = 'i_tipodocumento_representanteestudiante'
+                            data_dni    = 'i_dni_representanteestudiante'
+                            data_nombre = 'i_nombre_representanteestudiante'
+                            data_nombre_visible = 'representanteestudiante_nombres'
+                            type="button" 
+                            style="margin-top: 26px;height: 38px;border-radius: 0px;">
+                            Limpiar</button>
+                  </span>
+
+                  <span class="input-group-btn">
                     <button class="btn btn-primary modal-registro"
                             data_td     = 'i_tipodocumento_representanteestudiante'
                             data_dni    = 'i_dni_representanteestudiante'
@@ -261,7 +284,7 @@
                             data_nombre_visible = 'representanteestudiante_nombres'
                             data_titulo = 'REPRESENTANTE DE ESTUDIANTE'
                             type="button" 
-                            style="margin-top: 26px;height: 38px;">
+                            style="margin-top: 26px;height: 38px;border-radius: 0px;">
                             Buscar</button>
                   </span>
 
@@ -289,6 +312,18 @@
                                                 'data' => '4'])
 
                   <span class="input-group-btn">
+                    <button class="btn btn-danger btn-limpiar"
+                            data_td     = 'i_tipodocumento_representanteexalumno'
+                            data_dni    = 'i_dni_representanteexalumno'
+                            data_nombre = 'i_nombre_representanteexalumno'
+                            data_nombre_visible = 'representanteexalumno_nombres'
+                            type="button" 
+                            style="margin-top: 26px;height: 38px;border-radius: 0px;">
+                            Limpiar</button>
+                  </span>
+
+
+                  <span class="input-group-btn">
                     <button class="btn btn-primary modal-registro"
                             data_td     = 'i_tipodocumento_representanteexalumno'
                             data_dni    = 'i_dni_representanteexalumno'
@@ -296,7 +331,7 @@
                             data_nombre_visible = 'representanteexalumno_nombres'
                             data_titulo = 'REPRESENTANTE DE EX ALUMNO'
                             type="button" 
-                            style="margin-top: 26px;height: 38px;">
+                            style="margin-top: 26px;height: 38px;border-radius: 0px;">
                             Buscar</button>
                   </span>
 
