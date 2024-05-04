@@ -37,10 +37,15 @@ class GestionCertificadoController extends Controller
     {
 
         $institucion_id             =   $request['institucion_id'];
+        $procedencia_id             =   $request['procedencia_id'];
+
         $array_periodos             =   Certificado::where('institucion_id','=',$institucion_id)
+                                        ->where('procedente_id','=',$procedencia_id)
                                         ->where('activo','=',1)
+                                        ->where('estado_id','=','CEES00000001')
                                         ->pluck('periodo_id')                                   
                                         ->toArray();
+
         $comboperiodo               =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO',$array_periodos);
         $selectperiodo              =   '';
 
@@ -129,15 +134,27 @@ class GestionCertificadoController extends Controller
                     DB::beginTransaction();
                     /******************************/
 
-                    $usuario                    =   User::where('id',Session::get('usuario')->id)->first();
-                    $institucion_id             =   $request['institucion_id'];
-                    $periodo_id                 =   $request['periodo_id'];
-                    $procedencia_id             =   $request['procedencia_id'];
+                    //ya existe un certificado en ese periodo
+                    $activo                             =   $request['activo'];
+                    if($activo==0){
+                        $certificado->estado_id         =   'CEES00000003';
+                        $certificado->estado_nombre     =   'BAJA';
+                    }else{
+                        $certificados_activos           =   Certificado::where('institucion_id','=',$certificado->institucion_id)
+                                                            ->where('procedente_id','=',$certificado->procedente_id)
+                                                            ->where('periodo_id','=',$certificado->periodo_id)
+                                                            ->where('activo','=',1)
+                                                            ->get();
+                        if(count($certificados_activos)>0){
+                            return Redirect::back()->withInput()->with('errorbd', 'No puedes activar este certificado porque ya existe uno en este periodo');
+                        }else{
+                            $certificado->estado_id         =   'CEES00000001';
+                            $certificado->estado_nombre     =   'APROBADO';
+                        }
+                    }
 
-
-                    $certificado->institucion_id   =   $institucion_id;
-                    $certificado->periodo_id       =   $periodo_id;
-                    $certificado->procedente_id    =   $procedencia_id;
+                    $usuario                       =   User::where('id',Session::get('usuario')->id)->first();
+                    $certificado->activo           =   $request['activo'];
                     $certificado->fecha_mod        =   $this->fechaactual;
                     $certificado->usuario_mod      =   Session::get('usuario')->id;
                     $certificado->save();
@@ -196,9 +213,14 @@ class GestionCertificadoController extends Controller
         }else{
                 View::share('titulo','Modificar Certificado');
 
-                $datos              =   DB::table('instituciones')->where('activo','=',1)
-                                        ->where('id','<>','1CIX00000001')->pluck('nombre','id')->toArray();   
-                $comboinstituciones =   array('' => "Seleccione Categoria") + $datos;
+                $datos              =   DB::table('instituciones')
+                                        ->where('activo','=',1)
+                                        ->where('id','<>','1CIX00000001')
+                                        ->select(DB::raw("codigo+' - '+nombre+' - '+nivel as nombres,id"))
+                                        ->pluck('nombres','id')
+                                        ->toArray();
+
+                $comboinstituciones =   array('' => "Seleccione Institucion") + $datos;
                 $selectinstituciones=   $certificado->institucion_id;
                 $comboperiodo       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO');
 
@@ -262,18 +284,37 @@ class GestionCertificadoController extends Controller
                     $institucion_id             =   $request['institucion_id'];
                     $periodo_id                 =   $request['periodo_id'];
                     $procedencia_id             =   $request['procedencia_id'];
+
+                    $institucion                =   Institucion::where('id','=',$institucion_id)->first();
+                    $periodo                    =   Estado::where('id','=',$periodo_id)->first();
+                    $procedencia                =   Estado::where('id','=',$procedencia_id)->first();
+
                     $idcertificado              =   $this->funciones->getCreateIdMaestra('certificados');
                     $codigo                     =   $this->funciones->generar_codigo('certificados',8);
 
                     $cabecera                   =   new Certificado();
                     $cabecera->id               =   $idcertificado;
-                    $cabecera->codigo             =   $codigo;
+                    $cabecera->codigo           =   $codigo;
                     $cabecera->institucion_id   =   $institucion_id;
+                    $cabecera->institucion_codigo   =   $institucion->codigo;
+                    $cabecera->institucion_nombre   =   $institucion->nombre;
+                    $cabecera->institucion_nivel   =   $institucion->nivel;
+
                     $cabecera->periodo_id       =   $periodo_id;
+                    $cabecera->periodo_nombre   =   $periodo->nombre;
+
                     $cabecera->procedente_id    =   $procedencia_id;
+                    $cabecera->procedente_nombre=   $procedencia->nombre;
+
+                    $cabecera->estado_id        =   'CEES00000001';
+                    $cabecera->estado_nombre    =   'APROBADO';
+
                     $cabecera->fecha_crea       =   $this->fechaactual;
                     $cabecera->usuario_crea     =   Session::get('usuario')->id;
                     $cabecera->save();
+
+
+
 
                     $files                      =   $request['certificado'];
                     if(!is_null($files)){

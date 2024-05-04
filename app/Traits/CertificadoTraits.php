@@ -22,7 +22,7 @@ trait CertificadoTraits
 
 	private function con_lista_certificados() {
 
-		$listadatos 	= 	Certificado::where('activo','=','1')->orderby('id','desc')->get();
+		$listadatos 	= 	Certificado::orderby('id','desc')->get();
 	 	return  $listadatos;
 
 	}

@@ -2,11 +2,15 @@
   <thead>
     <tr>
       <th>ITEM</th>
-      <th>CODIGO.</th>
+      <th>CODIGO LOCAL</th>
       <th>INSTITUCION</th>
+      <th>NIVEL</th>
       <th>PERIODO</th>
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
+      <th>ESTADO</th>
+
+
       <th>OPCION</th>
     </tr>
   </thead>
@@ -14,11 +18,27 @@
     @foreach($listadatos as $index => $item)
       <tr data_certificado_id = "{{$item->id}}">
         <td>{{$index +1}}</td>
-        <td>{{$item->codigo}}</td>
+        <td>{{$item->institucion_codigo}}</td>
         <td>{{$item->institucion->nombre}}</td>
+        <td>{{$item->institucion_nivel}}</td>
+
         <td>{{$item->periodo->nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
+
+        <td>
+          @if($item->estado_id == 'CEES00000001') 
+              <span class="badge badge-success">{{$item->estado_nombre}}</span>
+          @else
+            @if($item->estado_id == 'ETM0000000000002') 
+                <span class="badge badge-warning">{{$item->estado_nombre}}</span>
+            @else
+              @if($item->estado_id == 'CEES00000003') 
+                  <span class="badge badge-danger">{{$item->estado_nombre}}</span>
+              @endif
+            @endif
+          @endif
+        </td>
 
         <td class="rigth">
           <div class="btn-group btn-hspace">

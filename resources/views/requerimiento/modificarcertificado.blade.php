@@ -25,41 +25,40 @@
               <div class="form-group">
                 <label class="col-sm-3 control-label">Institucion : </label>
                 <div class="col-sm-6">
-                  {!! Form::select( 'institucion_id', $comboinstituciones, array($selectinstituciones),
-                                    [
-                                      'class'       => 'form-control control select2' ,
-                                      'id'          => 'institucion_id',
-                                      'required'    => '',
-                                      'data-aw'     => '1'
-                                    ]) !!}
+
+                  <input  type="text"
+                          id="institucion_codigo" name='institucion_codigo' 
+                          value="{{$certificado->institucion_codigo}} - {{$certificado->institucion_nombre}} - {{$certificado->institucion_nivel}}"                                           
+                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
+
                 </div>
               </div>
+
               <div class="ajax_periodo">
                 <div class="form-group">
                   <label class="col-sm-3 control-label">Periodo : </label>
                   <div class="col-sm-6">
-                    {!! Form::select( 'periodo_id', $comboperiodo, array($selectperiodo),
-                                      [
-                                        'class'       => 'form-control control select2' ,
-                                        'id'          => 'periodo_id',
-                                        'required'    => '',
-                                        'data-aw'     => '2'
-                                      ]) !!}
+
+                  <input  type="text"
+                          id="periodo_nombre" name='periodo_nombre' 
+                          value="{{$certificado->periodo_nombre}}"                                           
+                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
+
                   </div>
                 </div> 
               </div>
+
               <div class="form-group">
                 <label class="col-sm-3 control-label">Procedencia : </label>
                 <div class="col-sm-6">
-                  {!! Form::select( 'procedencia_id', $comboprocedencia, array($selectprocedencia),
-                                    [
-                                      'class'       => 'form-control control select2' ,
-                                      'id'          => 'procedencia_id',
-                                      'required'    => '',
-                                      'data-aw'     => '3'
-                                    ]) !!}
+                  <input  type="text"
+                          id="procedente_nombre" name='procedente_nombre' 
+                          value="{{$certificado->procedente_nombre}}"                                           
+                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
+
                 </div>
               </div>
+
               <div class="form-group sectioncargarimagen">
                   <label class="col-sm-3 control-label">Certificado</label>
                   <div class="col-sm-6">
@@ -68,6 +67,22 @@
                       </div>
                   </div>
               </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Activo</label>
+                <div class="col-sm-5">
+                  <div class="be-radio has-success inline">
+                    <input type="radio" value='1' @if($certificado->activo == 1) checked @endif name="activo" id="rad6">
+                    <label for="rad6">Activado</label>
+                  </div>
+                  <div class="be-radio has-danger inline">
+                    <input type="radio" value='0' @if($certificado->activo == 0) checked @endif name="activo" id="rad8">
+                    <label for="rad8">Desactivado</label>
+                  </div>
+                </div>
+              </div>
+
+              
               <div class="row xs-pt-15">
                 <div class="col-xs-6">
                     <div class="be-checkbox">

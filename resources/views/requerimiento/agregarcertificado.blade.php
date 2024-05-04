@@ -35,6 +35,21 @@
                                     ]) !!}
                 </div>
               </div>
+
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Procedencia : </label>
+                <div class="col-sm-6">
+                  {!! Form::select( 'procedencia_id', $comboprocedencia, array($selectprocedencia),
+                                    [
+                                      'class'       => 'form-control control select2' ,
+                                      'id'          => 'procedencia_id',
+                                      'required'    => '',
+                                      'data-aw'     => '3'
+                                    ]) !!}
+                </div>
+              </div>
+
               <div class="ajax_periodo">
                 <div class="form-group">
                   <label class="col-sm-3 control-label">Periodo : </label>
@@ -49,18 +64,8 @@
                   </div>
                 </div> 
               </div>
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Procedencia : </label>
-                <div class="col-sm-6">
-                  {!! Form::select( 'procedencia_id', $comboprocedencia, array($selectprocedencia),
-                                    [
-                                      'class'       => 'form-control control select2' ,
-                                      'id'          => 'procedencia_id',
-                                      'required'    => '',
-                                      'data-aw'     => '3'
-                                    ]) !!}
-                </div>
-              </div>
+
+
       				<div class="form-group sectioncargarimagen">
       						<label class="col-sm-3 control-label">Certificado</label>
       						<div class="col-sm-6">
