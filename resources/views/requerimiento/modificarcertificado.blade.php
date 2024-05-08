@@ -68,19 +68,35 @@
                   </div>
               </div>
 
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Activo</label>
-                <div class="col-sm-5">
-                  <div class="be-radio has-success inline">
-                    <input type="radio" value='1' @if($certificado->activo == 1) checked @endif name="activo" id="rad6">
-                    <label for="rad6">Activado</label>
+              <div class="ajax_periodo">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Estado : </label>
+                  <div class="col-sm-6">
+                    {!! Form::select( 'activo', $comboestado, array($selectestado),
+                                      [
+                                        'class'       => 'form-control control select2' ,
+                                        'id'          => 'activo',
+                                        'required'    => '',
+                                        'data-aw'     => '2'
+                                      ]) !!}
                   </div>
-                  <div class="be-radio has-danger inline">
-                    <input type="radio" value='0' @if($certificado->activo == 0) checked @endif name="activo" id="rad8">
-                    <label for="rad8">Desactivado</label>
-                  </div>
+                </div> 
+              </div>
+
+
+              <div class="form-group bajaextorno ocultar">
+                <label class="col-sm-3 control-label">Motivo de BAJA / EXTORNO :</label>
+                <div class="col-sm-6">
+                      <textarea 
+                      name="descripcion"
+                      id = "descripcion"
+                      class="form-control input-sm validarmayusculas"
+                      rows="5" 
+                      cols="50"      
+                      data-aw="2"></textarea>
                 </div>
               </div>
+
 
               
               <div class="row xs-pt-15">
@@ -91,7 +107,7 @@
                 </div>
                 <div class="col-xs-6">
                   <p class="text-right">
-                    <button type="submit" class="btn btn-space btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-space btn-primary btn-guardar-certificado">Guardar</button>
                   </p>
                 </div>
               </div>

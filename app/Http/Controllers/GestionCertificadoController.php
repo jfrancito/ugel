@@ -136,25 +136,35 @@ class GestionCertificadoController extends Controller
 
                     //ya existe un certificado en ese periodo
                     $activo                             =   $request['activo'];
-                    if($activo==0){
-                        $certificado->estado_id         =   'CEES00000003';
-                        $certificado->estado_nombre     =   'BAJA';
+                    $estado                             =   Estado::where('id','=',$activo)->first();
+                    $estado_activo                      =   1;
+
+                    if($activo == 'CEES00000002' || $activo == 'CEES00000003'){
+
+                        $certificado->estado_id         =   $estado->id;
+                        $certificado->estado_nombre     =   $estado->nombre;
+                        $certificado->msj_extorno       =   $request['descripcion'];
+                        $estado_activo                  =   0;
+
                     }else{
+
                         $certificados_activos           =   Certificado::where('institucion_id','=',$certificado->institucion_id)
                                                             ->where('procedente_id','=',$certificado->procedente_id)
                                                             ->where('periodo_id','=',$certificado->periodo_id)
                                                             ->where('activo','=',1)
                                                             ->get();
-                        if(count($certificados_activos)>0){
+
+                        if(count($certificados_activos)>1){
                             return Redirect::back()->withInput()->with('errorbd', 'No puedes activar este certificado porque ya existe uno en este periodo');
                         }else{
                             $certificado->estado_id         =   'CEES00000001';
                             $certificado->estado_nombre     =   'APROBADO';
                         }
+
                     }
 
                     $usuario                       =   User::where('id',Session::get('usuario')->id)->first();
-                    $certificado->activo           =   $request['activo'];
+                    $certificado->activo           =   $estado_activo;
                     $certificado->fecha_mod        =   $this->fechaactual;
                     $certificado->usuario_mod      =   Session::get('usuario')->id;
                     $certificado->save();
@@ -163,9 +173,11 @@ class GestionCertificadoController extends Controller
                     if(!is_null($files)){
                         foreach($files as $file){
 
+                            $codigo                     =   $certificado->codigo;
+
                             $rutafile                   =   storage_path('app/').$this->pathFilesCer.$codigo.'/';
                             $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
-                            $numero                     =   $periodo_id;
+                            $numero                     =   $certificado->periodo_id;
                             $nombre                     =   $codigo.'-'.$file->getClientOriginalName();
 
                             $rutadondeguardar           =   $this->pathFilesCer.$codigo.'/';
@@ -242,7 +254,11 @@ class GestionCertificadoController extends Controller
                 $multimedia         =   Archivo::where('referencia_id','=',$certificado->id)->where('tipo_archivo','=','certificado')->where('activo','=',1)->first();
                 $rutafoto           =   !empty($multimedia) ? asset('public/img/00000001-UGEL01.pdf') : asset('public/img/no-foto.png');
 
-                //dd($rutafoto);
+                $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
+                $selectestado       =   $certificado->estado_id;
+
+
+                //dd($selectestado);
 
                 return View::make('requerimiento/modificarcertificado', 
                                 [
@@ -254,6 +270,10 @@ class GestionCertificadoController extends Controller
                                     'selectperiodo'         =>  $selectperiodo,
                                     'comboprocedencia'      =>  $comboprocedencia, 
                                     'selectprocedencia'     =>  $selectprocedencia,
+
+                                    'comboestado'           =>  $comboestado, 
+                                    'selectestado'          =>  $selectestado,
+
                                     'rutafoto'              =>  $rutafoto,
                                     'multimedia'            =>  $multimedia,
                                 ]);

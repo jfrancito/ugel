@@ -9,7 +9,7 @@
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
       <th>ESTADO</th>
-
+      <th>MOTIVO</th>
 
       <th>OPCION</th>
     </tr>
@@ -30,8 +30,8 @@
           @if($item->estado_id == 'CEES00000001') 
               <span class="badge badge-success">{{$item->estado_nombre}}</span>
           @else
-            @if($item->estado_id == 'ETM0000000000002') 
-                <span class="badge badge-warning">{{$item->estado_nombre}}</span>
+            @if($item->estado_id == 'CEES00000002') 
+                <span class="badge badge-danger">{{$item->estado_nombre}}</span>
             @else
               @if($item->estado_id == 'CEES00000003') 
                   <span class="badge badge-danger">{{$item->estado_nombre}}</span>
@@ -39,7 +39,7 @@
             @endif
           @endif
         </td>
-
+        <td>{{$item->msj_extorno}}</td>
         <td class="rigth">
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
