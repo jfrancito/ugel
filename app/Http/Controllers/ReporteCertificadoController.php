@@ -40,16 +40,30 @@ class ReporteCertificadoController extends Controller
 	    /******************************************************/
 	    View::share('titulo','Reporte de certificados de instituciones');
 	    $sel_periodo 			=	'';
+	    $sel_periodo_fin 		=	'';
+
 	    $anio  					=   $this->anio;
-        $comboperiodo       	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','TODO','APAFA_CONEI_PERIODO');
+
+        $comboperiodo       	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo Inicial','TODO','APAFA_CONEI_PERIODO');
+        $comboperiodofin       	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo Fin','TODO','APAFA_CONEI_PERIODO');
+
+
         $selectperiodo      	=   'TODO';
+        $selectperiodofin      	=   'TODO';
+
         $comboprocedencia   	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','TODO','APAFA_CONEI');
         $selectprocedencia  	=   'TODO';
-        $listadatos     		=   $this->con_lista_certificados_xfiltro($selectperiodo,$selectprocedencia);
-        $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($selectperiodo,$selectprocedencia);
-        $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($selectperiodo,$selectprocedencia);
 
-        //dd($listacertificadoperiod);
+        // $listadatos     		=   $this->con_lista_certificados_xfiltro($selectperiodo,$selectperiodo,$selectprocedencia);
+        // $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($selectperiodo,$selectperiodofin,$selectprocedencia);
+        // $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($selectperiodo,$selectprocedencia);
+
+
+
+        $listadatos     		=   array();
+        $listacertificadoperiod =   array();
+        $listacertificadoproced =   array();
+
 		$funcion 				= 	$this;
 		
 		return View::make('reportes/listacertificadoinstitucion',

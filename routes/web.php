@@ -87,9 +87,18 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-combo-periodo-xinstitucion', 'GestionCertificadoController@actionAjaxComboPeriodoxInstitucion');
 	Route::any('/descargar-archivo-certificado/{idcertificado}/{idarchivo}', 'GestionCertificadoController@actionDescargarArchivosCertificado');
 	Route::any('/modificar-certificado/{idopcion}/{idcertificado}', 'GestionCertificadoController@actionModificarCertificado');
+	Route::any('/ajax-modal-periodo-xinstitucion-xprocedencia', 'GestionCertificadoController@actionAjaxListarPeriodos');
+	Route::any('/ajax-periodo-fin-certificado', 'GestionCertificadoController@actionAjaxListarPeriodoFin');
+
+
+
 
 	Route::any('/gestion-de-instituciones-certificado/{idopcion}', 'ReporteCertificadoController@actionListarCertificadosInstituciones');
 	Route::any('/ajax-lista-instituciones-certificado', 'ReporteCertificadoController@actionAjaxListarInstitucionCertificado');
+
+
+
+
 
 
 

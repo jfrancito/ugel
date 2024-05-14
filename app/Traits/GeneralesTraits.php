@@ -171,6 +171,20 @@ trait GeneralesTraits
 	}
 
 
+	private function gn_generacion_combo_tabla_in_array($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado,$array) {
+		
+		$array 							= 	DB::table($tabla)
+        									->where('activo','=',1)
+        									->whereIn('id',$array)
+        									->where('tipoestado','=',$tipoestado)
+        									->orderby('codigo','desc')
+		        							->pluck($atributo2,$atributo1)
+											->toArray();
+		$combo  					= 	$array;
+	 	return  $combo;					 			
+	}
+
+
 
 	private function gn_generacion_combo_tabla_not_array($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado,$array) {
 		

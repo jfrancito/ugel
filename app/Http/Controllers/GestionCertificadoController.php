@@ -15,6 +15,8 @@ use App\Modelos\Conei;
 use App\Modelos\Estado;
 use App\Modelos\OtroIntegranteConei;
 use App\Modelos\Certificado;
+use App\Modelos\DetalleCertificado;
+
 
 use App\User;
 use Illuminate\Support\Facades\Crypt;
@@ -33,6 +35,122 @@ class GestionCertificadoController extends Controller
     use CertificadoTraits;
 
 
+    public function actionAjaxListarPeriodos(Request $request)
+    {
+
+        $institucion_id             =   $request['institucion_id'];
+        $procedencia_id             =   $request['procedencia_id'];
+        $array_periodos             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
+                                        ->where('procedente_id','=',$procedencia_id)
+                                        ->where('activo','=',1)
+                                        ->where('estado_id','=','CEES00000001')
+                                        ->pluck('periodo_id')                                   
+                                        ->toArray();
+
+        $institucion                =   Institucion::where('id','=',$institucion_id)->first();
+        $procedencia                =   Estado::where('id','=',$procedencia_id)->first();
+
+
+        $comboperiodo               =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO',$array_periodos);
+        $selectperiodo              =   '';
+
+        $comboperiodofin            =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo fin','','APAFA_CONEI_PERIODO',$array_periodos);
+        $selectperiodofin            =   '';
+        $ind = 0;
+
+        $mensaje                    =   'Seleccione periodos';
+        return View::make('requerimiento/modal/ajax/amcertiperiodos',
+                         [          
+                            'comboperiodo'             => $comboperiodo,
+                            'selectperiodo'            => $selectperiodo,
+                            'comboperiodofin'          => $comboperiodofin,
+                            'selectperiodofin'         => $selectperiodofin,
+                            'institucion'              => $institucion,
+                            'procedencia'              => $procedencia,
+                            'mensaje'                  => $mensaje,
+                            'ind'                      => $ind,
+                            'ajax'                     => true,                            
+                         ]);
+    }
+
+
+
+    public function actionAjaxListarPeriodoFin(Request $request)
+    {
+
+        $periodo_id                 =   $request['periodo_id'];
+        $periodofin_id              =   $request['periodofin_id'];
+        $institucion_id             =   $request['institucion_id'];
+        $procedencia_id             =   $request['procedencia_id'];
+        $periodo                    =   Estado::where('id','=',$periodo_id)->first();
+
+        $certificado                =   DetalleCertificado::where('institucion_id','=',$institucion_id)
+                                        ->where('procedente_id','=',$procedencia_id)
+                                        ->where('periodo_id','=',$periodo_id)
+                                        ->where('activo','=',1)
+                                        ->where('estado_id','=','CEES00000001')
+                                        ->pluck('periodo_id')                                   
+                                        ->first();
+
+        $comboperiodofin            =   array();
+        $selectperiodofin           =   '';
+        $mensaje                    =   'Periodo libres asignar';
+        $ind                        =   '0';
+        //si ya tiene
+        if(count($certificado)>0){
+            $mensaje           =   'Ya existe un certificado en este periodo '.$periodo->nombre;
+        }else{
+
+
+            $nombreperiodofin           =   (string)($periodo->nombre + 1);
+            $periodofin                 =   Estado::where('nombre','=',$nombreperiodofin)->first();
+
+            if(count($periodofin)<=0){
+                $mensaje           =   'No existe el periodo '.$nombreperiodofin.' en la base de datos';
+            }else{
+
+                $certificadofin             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
+                                                ->where('procedente_id','=',$procedencia_id)
+                                                ->where('periodo_id','=',$periodofin->id)
+                                                ->where('activo','=',1)
+                                                ->where('estado_id','=','CEES00000001')
+                                                ->pluck('periodo_id')                                   
+                                                ->first();
+
+                if(count($certificadofin)>0){
+                    $mensaje           =   'Ya existe un certificado en este periodo '.$nombreperiodofin;
+                }else{
+
+                    $array_periodos             =   array($periodofin->id);
+                    $comboperiodofin            =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione periodo fin','','APAFA_CONEI_PERIODO',$array_periodos);
+                    $selectperiodofin           =   $periodofin->id;
+                    $ind                        =   '1';
+
+
+                }
+
+
+            }
+
+        }
+
+
+
+        return View::make('requerimiento/ajax/aperiodofin',
+                         [          
+                            'comboperiodofin'          => $comboperiodofin,
+                            'selectperiodofin'         => $selectperiodofin,
+                            'mensaje'                  => $mensaje,
+                            'ind'                      => $ind,
+                            'ajax'                     => true,                            
+                         ]);
+    }
+
+
+
+
+
+
     public function actionAjaxComboPeriodoxInstitucion(Request $request)
     {
 
@@ -48,6 +166,9 @@ class GestionCertificadoController extends Controller
 
         $comboperiodo               =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO',$array_periodos);
         $selectperiodo              =   '';
+
+
+
 
         return View::make('requerimiento/combo/periodo',
                          [          
@@ -71,6 +192,8 @@ class GestionCertificadoController extends Controller
         $user_id        =   Session::get('usuario')->id;
         $listadatos     =   $this->con_lista_certificados();
         $funcion        =   $this;
+
+        //dd($listadatos);
 
         return View::make('requerimiento/listacertificado',
                          [
@@ -236,23 +359,28 @@ class GestionCertificadoController extends Controller
                 $selectinstituciones=   $certificado->institucion_id;
                 $comboperiodo       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO');
 
-                $array_periodos     =   Certificado::where('institucion_id','=',$certificado->institucion_id)
-                                                ->where('activo','=',1)
-                                                ->pluck('periodo_id')                                   
-                                                ->toArray();
 
+                // $array_periodos     =   Certificado::where('institucion_id','=',$certificado->institucion_id)
+                //                                 ->where('activo','=',1)
+                //                                 ->pluck('periodo_id')                                   
+                //                                 ->toArray();
+                // $periodo_sel        =   Estado::where('id','=',$certificado->periodo_id)->first();
+                // $comboperiodo       =   array($periodo_sel->id => $periodo_sel->nombre) + $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO',$array_periodos);
+                // $selectperiodo      =   $certificado->periodo_id;
 
-                $periodo_sel        =   Estado::where('id','=',$certificado->periodo_id)->first();
-
-                $comboperiodo       =   array($periodo_sel->id => $periodo_sel->nombre) + $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO',$array_periodos);
-
-
-                $selectperiodo      =   $certificado->periodo_id;
                 $comboprocedencia   =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','','APAFA_CONEI');
                 $selectprocedencia  =   $certificado->procedente_id;
 
                 $multimedia         =   Archivo::where('referencia_id','=',$certificado->id)->where('tipo_archivo','=','certificado')->where('activo','=',1)->first();
-                $rutafoto           =   !empty($multimedia) ? asset('public/img/00000001-UGEL01.pdf') : asset('public/img/no-foto.png');
+                
+                //dd($multimedia);
+                //dd(storage_path('app/certificado_conei/').$multimedia->lote.'/'.$multimedia->nombre_archivo);
+
+
+
+                $rutafoto           =   !empty($multimedia) ? asset('storage/app/certificado_conei/'.$multimedia->lote.'/'.$multimedia->nombre_archivo) : asset('public/img/no-foto.png');
+
+                //dd($rutafoto);
 
                 $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
                 $selectestado       =   $certificado->estado_id;
@@ -266,8 +394,8 @@ class GestionCertificadoController extends Controller
                                     'idopcion'              =>  $idopcion,
                                     'comboinstituciones'    =>  $comboinstituciones, 
                                     'selectinstituciones'   =>  $selectinstituciones,
-                                    'comboperiodo'          =>  $comboperiodo, 
-                                    'selectperiodo'         =>  $selectperiodo,
+                                    // 'comboperiodo'          =>  $comboperiodo, 
+                                    // 'selectperiodo'         =>  $selectperiodo,
                                     'comboprocedencia'      =>  $comboprocedencia, 
                                     'selectprocedencia'     =>  $selectprocedencia,
 
@@ -299,41 +427,84 @@ class GestionCertificadoController extends Controller
                     DB::beginTransaction();
                     /******************************/
 
-                    $usuario                                    =   User::where('id',Session::get('usuario')->id)->first();
+                    $usuario                        =   User::where('id',Session::get('usuario')->id)->first();
 
-                    $institucion_id             =   $request['institucion_id'];
-                    $periodo_id                 =   $request['periodo_id'];
-                    $procedencia_id             =   $request['procedencia_id'];
+                    $institucion_id                 =   $request['institucion_id'];
+                    $periodo_id                     =   $request['periodo_inicio_id'];
+                    $periodofin_id                  =   $request['periodo_fin_id'];
+                    $procedencia_id                 =   $request['procedencia_id'];
 
-                    $institucion                =   Institucion::where('id','=',$institucion_id)->first();
-                    $periodo                    =   Estado::where('id','=',$periodo_id)->first();
-                    $procedencia                =   Estado::where('id','=',$procedencia_id)->first();
+                    $nombreperiodog                 =   '';
+                    $institucion                    =   Institucion::where('id','=',$institucion_id)->first();
+                    $periodo                        =   Estado::where('id','=',$periodo_id)->first();
+                    $periodofin                     =   Estado::where('id','=',$periodofin_id)->first();
 
-                    $idcertificado              =   $this->funciones->getCreateIdMaestra('certificados');
-                    $codigo                     =   $this->funciones->generar_codigo('certificados',8);
+                    if(count($periodofin)>0){
+                        $nombreperiodog                 =   $periodo->nombre . '-' .$periodofin->nombre;
+                    }else{
+                        $nombreperiodog                 =   $periodo->nombre;
+                    }
 
-                    $cabecera                   =   new Certificado();
-                    $cabecera->id               =   $idcertificado;
-                    $cabecera->codigo           =   $codigo;
-                    $cabecera->institucion_id   =   $institucion_id;
+
+                    $procedencia                    =   Estado::where('id','=',$procedencia_id)->first();
+                    $idcertificado                  =   $this->funciones->getCreateIdMaestra('certificados');
+                    $codigo                         =   $this->funciones->generar_codigo('certificados',8);
+
+                    $cabecera                       =   new Certificado();
+                    $cabecera->id                   =   $idcertificado;
+                    $cabecera->codigo               =   $codigo;
+                    $cabecera->institucion_id       =   $institucion_id;
                     $cabecera->institucion_codigo   =   $institucion->codigo;
                     $cabecera->institucion_nombre   =   $institucion->nombre;
-                    $cabecera->institucion_nivel   =   $institucion->nivel;
-
-                    $cabecera->periodo_id       =   $periodo_id;
-                    $cabecera->periodo_nombre   =   $periodo->nombre;
-
-                    $cabecera->procedente_id    =   $procedencia_id;
-                    $cabecera->procedente_nombre=   $procedencia->nombre;
-
-                    $cabecera->estado_id        =   'CEES00000001';
-                    $cabecera->estado_nombre    =   'APROBADO';
-
-                    $cabecera->fecha_crea       =   $this->fechaactual;
-                    $cabecera->usuario_crea     =   Session::get('usuario')->id;
+                    $cabecera->institucion_nivel    =   $institucion->nivel;
+                    $cabecera->periodo_nombre       =   $nombreperiodog;
+                    $cabecera->procedente_id        =   $procedencia_id;
+                    $cabecera->procedente_nombre    =   $procedencia->nombre;
+                    $cabecera->estado_id            =   'CEES00000001';
+                    $cabecera->estado_nombre        =   'APROBADO';
+                    $cabecera->fecha_crea           =   $this->fechaactual;
+                    $cabecera->usuario_crea         =   Session::get('usuario')->id;
                     $cabecera->save();
 
+                    $iddetcertificado               =   $this->funciones->getCreateIdMaestra('detallecertificados');
+                    //primer periodo
+                    $cabeceradet                       =   new DetalleCertificado();
+                    $cabeceradet->id                   =   $iddetcertificado;
+                    $cabeceradet->codigo               =   $codigo;
+                    $cabeceradet->institucion_id       =   $institucion_id;
+                    $cabeceradet->institucion_codigo   =   $institucion->codigo;
+                    $cabeceradet->institucion_nombre   =   $institucion->nombre;
+                    $cabeceradet->institucion_nivel    =   $institucion->nivel;
+                    $cabeceradet->periodo_id           =   $periodo->id;    
+                    $cabeceradet->periodo_nombre       =   $periodo->nombre;
+                    $cabeceradet->procedente_id        =   $procedencia_id;
+                    $cabeceradet->certificado_id       =   $idcertificado;
+                    $cabeceradet->procedente_nombre    =   $procedencia->nombre;
+                    $cabeceradet->estado_id            =   'CEES00000001';
+                    $cabeceradet->estado_nombre        =   'APROBADO';
+                    $cabeceradet->fecha_crea           =   $this->fechaactual;
+                    $cabeceradet->usuario_crea         =   Session::get('usuario')->id;
+                    $cabeceradet->save();
 
+                    $iddetcertificado               =   $this->funciones->getCreateIdMaestra('detallecertificados');
+                    //primer periodo
+                    $cabeceradet                       =   new DetalleCertificado();
+                    $cabeceradet->id                   =   $iddetcertificado;
+                    $cabeceradet->codigo               =   $codigo;
+                    $cabeceradet->institucion_id       =   $institucion_id;
+                    $cabeceradet->institucion_codigo   =   $institucion->codigo;
+                    $cabeceradet->institucion_nombre   =   $institucion->nombre;
+                    $cabeceradet->institucion_nivel    =   $institucion->nivel;
+                    $cabeceradet->periodo_id           =   $periodofin->id;    
+                    $cabeceradet->periodo_nombre       =   $periodofin->nombre;
+                    $cabeceradet->procedente_id        =   $procedencia_id;
+                    $cabeceradet->certificado_id       =   $idcertificado;
+                    $cabeceradet->procedente_nombre    =   $procedencia->nombre;
+                    $cabeceradet->estado_id            =   'CEES00000001';
+                    $cabeceradet->estado_nombre        =   'APROBADO';
+                    $cabeceradet->fecha_crea           =   $this->fechaactual;
+                    $cabeceradet->usuario_crea         =   Session::get('usuario')->id;
+                    $cabeceradet->save();
 
 
                     $files                      =   $request['certificado'];
@@ -409,10 +580,17 @@ class GestionCertificadoController extends Controller
 
             //dd($datos);
 
-            $comboinstituciones =   array('' => "Seleccione Categoria") + $datos;
-            $selectinstituciones=   '';
-            $comboperiodo       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO');
-            $selectperiodo      =   '';
+            $comboinstituciones     =   array('' => "Seleccione Categoria") + $datos;
+            $selectinstituciones    =   '';
+
+            $comboperiodo           =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO');
+            $selectperiodo          =   '';
+
+            $comboperiodo_fin       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo final','','APAFA_CONEI_PERIODO');
+            $selectperiodo_fin      =   '';
+
+
+
             $comboprocedencia   =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','','APAFA_CONEI');
             $selectprocedencia  =   '';
 
@@ -424,8 +602,13 @@ class GestionCertificadoController extends Controller
                             'idopcion'              =>  $idopcion,
                             'comboinstituciones'    =>  $comboinstituciones, 
                             'selectinstituciones'   =>  $selectinstituciones,
+
                             'comboperiodo'          =>  $comboperiodo, 
                             'selectperiodo'         =>  $selectperiodo,
+
+                            'comboperiodo_fin'      =>  $comboperiodo_fin, 
+                            'selectperiodo_fin'     =>  $selectperiodo_fin,
+
                             'comboprocedencia'      =>  $comboprocedencia, 
                             'selectprocedencia'     =>  $selectprocedencia
                         ]);

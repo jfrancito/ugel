@@ -22,7 +22,7 @@
         <td>{{$item->institucion->nombre}}</td>
         <td>{{$item->institucion_nivel}}</td>
 
-        <td>{{$item->periodo->nombre}}</td>
+        <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
 

@@ -3,7 +3,85 @@ $(document).ready(function(){
     var carpeta = $("#carpeta").val();
 
 
-    $(".certificado").on('change','#institucion_id', function() {
+    $(".certificado").on('click','.btn_asignar_periodo', function(e) {
+
+        event.preventDefault();
+
+        var periodo_id              =   $('#periodo_id').val(); 
+        var periodofin_id           =   $('#periodofin_id').val();
+        var indb                    =   $('#indb').val();
+        if(periodo_id ==''){ alerterrorajax("Seleccione un periodo Inicial."); return false;}
+        if(periodofin_id ==''){ alerterrorajax("Seleccione un periodo Final."); return false;}
+        if(indb =='0'){ alerterrorajax("Hay errores en la seleccion de periodos."); return false;}
+
+        var periodo_nombre = $('#periodo_id option:selected').text();
+        var periodofin_nombre = $('#periodofin_id option:selected').text();
+
+        $('#periodo_inicio_id').val(periodo_id);
+        $('#periodo_fin_id').val(periodofin_id);
+        $('#periodos_nombres').val(periodo_nombre + '-' + periodofin_nombre);
+        $('#modal-certificado').niftyModal('hide');
+
+
+
+
+    });
+
+
+    $(".certificado").on('click','.modal-registro', function() {
+        event.preventDefault();
+        var _token                  =   $('#token').val();
+        var institucion_id          =   $('#institucion_id').val();
+        var procedencia_id          =   $('#procedencia_id').val();
+        if(institucion_id ==''){ alerterrorajax("Seleccione una institucion."); return false;}
+        if(procedencia_id ==''){ alerterrorajax("Seleccione una procedencia."); return false;}
+
+
+        data                        =   {
+                                            _token                  : _token,
+                                            institucion_id          : institucion_id,
+                                            procedencia_id          : procedencia_id
+                                        };
+                              
+        ajax_modal(data,"/ajax-modal-periodo-xinstitucion-xprocedencia",
+                  "modal-certificado","modal-certificado-container");
+
+    });
+
+
+    $(".certificado").on('change','.buscar_periodo_sgt', function() {
+
+        event.preventDefault();
+        var periodo_id           =   $('#periodo_id').val();
+        var periodofin_id        =   $('#periodofin_id').val();
+
+        debugger;
+
+        var institucion_id          =   $('#institucion_id').val();
+        var procedencia_id          =   $('#procedencia_id').val();
+
+        var _token               =   $('#token').val();
+        //validacioones
+        if(periodo_id ==''){ alerterrorajax("Seleccione periodo inicial."); return false;}
+
+
+        data            =   {
+                                _token              : _token,
+                                periodo_id          : periodo_id,
+                                periodofin_id       : periodofin_id,
+                                institucion_id          : institucion_id,
+                                procedencia_id       : procedencia_id,
+
+                            };
+
+        ajax_normal_section(data,"/ajax-periodo-fin-certificado","msj_consulta_periodo")                    
+
+    });
+
+
+
+
+    $(".certificado").on('change','#institucion_id_antes', function() {
 
         event.preventDefault();
         var institucion_id       =   $('#institucion_id').val();
@@ -59,7 +137,7 @@ $(document).ready(function(){
 
     });
 
-    $(".certificado").on('change','#procedencia_id', function() {
+    $(".certificado").on('change','#procedencia_id_antes', function() {
 
         event.preventDefault();
         var procedencia_id       =   $('#procedencia_id').val();

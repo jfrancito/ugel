@@ -4,9 +4,9 @@ namespace App\Modelos;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Certificado extends Model
+class DetalleCertificado extends Model
 {
-    protected $table = 'certificados';
+    protected $table = 'detallecertificados';
     public $timestamps=false;
     protected $primaryKey = 'id';
 	public $incrementing = false;

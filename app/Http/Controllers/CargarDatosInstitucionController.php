@@ -23,6 +23,8 @@ use App\Modelos\Departamento;
 use App\Modelos\Cosecha;
 use App\Modelos\Institucion;
 use App\Modelos\Director;
+use App\Modelos\DetalleInstitucion;
+
 
 
 
@@ -124,17 +126,21 @@ class CargarDatosInstitucionController extends Controller
 
                             $institucion = Institucion::where('codigo','=',$item->codigo_local)->first();
 
+                            $idinstitucion = '';
+                            $nivelstring = '';
+
                             //AGREGAR
                             if(count($institucion)<=0){
+
+                                $nivelstring                                =   $item->nivel;
 
                                 //INSTITUCION
                                 $idinstitucion                              =   $this->funciones->getCreateIdMaestra('instituciones');
                                 $cabecera                                   =   new Institucion;
                                 $cabecera->id                               =   $idinstitucion;
                                 $cabecera->codigo                           =   $item->codigo_local;
-                                $cabecera->codigomodular                    =   $item->codigo_modular;
                                 $cabecera->nombre                           =   $item->nombre_iiee;
-                                $cabecera->nivel                            =   $item->nivel;  
+                                $cabecera->nivel                            =   $nivelstring;  
                                 $cabecera->direccion                        =   $item->direccion_iiee;
                                 $cabecera->departamento                     =   $item->departamento;
                                 $cabecera->provincia                        =   $item->departamento;
@@ -144,7 +150,6 @@ class CargarDatosInstitucionController extends Controller
                                 $cabecera->fecha_crea                       =   $this->fechaactual;
                                 $cabecera->usuario_crea                     =   Session::get('usuario')->id;
                                 $cabecera->save();
-
                                 //DIRECTOR
                                 $iddirector                                 =   $this->funciones->getCreateIdMaestra('directores');
                                 $director                                   =   new Director;
@@ -170,14 +175,16 @@ class CargarDatosInstitucionController extends Controller
                                 $users->usuario_crea                        =   Session::get('usuario')->id;
                                 $users->save();
 
+
                             }else{
 
+                                $nivelstring                                =   $institucion->nivel.'-'.$item->nivel;
+                                $idinstitucion                              =   $institucion->id;
                                 //MODIFICAR
                                 //INSTITUCIONES
                                 $institucion->codigo                        =   $item->codigo_local;
-                                $institucion->codigomodular                 =   $item->codigo_modular;
                                 $institucion->nombre                        =   $item->nombre_iiee; 
-                                $institucion->nivel                         =   $item->nivel;  
+                                $institucion->nivel                         =   $nivelstring;
 
                                 $institucion->direccion                     =   $item->director;
                                 $institucion->departamento                  =   $item->departamento;
@@ -199,6 +206,22 @@ class CargarDatosInstitucionController extends Controller
                                 $director_sel->save();
 
                             } 
+
+                            $detinstitucion = DetalleInstitucion::where('codigo','=',$item->codigo_local)->where('codigomodular','=',$item->codigo_modular)->first();
+
+                            if(count($detinstitucion)<=0){
+                                //INSTITUCION
+                                $iddetinstitucion                           =   $this->funciones->getCreateIdMaestra('detalleinstituciones');
+                                $cabecera                                   =   new DetalleInstitucion;
+                                $cabecera->id                               =   $iddetinstitucion;
+                                $cabecera->codigo                           =   $item->codigo_local;
+                                $cabecera->codigomodular                    =   $item->codigo_modular;
+                                $cabecera->nivel                            =   $item->nivel;
+                                $cabecera->institucion_id                   =   $idinstitucion;
+                                $cabecera->fecha_crea                       =   $this->fechaactual;
+                                $cabecera->usuario_crea                     =   Session::get('usuario')->id;
+                                $cabecera->save();
+                            }
 
 
 

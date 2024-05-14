@@ -34,7 +34,34 @@
                 </div>
               </div>
 
-              <div class="ajax_periodo">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Periodos : </label>
+                <div class="col-sm-6">
+                  <div class="input-group my-group">
+                      <input  type="text"
+                              id="periodos_nombres" name='periodos_nombres' 
+                              value="{{$certificado->periodo_nombre}}"                         
+                              placeholder="PERIODOS"
+                              required = ""                   
+                              autocomplete="off" class="form-control input-sm periodos_nombres" data-aw="4" readonly/>
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary modal-registro"
+                                data_periodo_inicio     = 'periodo_inicio'
+                                data_periodo_fin    = 'periodo_fin'
+                                type="button" 
+                                style="height: 38px;">
+                                Buscar periodo</button>
+                      </span>
+
+                      <input type="hidden" name="periodo_inicio_id" id = 'periodo_inicio_id'>
+                      <input type="hidden" name="periodo_fin_id" id = 'periodo_fin_id'>
+                  </div>
+
+                </div>
+              </div>
+
+
+<!--               <div class="ajax_periodo">
                 <div class="form-group">
                   <label class="col-sm-3 control-label">Periodo : </label>
                   <div class="col-sm-6">
@@ -46,7 +73,7 @@
 
                   </div>
                 </div> 
-              </div>
+              </div> -->
 
               <div class="form-group">
                 <label class="col-sm-3 control-label">Procedencia : </label>
@@ -119,6 +146,9 @@
       </div>
     </div>
   </div>
+
+  @include('requerimiento.modal.mcertificado')
+
 </div>  
 @stop
 
@@ -136,9 +166,16 @@
     <script src="{{ asset('public/js/file/fileinput.js?v='.$version) }}" type="text/javascript"></script>
     <script src="{{ asset('public/js/file/locales/es.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/js/general/general.js') }}" type="text/javascript"></script>
-
+  <script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
+
+      $.fn.niftyModal('setDefaults',{
+        overlaySelector: '.modal-overlay',
+        closeSelector: '.modal-close',
+        classAddAfterOpen: 'modal-show',
+      });
+
       $(document).ready(function(){
         //initialize the javascript
         App.init();

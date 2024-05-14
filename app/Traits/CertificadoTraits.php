@@ -32,7 +32,9 @@ trait CertificadoTraits
 		$listadatos 	= 	Certificado::where('activo','=','1')
 							->Periodo($periodo_id)
 							->Procedencia($procedencia_id)
-							->orderby('fecha_crea','desc')->get();
+							->orderby('fecha_crea','desc')
+							->get();
+							
 	 	return  $listadatos;
 
 	}
