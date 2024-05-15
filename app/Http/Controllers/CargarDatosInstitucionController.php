@@ -104,6 +104,10 @@ class CargarDatosInstitucionController extends Controller
                         // dd($cant_reg);
                         $fila=0;
                         $idproducto='';
+
+
+
+
                         foreach ($listadatos as $index => $item) 
                         {
 
@@ -140,10 +144,10 @@ class CargarDatosInstitucionController extends Controller
                                 $cabecera->id                               =   $idinstitucion;
                                 $cabecera->codigo                           =   $item->codigo_local;
                                 $cabecera->nombre                           =   $item->nombre_iiee;
-                                $cabecera->nivel                            =   $nivelstring;  
+                                $cabecera->nivel                            =   '';  
                                 $cabecera->direccion                        =   $item->direccion_iiee;
                                 $cabecera->departamento                     =   $item->departamento;
-                                $cabecera->provincia                        =   $item->departamento;
+                                $cabecera->provincia                        =   $item->provincia;
                                 $cabecera->distrito                         =   $item->distrito;
                                 $cabecera->localidad                        =   $item->localidad;
                                 $cabecera->centropoblado                    =   $item->centro_poblado;
@@ -178,17 +182,17 @@ class CargarDatosInstitucionController extends Controller
 
                             }else{
 
-                                $nivelstring                                =   $institucion->nivel.'-'.$item->nivel;
+                                //$nivelstring                                =   $institucion->nivel.'-'.$item->nivel;
                                 $idinstitucion                              =   $institucion->id;
                                 //MODIFICAR
                                 //INSTITUCIONES
                                 $institucion->codigo                        =   $item->codigo_local;
                                 $institucion->nombre                        =   $item->nombre_iiee; 
-                                $institucion->nivel                         =   $nivelstring;
+                                $institucion->nivel                         =   '';
 
                                 $institucion->direccion                     =   $item->director;
                                 $institucion->departamento                  =   $item->departamento;
-                                $institucion->provincia                     =   $item->departamento;
+                                $institucion->provincia                     =   $item->provincia;
                                 $institucion->distrito                      =   $item->distrito;
                                 $institucion->localidad                     =   $item->localidad;
                                 $institucion->centropoblado                 =   $item->centro_poblado;
@@ -221,11 +225,41 @@ class CargarDatosInstitucionController extends Controller
                                 $cabecera->fecha_crea                       =   $this->fechaactual;
                                 $cabecera->usuario_crea                     =   Session::get('usuario')->id;
                                 $cabecera->save();
+                            }else{
+                                $detinstitucion->codigo                           =   $item->codigo_local;
+                                $detinstitucion->codigomodular                    =   $item->codigo_modular;
+                                $detinstitucion->nivel                            =   $item->nivel;
+                                $detinstitucion->institucion_id                   =   $idinstitucion;
+                                $detinstitucion->fecha_mod                        =   $this->fechaactual;
+                                $detinstitucion->usuario_mod                      =   Session::get('usuario')->id;
+                                $detinstitucion->save();
                             }
 
-
-
                             $contador = $contador + 1;
+                        }
+
+                        $li = Institucion::get();
+                        foreach ($li as $index => $item) 
+                        {
+                            $item->nivel     =   '';
+                            $item->save();
+                        }
+
+                        $detalle = DetalleInstitucion::get();
+
+                        foreach ($detalle as $index => $item) 
+                        {
+                            $institucion = Institucion::where('codigo','=',$item->codigo)->first();
+
+                            if(count($institucion)>0){
+                                if($institucion->nivel==''){
+                                    $nivelstring                                =   $item->nivel;
+                                }else{
+                                    $nivelstring                                =   $institucion->nivel.'-'.$item->nivel;
+                                }
+                                $institucion->nivel                             =   $nivelstring;
+                                $institucion->save();
+                            }
                         }
 
                     DB::commit();

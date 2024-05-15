@@ -33,6 +33,17 @@
 
                 </div>
               </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Procedencia : </label>
+                <div class="col-sm-6">
+                  <input  type="text"
+                          id="procedente_nombre" name='procedente_nombre' 
+                          value="{{$certificado->procedente_nombre}}"                                           
+                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
+
+                </div>
+              </div>
+
 
               <div class="form-group">
                 <label class="col-sm-3 control-label">Periodos : </label>
@@ -75,16 +86,7 @@
                 </div> 
               </div> -->
 
-              <div class="form-group">
-                <label class="col-sm-3 control-label">Procedencia : </label>
-                <div class="col-sm-6">
-                  <input  type="text"
-                          id="procedente_nombre" name='procedente_nombre' 
-                          value="{{$certificado->procedente_nombre}}"                                           
-                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
 
-                </div>
-              </div>
 
               <div class="form-group sectioncargarimagen">
                   <label class="col-sm-3 control-label">Certificado</label>

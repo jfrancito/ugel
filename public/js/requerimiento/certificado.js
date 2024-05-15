@@ -10,19 +10,28 @@ $(document).ready(function(){
         var periodo_id              =   $('#periodo_id').val(); 
         var periodofin_id           =   $('#periodofin_id').val();
         var indb                    =   $('#indb').val();
+        var checkconei              =   $('#checkconei').prop("checked");
+
+
         if(periodo_id ==''){ alerterrorajax("Seleccione un periodo Inicial."); return false;}
-        if(periodofin_id ==''){ alerterrorajax("Seleccione un periodo Final."); return false;}
+
+        if(checkconei==false){
+            if(periodofin_id ==''){ alerterrorajax("Seleccione un periodo Final."); return false;}
+        }
+
         if(indb =='0'){ alerterrorajax("Hay errores en la seleccion de periodos."); return false;}
 
         var periodo_nombre = $('#periodo_id option:selected').text();
         var periodofin_nombre = $('#periodofin_id option:selected').text();
+        var nombre_periodo = periodo_nombre + '-' + periodofin_nombre;
+        if(checkconei==true){
+             nombre_periodo = periodo_nombre;
+        }
 
         $('#periodo_inicio_id').val(periodo_id);
         $('#periodo_fin_id').val(periodofin_id);
-        $('#periodos_nombres').val(periodo_nombre + '-' + periodofin_nombre);
+        $('#periodos_nombres').val(nombre_periodo);
         $('#modal-certificado').niftyModal('hide');
-
-
 
 
     });
@@ -54,8 +63,7 @@ $(document).ready(function(){
         event.preventDefault();
         var periodo_id           =   $('#periodo_id').val();
         var periodofin_id        =   $('#periodofin_id').val();
-
-        debugger;
+        var checkconei           =   $('#checkconei').prop("checked");
 
         var institucion_id          =   $('#institucion_id').val();
         var procedencia_id          =   $('#procedencia_id').val();
@@ -71,6 +79,7 @@ $(document).ready(function(){
                                 periodofin_id       : periodofin_id,
                                 institucion_id          : institucion_id,
                                 procedencia_id       : procedencia_id,
+                                checkconei       : checkconei,
 
                             };
 
