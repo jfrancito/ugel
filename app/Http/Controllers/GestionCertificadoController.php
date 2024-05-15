@@ -283,35 +283,53 @@ class GestionCertificadoController extends Controller
                     $estado                             =   Estado::where('id','=',$activo)->first();
                     $estado_activo                      =   1;
 
-                    if($activo == 'CEES00000002' || $activo == 'CEES00000003'){
+                    //BAJA
+                    if($activo == 'CEES00000003'){
 
                         $certificado->estado_id         =   $estado->id;
                         $certificado->estado_nombre     =   $estado->nombre;
                         $certificado->msj_extorno       =   $request['descripcion'];
                         $estado_activo                  =   0;
 
-                    }else{
-
-                        $certificados_activos           =   Certificado::where('institucion_id','=',$certificado->institucion_id)
-                                                            ->where('procedente_id','=',$certificado->procedente_id)
-                                                            ->where('periodo_id','=',$certificado->periodo_id)
-                                                            ->where('activo','=',1)
-                                                            ->get();
-
-                        if(count($certificados_activos)>1){
-                            return Redirect::back()->withInput()->with('errorbd', 'No puedes activar este certificado porque ya existe uno en este periodo');
-                        }else{
-                            $certificado->estado_id         =   'CEES00000001';
-                            $certificado->estado_nombre     =   'APROBADO';
-                        }
-
                     }
+                    // else{
+
+                    //     $certificados_activos           =   Certificado::where('institucion_id','=',$certificado->institucion_id)
+                    //                                         ->where('procedente_id','=',$certificado->procedente_id)
+                    //                                         ->where('periodo_id','=',$certificado->periodo_id)
+                    //                                         ->where('activo','=',1)
+                    //                                         ->get();
+
+                    //     if(count($certificados_activos)>1){
+                    //         return Redirect::back()->withInput()->with('errorbd', 'No puedes activar este certificado porque ya existe uno en este periodo');
+                    //     }else{
+                    //         $certificado->estado_id         =   'CEES00000001';
+                    //         $certificado->estado_nombre     =   'APROBADO';
+                    //     }
+
+                    // }
 
                     $usuario                       =   User::where('id',Session::get('usuario')->id)->first();
+
+
+                    $certificado->estado_id        =   $estado->id;
+                    $certificado->estado_nombre    =   $estado->nombre;
                     $certificado->activo           =   $estado_activo;
                     $certificado->fecha_mod        =   $this->fechaactual;
                     $certificado->usuario_mod      =   Session::get('usuario')->id;
                     $certificado->save();
+
+
+                    DetalleCertificado::where('certificado_id',$id_certificado)
+                                ->update(
+                                    [
+                                        'estado_id'=>$estado->id,
+                                        'estado_nombre'=>$estado->nombre,
+                                        'activo'=>$estado_activo,
+                                        'fecha_mod'=>$this->fechaactual,
+                                        'usuario_mod'=>Session::get('usuario')->id
+                                    ]
+                                );
 
                     $files                      =   $request['certificado'];
                     if(!is_null($files)){
@@ -351,6 +369,8 @@ class GestionCertificadoController extends Controller
 
                         }
                     }
+
+
 
 
                     DB::commit();

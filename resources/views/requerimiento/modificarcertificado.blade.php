@@ -44,32 +44,21 @@
                 </div>
               </div>
 
-
               <div class="form-group">
-                <label class="col-sm-3 control-label">Periodos : </label>
+                <label class="col-sm-3 control-label">Procedencia : </label>
                 <div class="col-sm-6">
-                  <div class="input-group my-group">
-                      <input  type="text"
-                              id="periodos_nombres" name='periodos_nombres' 
-                              value="{{$certificado->periodo_nombre}}"                         
-                              placeholder="PERIODOS"
-                              required = ""                   
-                              autocomplete="off" class="form-control input-sm periodos_nombres" data-aw="4" readonly/>
-                      <span class="input-group-btn">
-                        <button class="btn btn-primary modal-registro"
-                                data_periodo_inicio     = 'periodo_inicio'
-                                data_periodo_fin    = 'periodo_fin'
-                                type="button" 
-                                style="height: 38px;">
-                                Buscar periodo</button>
-                      </span>
-
-                      <input type="hidden" name="periodo_inicio_id" id = 'periodo_inicio_id'>
-                      <input type="hidden" name="periodo_fin_id" id = 'periodo_fin_id'>
-                  </div>
+                  <input  type="text"
+                          id="periodos_nombres" name='periodos_nombres' 
+                          value="{{$certificado->periodo_nombre}}"                                           
+                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
 
                 </div>
               </div>
+
+
+              <input type="hidden" id = 'institucion_id' name="institucion_id" value="{{$certificado->institucion_id}}">
+              <input type="hidden" id = 'procedencia_id' name="procedencia_id" value="{{$certificado->procedente_id}}">
+
 
 
 <!--               <div class="ajax_periodo">
@@ -114,7 +103,7 @@
 
 
               <div class="form-group bajaextorno ocultar">
-                <label class="col-sm-3 control-label">Motivo de BAJA / EXTORNO :</label>
+                <label class="col-sm-3 control-label">Motivo de BAJA :</label>
                 <div class="col-sm-6">
                       <textarea 
                       name="descripcion"

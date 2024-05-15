@@ -37,6 +37,19 @@ $(document).ready(function(){
     });
 
 
+    $(".certificado").on('click','#checkconei', function(e) {
+
+        var checkconei              =   $(this).prop("checked");
+
+        $("#periodo_id").select2().val("");
+        $("#periodo_id").select2().val("");
+        //alert(checkconei);
+
+    });
+
+
+
+
     $(".certificado").on('click','.modal-registro', function() {
         event.preventDefault();
         var _token                  =   $('#token').val();
@@ -44,7 +57,7 @@ $(document).ready(function(){
         var procedencia_id          =   $('#procedencia_id').val();
         if(institucion_id ==''){ alerterrorajax("Seleccione una institucion."); return false;}
         if(procedencia_id ==''){ alerterrorajax("Seleccione una procedencia."); return false;}
-
+        //debugger;
 
         data                        =   {
                                             _token                  : _token,
@@ -134,7 +147,7 @@ $(document).ready(function(){
         var activo       =   $('#activo').val();
                 
 
-        if(activo == 'CEES00000002' || activo == 'CEES00000003'){
+        if(activo == 'CEES00000003'){
             $( ".bajaextorno" ).addClass( "mostrar" );
             $( ".bajaextorno" ).removeClass( "ocultar" );
         }else{

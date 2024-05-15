@@ -49,11 +49,16 @@
                   Descargar
                 </a>  
               </li>
-              <li>
-                <a href="{{ url('/modificar-certificado/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
-                  Modificar
-                </a>  
-              </li>
+
+              @if($item->estado_id == 'CEES00000001') 
+                <li>
+                  <a href="{{ url('/modificar-certificado/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
+                    Modificar
+                  </a>  
+                </li>
+              @endif
+
+
 
 
             </ul>
