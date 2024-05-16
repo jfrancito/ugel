@@ -129,7 +129,7 @@ $(document).ready(function(){
         var activo       =   $('#activo').val();
         var descripcion       =   $('#descripcion').val();
         debugger;
-        if(activo == 'CEES00000002' || activo == 'CEES00000003'){
+        if(activo == 'CEES00000003'){
             if(descripcion == ''){ alerterrorajax("Ingrese un Motivo de Extorno/Baja."); return false;}
         }            
         return true;
