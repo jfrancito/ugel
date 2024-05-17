@@ -102,7 +102,7 @@
               </div>
 
 
-              <div class="form-group bajaextorno ocultar">
+              <div class="form-group bajaextorno  @if($certificado->estado_id<>'CEES00000003') ocultar @endif">
                 <label class="col-sm-3 control-label">Motivo de BAJA :</label>
                 <div class="col-sm-6">
                       <textarea 
@@ -110,8 +110,8 @@
                       id = "descripcion"
                       class="form-control input-sm validarmayusculas"
                       rows="5" 
-                      cols="50"      
-                      data-aw="2"></textarea>
+                      cols="50"    
+                      data-aw="2">{{$certificado->msj_extorno}}</textarea>
                 </div>
               </div>
 
