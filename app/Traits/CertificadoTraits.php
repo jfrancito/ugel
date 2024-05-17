@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Crypt;
 use App\Modelos\Requerimiento;
 use App\Modelos\Conei;
 use App\Modelos\Certificado;
+use App\Modelos\DetalleCertificado;
+
 
 use View;
 use Session;
@@ -29,7 +31,7 @@ trait CertificadoTraits
 
 	private function con_lista_certificados_xfiltro($periodo_id,$procedencia_id) {
 
-		$listadatos 	= 	Certificado::where('activo','=','1')
+		$listadatos 	= 	DetalleCertificado::where('activo','=','1')
 							->Periodo($periodo_id)
 							->Procedencia($procedencia_id)
 							->orderby('fecha_crea','desc')
@@ -41,7 +43,7 @@ trait CertificadoTraits
 
 	private function con_lista_certificados_xperiodo($periodo_id,$procedencia_id) {
 
-		$listadatos 	= 	Certificado::where('activo','=','1')
+		$listadatos 	= 	DetalleCertificado::where('activo','=','1')
 							->Periodo($periodo_id)
 							->Procedencia($procedencia_id)
 							->select(DB::raw('count(periodo_id) as cantidad,periodo_id'))
@@ -55,7 +57,7 @@ trait CertificadoTraits
 
 	private function con_lista_certificados_xprocedencia($periodo_id,$procedencia_id) {
 
-		$listadatos 	= 	Certificado::where('activo','=','1')
+		$listadatos 	= 	DetalleCertificado::where('activo','=','1')
 							->Periodo($periodo_id)
 							->Procedencia($procedencia_id)
 							->select(DB::raw('count(procedente_id) as cantidad,procedente_id'))

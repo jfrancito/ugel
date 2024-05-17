@@ -292,6 +292,13 @@ class GestionCertificadoController extends Controller
                         $estado_activo                  =   0;
 
                     }
+
+                    if($activo == 'CEES00000002'){
+
+                        $estado_activo                  =   0;
+
+                    }
+
                     // else{
 
                     //     $certificados_activos           =   Certificado::where('institucion_id','=',$certificado->institucion_id)
@@ -423,8 +430,15 @@ class GestionCertificadoController extends Controller
 
                 //dd($rutafoto);
 
-                $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
-                $selectestado       =   $certificado->estado_id;
+                if($certificado->estado_id == 'CEES00000003'){
+                    $array_estado       =   array('CEES00000001');
+                    $comboestado        =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+                    $selectestado       =   $certificado->estado_id;          
+                }else{
+                    $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
+                    $selectestado       =   $certificado->estado_id;  
+                }
+
 
 
                 //dd($selectestado);

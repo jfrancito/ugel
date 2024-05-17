@@ -54,15 +54,14 @@ class ReporteCertificadoController extends Controller
         $comboprocedencia   	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','TODO','APAFA_CONEI');
         $selectprocedencia  	=   'TODO';
 
-        // $listadatos     		=   $this->con_lista_certificados_xfiltro($selectperiodo,$selectperiodo,$selectprocedencia);
-        // $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($selectperiodo,$selectperiodofin,$selectprocedencia);
-        // $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($selectperiodo,$selectprocedencia);
+        $listadatos     		=   $this->con_lista_certificados_xfiltro($selectperiodo,$selectperiodo,$selectprocedencia);
+        $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($selectperiodo,$selectperiodofin,$selectprocedencia);
+        $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($selectperiodo,$selectprocedencia);
 
 
-
-        $listadatos     		=   array();
-        $listacertificadoperiod =   array();
-        $listacertificadoproced =   array();
+        // $listadatos     		=   array();
+        // $listacertificadoperiod =   array();
+        // $listacertificadoproced =   array();
 
 		$funcion 				= 	$this;
 		

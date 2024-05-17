@@ -50,7 +50,7 @@
                 </a>  
               </li>
 
-              @if($item->estado_id == 'CEES00000001') 
+              @if($item->estado_id == 'CEES00000001' || $item->estado_id == 'CEES00000003') 
                 <li>
                   <a href="{{ url('/modificar-certificado/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
                     Modificar
