@@ -7,7 +7,7 @@
                 <div class="panel-body xs-pt-25">
                   @foreach($listacertificadoperiod as $index => $item)
                     <div class="row user-progress user-progress-small" style="margin-bottom: 15px !important;">
-                      <div class="col-md-5"><span class="title"><b>{{$item->periodo->nombre}}</b></span></div>
+                      <div class="col-md-5"><span class="title"><b>{{$item->periodo_nombre}}</b></span></div>
                       <div class="col-md-7"><span class="badge badge-primary">{{$item->cantidad}}</span>
                           
                       </div>
@@ -78,7 +78,7 @@
         <td>{{$index +1}}</td>
         <td>{{$item->codigo}}</td>
         <td>{{$item->institucion->nombre}}</td>
-        <td>{{$item->periodo->nombre}}</td>
+        <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
 

@@ -6,17 +6,22 @@ $(document).ready(function(){
 
         event.preventDefault();
         var periodo_id              =   $('#periodo_id').val();
+        var periodofin_id              =   $('#periodofin_id').val();
+
         var procedencia_id          =   $('#procedencia_id').val();
         var idopcion                =   $('#idopcion').val();
         var _token                  =   $('#token').val();
 
         //validacioones
-        if(periodo_id ==''){ alerterrorajax("Seleccione un Periodo."); return false;}
+        if(periodo_id ==''){ alerterrorajax("Seleccione un Periodo Inicio."); return false;}
+        if(periodofin_id ==''){ alerterrorajax("Seleccione un Periodo Fin."); return false;}
         if(procedencia_id ==''){ alerterrorajax("Seleccione un Procedencia."); return false;}
 
         data            =   {
                                 _token                  : _token,
                                 periodo_id              : periodo_id,
+                                periodofin_id              : periodofin_id,
+                                
                                 procedencia_id          : procedencia_id,
                                 idopcion                : idopcion,
                             };

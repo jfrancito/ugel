@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         
         Schema::defaultStringLength(191);    
         View::share('capeta', '/perugel');  
-        View::share('version', '1.77');
+        View::share('version', '1.79');
 
         View::share('titulo', '');
 

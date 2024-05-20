@@ -40,7 +40,7 @@
                       <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte">
 
                           <div class="form-group">
-                            <label class="col-sm-12 control-label">Periodo : </label>
+                            <label class="col-sm-12 control-label">Periodo Inicio: </label>
                             <div class="col-sm-12">
                               {!! Form::select( 'periodo_id', $comboperiodo, array($selectperiodo),
                                                 [
@@ -53,6 +53,26 @@
                           </div> 
 
                       </div>
+
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte">
+
+                          <div class="form-group">
+                            <label class="col-sm-12 control-label">Periodo Fin: </label>
+                            <div class="col-sm-12">
+                              {!! Form::select( 'periodofin_id', $comboperiodofin, array($selectperiodofin),
+                                                [
+                                                  'class'       => 'form-control control select2' ,
+                                                  'id'          => 'periodofin_id',
+                                                  'required'    => '',
+                                                  'data-aw'     => '2'
+                                                ]) !!}
+                            </div>
+                          </div> 
+
+                      </div>
+
+
+
                       <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte">
                         <div class="form-group">
                           <label class="col-sm-12 control-label">Procedencia : </label>
