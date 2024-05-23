@@ -52,6 +52,43 @@
             </div>
 
 
+            <div class="col-xs-12 col-md-4">
+              <div class="widget be-loading" style="background-color: #eeefff;">
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados por Estados</div>
+
+                <div class="widget-chart-container" >
+                  <div id="top-sales" style="height: 100px;"></div>
+                  <div class="chart-pie-counter">
+                        {{count($listadatos)}}<br>
+                  </div>
+                </div>
+                <div class="chart-legend">
+                  <table>
+                    <tr>
+                      <td class="chart-legend-color"><span data-color="top-sales-color1" style="background: #f7d292;"></span></td>
+                      <td>TOTAL</td>
+                      <td class="chart-legend-value"> <span class="badge badge-primary">{{count($listadatos)}}</span></td>
+                    </tr>
+
+                    @foreach($listacertificadoestado as $index => $item)
+                      <tr>
+                        <td class="chart-legend-color"><span data-color="top-sales-color2 primary" style="background: #f7d292;"></span></td>
+                        <td>{{$item->estado_nombre}} </td>
+                        <td class="chart-legend-value"><span class="badge badge-primary">{{$item->cantidad}}</span></td>
+                      </tr>
+                    @endforeach
+                  </table>
+                </div>
+                <div class="be-spinner">
+                  <svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle fill="none" stroke-width="4" stroke-linecap="round" cx="33" cy="33" r="30" class="circle"></circle>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+
+
 
           </div>
 

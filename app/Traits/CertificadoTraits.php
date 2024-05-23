@@ -163,6 +163,17 @@ trait CertificadoTraits
 
 	}
 
+	private function con_lista_certificados_xestado($arraydata) {
+
+		$listadatos 	= 	Certificado::whereIn('id', $arraydata)
+							->select(DB::raw('count(estado_nombre) as cantidad,estado_nombre'))
+							->groupby('estado_nombre')
+							->orderby('estado_nombre','desc')
+							->get();
+	 	return  $listadatos;
+
+	}
+
 
 
 }

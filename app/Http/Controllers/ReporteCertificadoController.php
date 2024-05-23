@@ -71,7 +71,7 @@ class ReporteCertificadoController extends Controller
 
         $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($arraydata);
         $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($arraydata);
-
+        $listacertificadoestado =   $this->con_lista_certificados_xestado($arraydata);
 
         // $listadatos     		=   array();
         // $listacertificadoperiod =   array();
@@ -84,6 +84,8 @@ class ReporteCertificadoController extends Controller
 						 	'listadatos' 			=> $listadatos,
 						 	'listacertificadoperiod'=> $listacertificadoperiod,
 						 	'listacertificadoproced'=> $listacertificadoproced,
+						 	'listacertificadoestado'=> $listacertificadoestado,
+
 						 	'comboperiodo'			=> $comboperiodo,
 						 	'selectperiodo'			=> $selectperiodo,
 						 	'comboperiodofin'		=> $comboperiodofin,
@@ -109,8 +111,6 @@ class ReporteCertificadoController extends Controller
 
 		//dd($selectperiodofin);
 
-
-
         $comboperiodo       	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','TODO','APAFA_CONEI_PERIODO');
         $selectperiodo      	=   $periodo_id;
         $comboprocedencia   	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','TODO','APAFA_CONEI');
@@ -121,7 +121,7 @@ class ReporteCertificadoController extends Controller
         $listadatos     		=   $this->con_lista_certificados_xfiltro($arraydata);
         $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($arraydata);
         $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($arraydata);
-
+        $listacertificadoestado =   $this->con_lista_certificados_xestado($arraydata);
         //dd($listacertificadoperiod);
 		$funcion 				= 	$this;
 		
@@ -131,6 +131,7 @@ class ReporteCertificadoController extends Controller
 						 	'listadatos' 			=> $listadatos,
 						 	'listacertificadoperiod'=> $listacertificadoperiod,
 						 	'listacertificadoproced'=> $listacertificadoproced,
+						 	'listacertificadoestado'=> $listacertificadoestado,
 						 	'funcion'				=> $funcion,	
 						 	'idopcion'				=> $idopcion,		 	
 						 	'ajax' 					=> true,						 	

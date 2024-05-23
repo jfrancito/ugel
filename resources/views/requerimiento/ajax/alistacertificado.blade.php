@@ -35,6 +35,8 @@
             @else
               @if($item->estado_id == 'CEES00000003') 
                   <span class="badge badge-danger">{{$item->estado_nombre}}</span>
+              @else    
+                  <span class="badge badge-warning">{{$item->estado_nombre}}</span>
               @endif
             @endif
           @endif
@@ -44,11 +46,15 @@
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
             <ul role="menu" class="dropdown-menu pull-right">
+
+
+              @if($item->estado_id == 'CEES00000001' || $item->estado_id == 'CEES00000003' || $item->estado_id == 'CEES00000002') 
               <li>
                 <a href="{{ url('/descargar-archivo-certificado/'.Hashids::encode(substr($item->id, -8)).'/'.Hashids::encode(substr($item->archivo_id, -8))) }}">
                   Descargar
                 </a>  
               </li>
+              @endif
 
               @if($item->estado_id == 'CEES00000001' || $item->estado_id == 'CEES00000003') 
                 <li>

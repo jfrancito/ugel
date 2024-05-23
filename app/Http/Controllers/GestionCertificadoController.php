@@ -535,6 +535,8 @@ class GestionCertificadoController extends Controller
                     $cabeceradet->procedente_id        =   $procedencia_id;
                     $cabeceradet->certificado_id       =   $idcertificado;
                     $cabeceradet->procedente_nombre    =   $procedencia->nombre;
+                    $cabeceradet->inicio_fin           =   'I';
+
                     $cabeceradet->estado_id            =   'CEES00000001';
                     $cabeceradet->estado_nombre        =   'APROBADO';
                     $cabeceradet->fecha_crea           =   $this->fechaactual;
@@ -558,6 +560,7 @@ class GestionCertificadoController extends Controller
                         $cabeceradet->procedente_id        =   $procedencia_id;
                         $cabeceradet->certificado_id       =   $idcertificado;
                         $cabeceradet->procedente_nombre    =   $procedencia->nombre;
+                        $cabeceradet->inicio_fin           =   'F';
                         $cabeceradet->estado_id            =   'CEES00000001';
                         $cabeceradet->estado_nombre        =   'APROBADO';
                         $cabeceradet->fecha_crea           =   $this->fechaactual;

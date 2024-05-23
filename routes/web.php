@@ -81,6 +81,13 @@ Route::group(['middleware' => ['authaw']], function () {
 	// Route::any('/formato-excel-produccion-cargar-datos-produccion/{idopcion}', 'CargarDatosProduccionController@actionDescargarFormatoProduccionExcel');
 	// Route::any('/formato-excel-departamentos-cargar-datos-produccion/{idopcion}', 'CargarDatosProduccionController@actionDescargarFormatoDepartamentosExcel');
 
+
+	/* SUBIR CERTIFICADO MASIVO */
+	Route::any('/gestion-de-subir-certificado/{idopcion}', 'CargarDatosCertificadoController@actionCargarDatos');
+	Route::any('/formato-excel-cargar-datos-certificado/{idopcion}', 'CargarDatosCertificadoController@actionDescargarFormatoCertificadoCargaExcel');
+	Route::any('/subir-excel-cargar-datos-certificado/{idopcion}', 'CargarDatosCertificadoController@actionCargarDatoCertificado');
+
+
 	/* SUBIR CERTIFICADOS */
 	Route::any('/gestion-de-registro-certificado/{idopcion}', 'GestionCertificadoController@actionListarCertificados');
 	Route::any('/agregar-certificado/{idopcion}', 'GestionCertificadoController@actionAgregarCertificado');
