@@ -18,7 +18,7 @@
             </div>
             <div class="col-xs-12 col-md-4">
               <div class="widget be-loading" style="background-color: #eeefff;">
-                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados por Periodos</div>
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados por Procedencia</div>
 
                 <div class="widget-chart-container" >
                   <div id="top-sales" style="height: 100px;"></div>
@@ -106,6 +106,8 @@
       <th>PERIODO</th>
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
+      <th>ESTADO</th>
+
       <th>OPCION</th>
     </tr>
   </thead>
@@ -118,6 +120,26 @@
         <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
+
+        <td>
+          @if($item->estado_id == 'CEES00000001') 
+              <span class="badge badge-success">{{$item->estado_nombre}}</span>
+          @else
+            @if($item->estado_id == 'CEES00000002') 
+                <span class="badge badge-danger">{{$item->estado_nombre}}</span>
+            @else
+              @if($item->estado_id == 'CEES00000003') 
+                  <span class="badge badge-danger">{{$item->estado_nombre}}</span>
+              @else    
+                @if($item->estado_id == 'CEES00000004') 
+                    <span class="badge badge-primary">{{$item->estado_nombre}}</span>
+                @else    
+                    <span class="badge badge-warning">{{$item->estado_nombre}}</span>
+                @endif
+              @endif
+            @endif
+          @endif
+        </td>
 
         <td class="rigth">
           <div class="btn-group btn-hspace">

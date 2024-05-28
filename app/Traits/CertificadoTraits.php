@@ -63,6 +63,7 @@ trait CertificadoTraits
 
 				$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 												->Procedencia($procedencia_id)
+												->where('estado_id','<>','CEES00000002')
 												->select(DB::raw('codigo,certificado_id,min(periodo_id) as periodomin_id'))
 												->groupBy('codigo')
 												->groupBy('certificado_id')
@@ -81,6 +82,7 @@ trait CertificadoTraits
 
 					$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 													->Procedencia($procedencia_id)
+													->where('estado_id','<>','CEES00000002')
 													->select(DB::raw('codigo,certificado_id,max(periodo_id) as periodomin_id'))
 													->groupBy('codigo')
 													->groupBy('certificado_id')
@@ -95,6 +97,7 @@ trait CertificadoTraits
         			//LOS QUE VIENEN EN MEDIO
 					$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 													->Procedencia($procedencia_id)
+													->where('estado_id','<>','CEES00000002')
 													->select(DB::raw('codigo,certificado_id,min(periodo_id) as periodomin_id'))
 													->groupBy('codigo')
 													->groupBy('certificado_id')
@@ -105,6 +108,7 @@ trait CertificadoTraits
 					}	
 					$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 													->Procedencia($procedencia_id)
+													->where('estado_id','<>','CEES00000002')
 													->select(DB::raw('codigo,certificado_id,max(periodo_id) as periodomin_id'))
 													->groupBy('codigo')
 													->groupBy('certificado_id')
@@ -133,6 +137,7 @@ trait CertificadoTraits
 	private function con_lista_certificados_xfiltro($arraydata) {
 
 		$listadatos 	= 	Certificado::whereIn('id', $arraydata)
+							->where('estado_id','<>','CEES00000002')
 							->orderby('fecha_crea','desc')
 							->get();
 							
@@ -143,6 +148,7 @@ trait CertificadoTraits
 	private function con_lista_certificados_xperiodo($arraydata) {
 
 		$listadatos 	= 	Certificado::whereIn('id', $arraydata)
+							->where('estado_id','<>','CEES00000002')
 							->select(DB::raw('count(periodo_nombre) as cantidad,periodo_nombre'))
 							->groupby('periodo_nombre')
 							->orderby('periodo_nombre','desc')
@@ -155,6 +161,7 @@ trait CertificadoTraits
 	private function con_lista_certificados_xprocedencia($arraydata) {
 
 		$listadatos 	= 	Certificado::whereIn('id', $arraydata)
+							->where('estado_id','<>','CEES00000002')
 							->select(DB::raw('count(procedente_id) as cantidad,procedente_id'))
 							->groupby('procedente_id')
 							->orderby('procedente_id','desc')
@@ -166,6 +173,7 @@ trait CertificadoTraits
 	private function con_lista_certificados_xestado($arraydata) {
 
 		$listadatos 	= 	Certificado::whereIn('id', $arraydata)
+							->where('estado_id','<>','CEES00000002')
 							->select(DB::raw('count(estado_nombre) as cantidad,estado_nombre'))
 							->groupby('estado_nombre')
 							->orderby('estado_nombre','desc')

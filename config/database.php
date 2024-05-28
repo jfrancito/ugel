@@ -70,7 +70,7 @@ return [
         'sqlsrv' => [
             'driver'    =>  'sqlsrv',
             'host'      =>  '10.1.0.12',
-            'database'  =>  'ug_prueba',
+            'database'  =>  'ug',
             'username'  =>  'sa',
             'password'  =>  'Bup8A=Um',
             'charset'   =>  'utf8',
