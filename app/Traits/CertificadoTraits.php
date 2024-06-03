@@ -33,7 +33,7 @@ trait CertificadoTraits
 
 	}
 
-	private function gn_array_certificados($periodo_id,$periodofin_id,$procedencia_id) {
+	private function gn_array_certificados($periodo_id,$periodofin_id,$procedencia_id,$estado_id) {
 
 		$periodoinicio  =   Estado::where('id','=',$periodo_id)->first();
 		$periodofin  	=   Estado::where('id','=',$periodofin_id)->first();
@@ -63,6 +63,7 @@ trait CertificadoTraits
 
 				$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 												->Procedencia($procedencia_id)
+												->Estado($estado_id)
 												->where('estado_id','<>','CEES00000002')
 												->select(DB::raw('codigo,certificado_id,min(periodo_id) as periodomin_id'))
 												->groupBy('codigo')
@@ -82,6 +83,7 @@ trait CertificadoTraits
 
 					$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 													->Procedencia($procedencia_id)
+													->Estado($estado_id)
 													->where('estado_id','<>','CEES00000002')
 													->select(DB::raw('codigo,certificado_id,max(periodo_id) as periodomin_id'))
 													->groupBy('codigo')
@@ -97,6 +99,7 @@ trait CertificadoTraits
         			//LOS QUE VIENEN EN MEDIO
 					$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 													->Procedencia($procedencia_id)
+													->Estado($estado_id)
 													->where('estado_id','<>','CEES00000002')
 													->select(DB::raw('codigo,certificado_id,min(periodo_id) as periodomin_id'))
 													->groupBy('codigo')
@@ -108,6 +111,7 @@ trait CertificadoTraits
 					}	
 					$detallecertificado 	= 	DetalleCertificado::where('activo','=','1')
 													->Procedencia($procedencia_id)
+													->Estado($estado_id)
 													->where('estado_id','<>','CEES00000002')
 													->select(DB::raw('codigo,certificado_id,max(periodo_id) as periodomin_id'))
 													->groupBy('codigo')

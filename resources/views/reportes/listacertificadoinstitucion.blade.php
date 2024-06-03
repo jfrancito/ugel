@@ -87,6 +87,26 @@
                           </div>
                         </div>
                       </div>
+
+
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte">
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label">Estado : </label>
+                          <div class="col-sm-12">
+                            {!! Form::select( 'estado_id', $comboestado, array($selectestado),
+                                              [
+                                                'class'       => 'form-control control select2' ,
+                                                'id'          => 'estado_id',
+                                                'required'    => '',
+                                                'data-aw'     => '3'
+                                              ]) !!}
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
                       <input type="hidden" name="idopcion" id='idopcion' value='{{$idopcion}}'>
 
                     </div>

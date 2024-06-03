@@ -423,26 +423,26 @@ class GestionCertificadoController extends Controller
                 
                 //dd($multimedia);
                 //dd(storage_path('app/certificado_conei/').$multimedia->lote.'/'.$multimedia->nombre_archivo);
-
-
-
                 $rutafoto           =   !empty($multimedia) ? asset('storage/app/certificado_conei/'.$multimedia->lote.'/'.$multimedia->nombre_archivo) : asset('public/img/no-foto.png');
-
                 //dd($rutafoto);
-
                 if($certificado->estado_id == 'CEES00000003'){
                     $array_estado       =   array('CEES00000001');
                     $comboestado        =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
                     $selectestado       =   $certificado->estado_id;          
                 }else{
-                    $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
-                    $selectestado       =   $certificado->estado_id;  
+
+                    if($certificado->estado_id == 'CEES00000004' || $certificado->estado_id == 'CEES00000006'){
+                        $array_estado       =   array('CEES00000002');
+                        $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+                        $selectestado       =   $certificado->estado_id;          
+                    }else{
+
+                        $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
+                        $selectestado       =   $certificado->estado_id;  
+                    }
                 }
-
-
-
+                
                 //dd($selectestado);
-
                 return View::make('requerimiento/modificarcertificado', 
                                 [
                                     'certificado'           =>  $certificado,

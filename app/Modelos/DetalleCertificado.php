@@ -41,6 +41,10 @@ class DetalleCertificado extends Model
         return $this->belongsTo('App\Modelos\Estado', 'procedente_id', 'id');
     }
 
+
+
+
+
     public function scopePeriodo($query,$periodo_id){
         if(trim($periodo_id) != 'TODO'){
             $query->where('periodo_id','=',$periodo_id);
@@ -52,5 +56,13 @@ class DetalleCertificado extends Model
             $query->where('procedente_id','=',$procedencia_id);
         }
     }
+
+    public function scopeEstado($query,$estado_id){
+        if(trim($estado_id) != 'TODO'){
+            $query->where('estado_id','=',$estado_id);
+        }
+    }
+
+
 
 }

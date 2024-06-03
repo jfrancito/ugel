@@ -28,11 +28,7 @@
                 </div>
                 <div class="chart-legend">
                   <table>
-                    <tr>
-                      <td class="chart-legend-color"><span data-color="top-sales-color1" style="background: #f7d292;"></span></td>
-                      <td>TOTAL</td>
-                      <td class="chart-legend-value"> <span class="badge badge-primary">{{count($listadatos)}}</span></td>
-                    </tr>
+
 
                     @foreach($listacertificadoproced as $index => $item)
                       <tr>
@@ -64,11 +60,7 @@
                 </div>
                 <div class="chart-legend">
                   <table>
-                    <tr>
-                      <td class="chart-legend-color"><span data-color="top-sales-color1" style="background: #f7d292;"></span></td>
-                      <td>TOTAL</td>
-                      <td class="chart-legend-value"> <span class="badge badge-primary">{{count($listadatos)}}</span></td>
-                    </tr>
+
 
                     @foreach($listacertificadoestado as $index => $item)
                       <tr>

@@ -60,11 +60,14 @@ class ReporteCertificadoController extends Controller
         $comboprocedencia   	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','TODO','APAFA_CONEI');
         $selectprocedencia  	=   'TODO';
 
-        $arraydata   			=   $this->gn_array_certificados($selectperiodo,$selectperiodofin,$selectprocedencia);
+        $comboestado   			=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','TODO','CERTIFICADO_ESTADO');
+        $selectestado  			=   'TODO';
+
+
+        $arraydata   			=   $this->gn_array_certificados($selectperiodo,$selectperiodofin,$selectprocedencia,$selectestado);
 
 
         $listadatos     		=   $this->con_lista_certificados_xfiltro($arraydata);
-
 
 
         //dd($listadatos);
@@ -95,6 +98,9 @@ class ReporteCertificadoController extends Controller
 						 	'comboprocedencia'		=> $comboprocedencia,
 						 	'selectprocedencia'	 	=> $selectprocedencia,
 
+						 	'comboestado'			=> $comboestado,
+						 	'selectestado'	 		=> $selectestado,
+
 						 	'idopcion' 				=> $idopcion,
 						 	'funcion' 				=> $funcion,						 	
 						 ]);
@@ -108,7 +114,7 @@ class ReporteCertificadoController extends Controller
 		$procedencia_id 		=   $request['procedencia_id'];
 		$idopcion 				=   $request['idopcion'];
 		$selectperiodofin 		=   $request['periodofin_id'];
-
+		$estado_id 				=   $request['estado_id'];
 		//dd($selectperiodofin);
 
         $comboperiodo       	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo','TODO','APAFA_CONEI_PERIODO');
@@ -117,7 +123,7 @@ class ReporteCertificadoController extends Controller
         $selectprocedencia  	=   $procedencia_id;
 
 
-        $arraydata   			=   $this->gn_array_certificados($periodo_id,$selectperiodofin,$selectprocedencia);
+        $arraydata   			=   $this->gn_array_certificados($periodo_id,$selectperiodofin,$selectprocedencia,$estado_id);
         $listadatos     		=   $this->con_lista_certificados_xfiltro($arraydata);
         $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($arraydata);
         $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($arraydata);
