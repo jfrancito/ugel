@@ -1,7 +1,9 @@
 <div class="tab-container">
   <ul class="nav nav-tabs">
     <li class="active"><a href="#conei" class="conei" data-toggle="tab"><b> INTEGRANTES </b></a></li>
-    <li class='disabled'><a href="#archivo" class="conei" data-toggle="tab"><b> EXPEDIENTES </b></a></li>
+    <!-- <li class='disabled'><a href="#archivo" class="conei" data-toggle="tab"><b> EXPEDIENTES </b></a></li> -->
+    <li ><a href="#archivo" class="conei" data-toggle="tab"><b> EXPEDIENTES </b></a></li>
+    
   </ul>
   <div class="tab-content">
     <div id="conei" class="tab-pane active cont">
