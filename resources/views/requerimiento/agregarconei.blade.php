@@ -1,16 +1,13 @@
 @extends('template_lateral')
 @section('style')
-    <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/datatables/css/dataTables.bootstrap.min.css') }} "/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/datatables/css/responsive.dataTables.min.css') }} "/>
+
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/datetimepicker/css/bootstrap-datetimepicker.min.css') }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/select2/css/select2.min.css') }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/bootstrap-slider/css/bootstrap-slider.css') }} "/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('public/css/archivos.css?v='.$version) }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/jquery-confirm.min.css') }} "/>
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('public/css/file/fileinput.css') }} "/>
 @stop
 @section('section')
-
 
 <div class="be-content conei">
   <div class="main-content container-fluid">
@@ -41,18 +38,7 @@
 
 @section('script')
 
-  <script src="{{ asset('public/lib/datatables/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/js/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/dataTables.buttons.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/jszipoo.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/pdfmake.min.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/vfs_fonts.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.html5.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.flash.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.print.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.colVis.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/datatables/plugins/buttons/js/buttons.bootstrap.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/js/app-tables-datatables.js?v='.$version) }}" type="text/javascript"></script>
+
 
   <script src="{{ asset('public/lib/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
   <script src="{{ asset('public/lib/jquery.nestable/jquery.nestable.js') }}" type="text/javascript"></script>
@@ -64,7 +50,14 @@
   <script src="{{ asset('public/lib/parsley/parsley.js') }}" type="text/javascript"></script>
   <script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 
+
+  <script src="{{ asset('public/js/file/bootstrap.bundle.min.js') }}" crossorigin="anonymous"></script>
+  <script src="{{ asset('public/js/file/fileinput.js?v='.$version) }}" type="text/javascript"></script>
+  <script src="{{ asset('public/js/file/locales/es.js') }}" type="text/javascript"></script>
+
+
   <script src="{{ asset('public/js/general/jquery-confirm.min.js?v='.$version) }}" type="text/javascript"></script>
+
 
   <script type="text/javascript">
 
@@ -79,13 +72,25 @@
       //initialize the javascript
       App.init();
       App.formElements();
-      App.dataTables();
+
       $('[data-toggle="tooltip"]').tooltip();
       $('form').parsley();
 
     });
 
   </script>
+
+  <script type="text/javascript">
+      @foreach($tarchivos as $index => $item) 
+         $('#file-{{$item->cod_archivo}}').fileinput({
+            theme: 'fa5',
+            language: 'es',
+            allowedFileExtensions: ['{{$item->formato}}'],
+          });
+      @endforeach
+  </script>
+
+
   <script src="{{ asset('public/js/archivos.js?v='.$version) }}" type="text/javascript"></script>
   <script src="{{ asset('public/js/requerimiento/conei.js?v='.$version) }}" type="text/javascript"></script>
 

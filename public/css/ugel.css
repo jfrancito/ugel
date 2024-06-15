@@ -1,3 +1,16 @@
+.tituloarchivo{
+  height: 50px;
+}
+
+.btneditar{
+  font-size: 12px !important;
+  font-weight: bold;
+  color: #fff !important;
+  background: #34a853;
+  padding: 1px 8px;
+  border-radius: 6px;
+}
+
 .ocultar{
   display: none;
 }

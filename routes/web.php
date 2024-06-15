@@ -73,6 +73,10 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-confirmar-registro', 'GestionConeiController@actionModalConfirmarRegistro');
 	Route::any('/detalle-conei/{idopcion}/{idconei}', 'GestionConeiController@actionDetalleConei');
 	Route::any('/descargar-archivo-requerimiento/{idopcion}/{idrequerimiento}/{idarchivo}', 'GestionConeiController@actionDescargarArchivosRequerimiento');
+	
+	Route::any('/ajax-modal-editar-director', 'GestionConeiController@actionModalEditarDirector');
+	Route::any('/ajax-guardar-registro-director', 'GestionConeiController@actionModalGuardarRegistroDirector');
+
 
 	/* SUBIR DOCENTE Y INTITUCION */
 	Route::any('/gestion-de-institucion-docente/{idopcion}', 'CargarDatosInstitucionController@actionCargarDatos');

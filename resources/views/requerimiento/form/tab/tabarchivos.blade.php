@@ -1,0 +1,28 @@
+<div class="col-md-12">
+  <div class="panel panel-default" style="border: 3px solid #EEEEEE;">
+    <div class="panel-heading panel-heading-divider"><b>ARCHIVOS</b>
+    </div>
+    <div class="panel-body">
+
+      @foreach($tarchivos as $index => $item) 
+          <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+            <div class="form-group sectioncargarimagen">
+              <label class="col-sm-12 control-label tituloarchivo" style="text-align: left;"><b >{{$item->nombre_archivo}} ({{$item->formato}})</b></label>
+                <div class="col-sm-12">
+                    <div class="file-loading">
+                        <input 
+                        id="file-{{$item->cod_archivo}}" 
+                        name="{{$item->cod_archivo}}[]" 
+                        class="file-es"  
+                        type="file" 
+                        multiple data-max-file-count="1"
+                        required>
+                    </div>
+                </div>
+            </div>
+          </div>
+      @endforeach
+
+    </div>
+  </div>
+</div>

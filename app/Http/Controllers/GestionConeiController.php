@@ -14,6 +14,10 @@ use App\Modelos\Archivo;
 use App\Modelos\Conei;
 use App\Modelos\Estado;
 use App\Modelos\OtroIntegranteConei;
+use App\Modelos\DetalleCertificado;
+use App\Modelos\DocumentosAsociado;
+
+
 
 
 use App\User;
@@ -315,6 +319,78 @@ class GestionConeiController extends Controller
                             'ajax'              =>  true
                          ]);
     }
+
+
+    public function actionModalEditarDirector(Request $request)
+    {
+
+        $director_id                =   $request['director_id'];
+        $procedencia_id             =   $request['procedencia_id'];
+
+
+        $director                   =   Director::where('id','=',$director_id)->first();
+        $institucion                =   Institucion::where('id','=',$director->institucion_id)->first();
+        $funcion                    =   $this;
+        $data_titulo                =   'Editar Director';
+        $combotd       =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+        $selecttd      =   'TIDO00000001';
+
+        return View::make('requerimiento/modal/ajax/ameditardirector',
+                         [
+                            'director_id'           =>  $director_id,
+                            'procedencia_id'        =>  $procedencia_id,
+                            'director'              =>  $director,
+                            'institucion'           =>  $institucion,
+                            'data_titulo'           =>  $data_titulo,
+                            'combotd'               =>  $combotd,
+                            'selecttd'              =>  $selecttd,
+
+                            'funcion'               =>  $funcion,
+                            'ajax'                  =>  true
+                         ]);
+    }
+
+
+
+    public function actionModalGuardarRegistroDirector(Request $request)
+    {
+
+        $dni                        =   $request['dni'];
+        $nombres                    =   $request['nombres'];
+        $telefono                   =   $request['telefono'];
+        $correo                     =   $request['correo'];
+        $director_id                =   $request['director_id'];
+        $procedencia_id             =   $request['procedencia_id'];
+
+        $director                   =   Director::where('id','=',$director_id)->first();
+        $institucion                =   Institucion::where('id','=',$director->institucion_id)->first();
+
+        $director->dni              =   $dni;
+        $director->nombres          =   $nombres;
+        $director->telefono         =   $telefono;
+        $director->correo           =   $correo;
+        $director->fecha_mod        =   $this->fechaactual;
+        $director->usuario_mod      =   Session::get('usuario')->id;
+        $director->save();
+
+
+
+
+        $funcion                    =   $this;
+
+        return View::make('requerimiento/modal/ajax/amdirector',
+                         [
+                            'director_id'           =>  $director_id,
+                            'procedencia_id'        =>  $procedencia_id,
+                            'director'              =>  $director,
+                            'institucion'           =>  $institucion,
+                            'funcion'               =>  $funcion
+                         ]);
+    }
+
+
+
+
 
     public function actionModalRegistroOI(Request $request)
     {
@@ -735,25 +811,51 @@ class GestionConeiController extends Controller
         }else{
 
 
-            $institucion_id =   Session::get('usuario')->institucion_id;
-            $institucion    =   Institucion::where('id','=',$institucion_id)->first();
-            $director       =   Director::where('institucion_id','=',$institucion_id)->where('activo','=','1')->first();
-            $combotd        =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
-            $selecttd       =   'TIDO00000001';
-            $array_detalle_producto = array();
-            
-            $comboperiodo   =   $this->gn_generacion_estados_sobrantes('estados','id','nombre','Seleccione Periodo','','APAFA_CONEI_PERIODO');
+            $institucion_id             =   Session::get('usuario')->institucion_id;
+            $institucion                =   Institucion::where('id','=',$institucion_id)->first();
+            $director                   =   Director::where('institucion_id','=',$institucion_id)->where('activo','=','1')->first();
+            $combotd                    =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+            $selecttd                   =   'TIDO00000001';
+            $array_detalle_producto     =   array();
+            $disabled                   =   false;
+            $comboperiodo               =   $this->gn_generacion_estados_sobrantes('estados','id','nombre','Seleccione Periodo','','APAFA_CONEI_PERIODO');
+
+            $procedencia_id             =   'APCN00000002';
+            $array_periodos             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
+                                            ->where('procedente_id','=',$procedencia_id)
+                                            ->where('activo','=',1)
+                                            ->where('estado_id','=','CEES00000001')
+                                            ->pluck('periodo_id')                                   
+                                            ->toArray();
+
+            $comboperiodo               =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo','','APAFA_CONEI_PERIODO',$array_periodos);
+            $selectperiodo              =   '';
+            $comboperiodofin            =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione periodo fin','','APAFA_CONEI_PERIODO',$array_periodos);
+            $selectperiodofin           =   '';
+            $ind                        =   0;
+            $checked                    =   false;
+            $mensaje                    =   'Seleccione periodos';
+
+            $tarchivos                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
 
             return View::make('requerimiento.agregarconei',
                         [
-
-                            'array_detalle_producto'                => $array_detalle_producto,
-                            'idopcion'          =>  $idopcion,
-                            'institucion'       =>  $institucion,
-                            'director'          =>  $director,
-                            'combotd'           =>  $combotd,
-                            'comboperiodo'      =>  $comboperiodo,
-                            'selecttd'          =>  $selecttd,
+                            'array_detalle_producto'                =>  $array_detalle_producto,
+                            'idopcion'                              =>  $idopcion,
+                            'institucion'                           =>  $institucion,
+                            'director'                              =>  $director,
+                            'combotd'                               =>  $combotd,
+                            'comboperiodo'                          =>  $comboperiodo,
+                            'selectperiodo'                         =>  $selectperiodo,
+                            'comboperiodofin'                       =>  $comboperiodofin,
+                            'selectperiodofin'                      =>  $selectperiodofin,
+                            'ind'                                   =>  $ind,
+                            'selecttd'                              =>  $selecttd,
+                            'disabled'                              =>  $disabled,
+                            'checked'                               =>  $checked,
+                            'mensaje'                               =>  $mensaje,
+                            'procedencia_id'                        =>  $procedencia_id,
+                            'tarchivos'                             =>  $tarchivos,
                         ]);
         }
     }

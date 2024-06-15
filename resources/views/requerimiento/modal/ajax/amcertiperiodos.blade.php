@@ -8,14 +8,12 @@
 	<div  class="row regla-modal">
 		    <div class="col-md-12">
 
-
-                <div class="col-sm-12">
-                  <div class="be-checkbox inline">
-                    <input id="checkconei" type="checkbox" @if($disabled) disabled @endif @if($checked) checked @endif >
-                    <label for="checkconei">Solo periodo incio</label>
-                  </div>
-                </div>
-
+            <div class="col-sm-12">
+              <div class="be-checkbox inline">
+                <input id="checkconei" type="checkbox" @if($disabled) disabled @endif @if($checked) checked @endif >
+                <label for="checkconei">Solo periodo incio</label>
+              </div>
+            </div>
 
             <div class="col-sm-6">
               <div class="form-group">

@@ -9,6 +9,98 @@ $(document).ready(function(){
       }
     });
 
+
+
+    $(".conei").on('click','.btn_guardar_editar', function(e) {
+
+        event.preventDefault();
+        var _token                  =   $('#token').val();
+        var dni                     =   $('#dni').val();
+        var nombres                 =   $('#nombres').val();
+        var telefono                =   $('#telefono').val();
+        var correo                  =   $('#correo').val();
+        if(dni ==''){ alerterrorajax("Ingrese un DNI."); return false;}
+        if(nombres ==''){ alerterrorajax("Ingrese un nombre."); return false;}
+        if(telefono ==''){ alerterrorajax("Ingrese un telefono."); return false;}
+        if(correo ==''){ alerterrorajax("Ingrese un correo."); return false;}
+        var director_id             =   $('#director_id').val();
+        var procedencia_id          =   $('#procedencia_id').val();
+        data            =   {
+                                _token              : _token,
+                                dni                 : dni,
+                                nombres             : nombres,
+                                telefono            : telefono,
+                                correo              : correo,
+                                director_id         : director_id,
+                                procedencia_id      : procedencia_id,
+                            };
+
+        ajax_normal_section(data,"/ajax-guardar-registro-director","ajax-director") 
+        $('#modal-conei-apafa').niftyModal('hide');
+
+    });
+
+
+
+
+    $(".conei").on('change','.buscar_periodo_sgt', function() {
+
+        event.preventDefault();
+
+
+        var periodo_id           =   $('#periodo_id').val();
+        var periodofin_id        =   $('#periodofin_id').val();
+        var checkconei           =   $('#checkconei').prop("checked");
+        var institucion_id       =   $('#institucion_id').val();
+        var procedencia_id       =   $('#procedencia_id').val();
+        var _token               =   $('#token').val();
+        //validacioones
+        if(periodo_id ==''){ alerterrorajax("Seleccione periodo inicial."); return false;}
+
+
+        data            =   {
+                                _token              : _token,
+                                periodo_id          : periodo_id,
+                                periodofin_id       : periodofin_id,
+                                institucion_id          : institucion_id,
+                                procedencia_id       : procedencia_id,
+                                checkconei       : checkconei,
+
+                            };
+
+        ajax_normal_section(data,"/ajax-periodo-fin-certificado","msj_consulta_periodo")                    
+
+    });
+
+
+    $(".conei").on('click','#checkconei', function() {
+
+        $('#periodo_id').val('').trigger('change.select2');
+        $('#periodofin_id').val('').trigger('change.select2');
+    });
+
+
+    $(".conei").on('click','.editardirector', function() {
+
+        event.preventDefault();
+        var _token                  =   $('#token').val();
+        var director_id             =   $('#director_id').val();
+        var procedencia_id          =   $('#procedencia_id').val();
+
+        data                        =   {
+                                            _token                  : _token,
+                                            director_id             : director_id,
+                                            procedencia_id          : procedencia_id,
+                                        };
+                              
+        ajax_modal(data,"/ajax-modal-editar-director",
+                  "modal-conei-apafa","modal-conei-apafa-container");
+
+    });
+
+
+
+
     $(".conei").on('click','.btn-guardar-conei', function() {
 
 
@@ -32,6 +124,27 @@ $(document).ready(function(){
 
 
 // 
+
+
+    $(".conei").on('click','.btn-next-tab01', function() {
+        event.preventDefault();
+
+        var periodo_id              =   $('#periodo_id').val(); 
+        var periodofin_id           =   $('#periodofin_id').val();
+        var indb                    =   $('#indb').val();
+        var checkconei              =   $('#checkconei').prop("checked");
+
+
+        if(periodo_id ==''){ alerterrorajax("Seleccione un periodo Inicial."); return false;}
+
+        if(checkconei==false){
+            if(periodofin_id ==''){ alerterrorajax("Seleccione un periodo Final."); return false;}
+        }
+
+        if(indb =='0'){ alerterrorajax("Hay errores en la seleccion de periodos."); return false;}
+        $('.nav-tabs a[href="#conei"]').tab('show');
+
+    });
 
 
 
@@ -230,6 +343,18 @@ $(document).ready(function(){
     });
 
 
+    $(".conei").on('click','.btn_buscar_dni_director', function(e) {
+        event.preventDefault();
+
+        debugger;
+        var dni                     =   $('#dni').val();
+        var _token                  =   $('#token').val();
+        actualizar_ajax_dni_conei_director(_token,carpeta,dni);
+
+
+    });
+
+
     $(".conei").on('click','.btn-limpiar', function(e) {
 
         event.preventDefault();
@@ -313,7 +438,39 @@ $(document).ready(function(){
 
 
 
+    function actualizar_ajax_dni_conei_director(_token,carpeta,data_dni_m){
 
+        abrircargando();
+        $.ajax({
+            type    :   "POST",
+            url     :   carpeta+"/ajax-buscar-dni-ugel",
+            data    :   {
+                            _token          : _token,
+                            dni             : data_dni_m
+                        },
+            success: function (data){
+                cerrarcargando();
+                var array        = $.parseJSON(data);
+
+                debugger;
+
+                var nombrea      = array[1];
+                var apellidopa   = array[2];
+                var apellidoma   = array[3];
+
+                if(nombrea == null){
+                    alerterrorajax('DNI NO EXISTE');
+                    $('#nombres').val('');
+                }else{
+                    $('#nombres').val(nombrea+' '+apellidopa+' '+apellidoma);
+                }
+            },
+            error: function (data) {
+                cerrarcargando();
+                error500(data);
+            }
+        });
+    }
 
 
     function actualizar_ajax_dni_conei(_token,carpeta,data_dni_m,data_nombre_m){

@@ -3,7 +3,7 @@
     <label class="control-label"><b>Periodo Fin : </b></label>
     {!! Form::select( 'periodofin_id', $comboperiodofin, $selectperiodofin,
                       [
-                        'class'       => 'select3 form-control control input-xs',
+                        'class'       => 'select4 form-control control input-xs',
                         'id'          => 'periodofin_id',
                         'disabled'    => true
                       ]) !!}
@@ -17,7 +17,7 @@
 @if(isset($ajax))
   <script type="text/javascript">
     $(document).ready(function(){
-      $(".select3").select2({
+      $(".select4").select2({
           width: '100%'
       });
     });

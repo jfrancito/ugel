@@ -32,5 +32,14 @@ trait ApafaConeiTraits
 	 	return  $listadatos;
 	}
 
+	private function array_documentos_cargar() {
+
+		$listadatos 	= 	Conei::where('director_id','=',Session::get('direccion')->id)
+							->get();
+	 	return  $listadatos;
+
+	 	
+	}
+
 
 }
