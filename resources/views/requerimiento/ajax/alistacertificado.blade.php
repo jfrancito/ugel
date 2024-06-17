@@ -10,7 +10,7 @@
       <th>FECHA CREA</th>
       <th>ESTADO</th>
       <th>MOTIVO</th>
-
+      <th>NRO TRAMITE</th>
       <th>OPCION</th>
     </tr>
   </thead>
@@ -46,6 +46,9 @@
           @endif
         </td>
         <td>{{$item->msj_extorno}}</td>
+        <td>{{$item->numero_tramite}}</td>
+
+        
         <td class="rigth">
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
