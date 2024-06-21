@@ -62,10 +62,20 @@
 <div class="modal-footer">
   <button type="submit" 
   				data-dismiss="modal" class="btn btn-success btn_asignar_nombre"
-  				data_td = '{{$data_td}}'
-          data_dni = '{{$data_dni}}'
+
+  				data_td_id = '{{$data_td_id}}'
+          data_td_no = '{{$data_td_no}}'
+          data_docu = '{{$data_docu}}'
           data_nombre = '{{$data_nombre}}'
           data_nombre_visible = '{{$data_nombre_visible}}'
+
+          data_rp_id_val = '{{$data_rp_id_val}}'
+          data_rp_no_val = '{{$data_rp_no_val}}'
+          data_rp_id = '{{$data_rp_id}}'
+          data_rp_no = '{{$data_rp_no}}'
+
+
+
 
   				>
   	Asignar

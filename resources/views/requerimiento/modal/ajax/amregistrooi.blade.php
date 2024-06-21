@@ -8,6 +8,19 @@
 	<div  class="row regla-modal">
 		    <div class="col-md-12">
 
+
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="control-label"><b>Representante : </b></label>
+                {!! Form::select( 'representante_id', $comboor, $selector,
+                                  [
+                                    'class'       => 'select3 form-control control input-xs combo',
+                                    'id'          => 'representante_id',
+                                  ]) !!}
+              </div>
+            </div>
+
+
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label"><b>Tipo Documento : </b></label>
@@ -18,6 +31,8 @@
                                   ]) !!}
               </div>
             </div>
+
+
             <div class="col-sm-6">
               <div class="input-group my-group">
                   <label class="control-label"><b>Documento : </b></label>
@@ -53,7 +68,8 @@
 
               </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6 ocultar invitados">
+
               <div class="form-group">
                 <label class="control-label"><b>CARGO  : </b></label>
                 <input  type="text"
@@ -64,6 +80,9 @@
                         maxlength="300"                     
                         autocomplete="off" class="form-control input-sm"/>
               </div>
+
+
+
             </div>
 		    </div>
 	    <div class="col-md-6">

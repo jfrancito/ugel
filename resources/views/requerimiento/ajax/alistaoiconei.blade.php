@@ -1,6 +1,6 @@
 <div class="col-sm-12">
   <div class="panel panel-default panel-table">
-    <div class="panel-heading">Registre otros integrantes <small class="opcional">(**) Opcional</small>
+    <div class="panel-heading">Registre otros representantes
       <div class="tools">
         <button class="btn btn-rounded btn-space btn-success modal-registro-oi">Agregar</button>
       </div>
@@ -10,6 +10,7 @@
         <thead>
           <tr>
             <th>Fila</th>
+            <th>Representante</th>
             <th>Tipo documento</th>
             <th>Documento</th>
             <th>Nombre</th>
@@ -21,13 +22,14 @@
           @foreach($array_detalle_producto as $index => $item)
             <tr>
               <td>{{$item['fila']}}</td>
+              <td>{{$item['representante_txt']}}</td>
               <td>{{$item['tdgtexto']}}</td>
               <td>{{$item['documentog']}}</td>
               <td>{{$item['nombresg']}}</td>
               <td>{{$item['dcargoni']}}</td>
               <td>
                 <div class="icon" style="text-align: center;">
-                  <span class="mdi mdi-close-circle eliminaroi" data-fila= "{{$item['fila']}}"" style="font-size: 20px;cursor: pointer;color: #E74C3C;"></span>
+                  <span class="mdi mdi-close-circle eliminaroi" data-fila= "{{$item['fila']}}" style="font-size: 20px;cursor: pointer;color: #E74C3C;"></span>
                 </div>
               </td>
             </tr>

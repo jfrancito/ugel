@@ -27,7 +27,7 @@ trait ApafaConeiTraits
 
 
 	private function con_lista_conei() {
-		$listadatos 	= 	Conei::where('director_id','=',Session::get('direccion')->id)
+		$listadatos 	= 	Conei::where('institucion_id','=',Session::get('institucion')->id)
 							->get();
 	 	return  $listadatos;
 	}
@@ -40,6 +40,19 @@ trait ApafaConeiTraits
 
 	 	
 	}
+
+	private function array_representante_obligatrio($tipo_colegio) {
+
+
+		if('M'=='M'){
+			$array = array('ESRP00000001','ESRP00000002','ESRP00000003','ESRP00000004','ESRP00000005','ESRP00000006');
+		}else{
+			$array = array('ESRP00000001','ESRP00000005','ESRP00000006');
+		}
+		return $array;
+	
+	}
+
 
 
 }

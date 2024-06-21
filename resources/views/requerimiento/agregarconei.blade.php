@@ -76,6 +76,9 @@
       $('[data-toggle="tooltip"]').tooltip();
       $('form').parsley();
 
+      $(':input[readonly]').css({'background-color':'#f6f6f6'});
+      $('.form-control[disabled]').css({'background-color':'#f6f6f6'});
+
     });
 
   </script>

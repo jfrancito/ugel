@@ -2,7 +2,6 @@
   <thead>
     <tr>
       <th>CODIGO REQ.</th>
-      <th>DIRECTOR</th>
       <th>PERIODO</th>
       <th>FECHA CREA</th>
       <th>ESTADO</th>
@@ -12,8 +11,8 @@
   <tbody>
     @foreach($listadatos as $index => $item)
       <tr data_requerimiento_id = "{{$item->id}}">
+
         <td>{{$item->codigo}}</td>
-        <td>{{$item->director->nombres}}</td>
         <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
         <td>
@@ -40,6 +39,7 @@
             </ul>
           </div>
         </td>
+
       </tr>                    
     @endforeach
   </tbody>

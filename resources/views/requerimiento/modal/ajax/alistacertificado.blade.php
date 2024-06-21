@@ -46,79 +46,31 @@
 	<table class="table table-condensed table-striped">
 	    <tbody>
 	      	<tr>
-	      	   <td colspan="3" style="text-align: center;"><b>CONSEJO DIRECTIVO </b></td>
+	      	   <td colspan="4" style="text-align: center;"><b>CONSEJO DIRECTIVO </b></td>
 	      	</tr>  
 	      	<tr>
+	      	   <td class="center"><b>REPRESENTANTE </b></td>
+	      		 <td class="center"><b>DOCUMENTO </b></td>
 	      	   <td class="center"><b>NOMBRES Y APELLIDOS </b></td>
-	      	   <td class="center"><b>INTEGRANTES </b></td>
-	      	   <td class="center"><b>DNI </b></td>
+	      	   <td class="center"><b>CARGO </b></td>
 	      	</tr> 
-	      	<tr>
-	      	   <td>DIRECTOR</td>
-	      	   <td>{{$i_nombre_director}}</td>
-	      	   <td>{{$i_dni_director}}</td>
-	      	</tr>
-
-	      	<tr>
-	      	   <td>SUBDIRECTOR </td>
-	      	   <td>{{$i_nombre_subdirector}}</td>
-	      	   <td>{{$i_dni_subdirector}}</td>
-	      	</tr> 
-
-	      	<tr>
-	      	   <td>REPRESENTANTE DE DOCENTE </td>
-	      	   <td>{{$i_nombre_representantedocente}}</td>
-	      	   <td>{{$i_dni_representantedocente}}</td>
-	      	</tr> 
-	  
-	      	<tr>
-	      	   <td>REPRESENTANTE DE APAFA </td>
-	      	   <td>{{$i_nombre_representanteapafa}}</td>
-	      	   <td>{{$i_dni_representanteapafa}}</td>
-	      	</tr>
-
-	      	<tr>
-	      	   <td>OTRO REPRESENTANTE DE LA COMUNIDAD </td>
-	      	   <td>{{$i_nombre_otrorepresentatecomunidad}}</td>
-	      	   <td>{{$i_dni_otrorepresentatecomunidad}}</td>
-	      	</tr>
-
-	      	@if($i_nombre_representanteadministrativo != '')
-	      	<tr>
-	      	   <td>REPRESENTANTE DE ADMINISTRATIVO </td>
-	      	   <td>{{$i_nombre_representanteadministrativo}}</td>
-	      	   <td>{{$i_dni_representanteadministrativo}}</td>
-	      	</tr>
-	      	@endif
-
-
-	      	@if($i_nombre_representanteestudiante != '')
-	      	<tr>
-	      	   <td>REPRESENTANTE DE ADMINISTRATIVO </td>
-	      	   <td>{{$i_nombre_representanteestudiante}}</td>
-	      	   <td>{{$i_dni_representanteestudiante}}</td>
-	      	</tr>
-	      	@endif
-
-	      	@if($i_nombre_representanteexalumno != '')
-	      	<tr>
-	      	   <td>REPRESENTANTE DE ADMINISTRATIVO </td>
-	      	   <td>{{$i_nombre_representanteexalumno}}</td>
-	      	   <td>{{$i_dni_representanteexalumno}}</td>
-	      	</tr>
-	      	@endif
-
-
-          @foreach($array_detalle_producto as $index => $item)
+          @foreach($data_o as $index => $item)
             <tr>
-            	<td>{{$item['dcargoni']}}</td>
-            	<td>{{$item['nombresg']}}</td>
-              	<td>{{$item['documentog']}}</td>
+            	<td>{{$item['_i_tipodocumento_nombre']}}</td>
+            	<td>{{$item['_i_documento']}}</td>
+              <td>{{$item['_i_nombres']}}</td>
+              <td></td>
             </tr>
           @endforeach
+          @foreach($array_detalle_producto as $index => $item)
+            <tr>
+            	<td>{{$item['representante_txt']}}</td>
+            	<td>{{$item['documentog']}}</td>
+              <td>{{$item['nombresg']}}</td>
+              <td>{{$item['dcargoni']}}</td>
 
-
-
+            </tr>
+          @endforeach
 	    </tbody>
 	</table>
 

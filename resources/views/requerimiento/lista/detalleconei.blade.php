@@ -5,6 +5,10 @@
   </ul>
   <div class="tab-content">
     <div id="conei" class="tab-pane active cont">
+
+
+
+      
       <fieldset>
         <legend>PERIODO CONEI </legend>
             <div class="col-sm-4">
@@ -18,7 +22,10 @@
               </div>
             </div>
       </fieldset>
-      <fieldset>
+
+
+
+<!--       <fieldset>
         <legend>INTEGRANTES </legend>
             <input type="hidden" name="institucion_id" id = 'institucion_id' value='{{$institucion->id}}'>
             <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
@@ -146,16 +153,15 @@
 
               </div>
             </div>
-      </fieldset>
+      </fieldset> -->
+
+
       <fieldset>
         <legend>OTROS INTEGRANTES </legend>
             <div class = 'listaajaxoi'>
               @include('requerimiento.lista.ajax.alistaoidetconei')
             </div>
       </fieldset>
-
-
-
 
       <br><br>
       <div style="text-align: right;">
