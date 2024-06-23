@@ -94,10 +94,13 @@ float: right;
 margin-bottom: 0px ;
 }
 
+
+
+
 .alertaw{
     width: 50%;
     z-index: 1;
-    /* float: right; */
+
     margin-bottom: 0px;
     position: absolute;
     right: 22px;
@@ -110,7 +113,7 @@ margin-bottom: 0px ;
 
 .panel-ajax-alert{
   position: fixed;
-  top: 2px;
+  bottom: 38px;
   right: 4px;
   width: 40%;
   z-index: 1205;
@@ -126,6 +129,10 @@ margin-bottom: 0px ;
 .panel-ajax-alert-mobil .alert{
   margin-bottom: 1px !important;
 }
+
+
+
+
 .panel-ajax-alert-mobil .alert{
   padding: 14px !important;
   border-radius: 0px !important;
@@ -152,6 +159,13 @@ margin-bottom: 0px ;
   padding: 6px 10px !important;
 }
 
+
+
+
+
+
+
+
 #WindowLoad
 {
     position:fixed;
@@ -163,6 +177,8 @@ margin-bottom: 0px ;
     opacity:0.65;
     background:#fff;
 }
+
+
 .msjcargando{
   color: #eee;
 }
@@ -195,6 +211,9 @@ margin-bottom: 0px ;
 .select2-container .select2-selection--single {
     height: 35px !important;
 }
+
+
+
 
 
 .select2-selection__arrow {

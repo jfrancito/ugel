@@ -20,17 +20,19 @@
     <![endif]-->
 
     @yield('style')
+
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/jquery-confirm.min.css') }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/style.css?v='.$version) }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/meta.css?v='.$version) }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/ugel.css?v='.$version) }} " />
+
   </head>
   <body class='fuente-muktabold'>
 
 
     <div class="be-wrapper be-fixed-sidebar">
 
-
+        @include('success.ajax-alert')
         @include('success.bienhecho', ['bien' => Session::get('bienhecho')])
         @include('error.erroresurl', ['error' => Session::get('errorurl')])
         @include('error.erroresbd', ['error' => Session::get('errorbd')])
@@ -39,7 +41,7 @@
         @include('menu.nav-left')
 
         @include('success.xml', ['xml' => Session::get('xmlmsj')])
-        @include('success.ajax-alert')
+
         @yield('section')
 
          <input type='hidden' id='carpeta' value="{{$capeta}}"/>

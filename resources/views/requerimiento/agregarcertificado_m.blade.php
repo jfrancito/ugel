@@ -1,5 +1,7 @@
-@extends('template_lateral')
+@extends('template_lateral_m')
 @section('style')
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/datetimepicker/css/bootstrap-datetimepicker.min.css') }} "/>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/select2/css/select2.min.css') }} "/>
@@ -106,14 +108,14 @@
               </div> -->
 
 
-      				<div class="form-group sectioncargarimagen">
-      						<label class="col-sm-3 control-label">Certificado</label>
-      						<div class="col-sm-6">
-      								<div class="file-loading">
-      				        		<input id="file-es" name="certificado[]" class="file-es" type="file" multiple data-max-file-count="1">
-      				        </div>
-      						</div>
-      				</div>
+              <div class="form-group sectioncargarimagen">
+                  <label class="col-sm-3 control-label">Certificado</label>
+                  <div class="col-sm-6">
+                      <div class="file-loading">
+                          <input id="file-es" name="certificado[]" class="file-es" type="file" multiple data-max-file-count="1">
+                      </div>
+                  </div>
+              </div>
               <div class="row xs-pt-15">
                 <div class="col-xs-6">
                     <div class="be-checkbox">

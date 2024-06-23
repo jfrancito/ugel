@@ -160,6 +160,9 @@ function alertajax(alert){
 	cadena += "                <span class='icon mdi mdi-check'></span>";
 	cadena += "                <strong>Bien Hecho!</strong> "+alert;
 	cadena += "          </div>";
+
+    debugger;
+
 	$(".panel-ajax-alert").append(cadena);
 	setTimeout(function(){ $(".rd"+aleatorio).fadeOut(200).fadeIn(100).fadeOut(400).fadeIn(400).fadeOut(100);}, 5000);
 

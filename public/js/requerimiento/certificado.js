@@ -55,6 +55,9 @@ $(document).ready(function(){
         var _token                  =   $('#token').val();
         var institucion_id          =   $('#institucion_id').val();
         var procedencia_id          =   $('#procedencia_id').val();
+
+        debugger;
+
         if(institucion_id ==''){ alerterrorajax("Seleccione una institucion."); return false;}
         if(procedencia_id ==''){ alerterrorajax("Seleccione una procedencia."); return false;}
         //debugger;
