@@ -5,7 +5,7 @@
     <div class="panel-body">
 
       @foreach($tarchivos as $index => $item) 
-          <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+          <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="margin-bottom: 10px;">
             <div class="form-group sectioncargarimagen">
               <label class="col-sm-12 control-label tituloarchivo" style="text-align: left;"><b >{{$item->nombre_archivo}} ({{$item->formato}})</b></label>
                 <div class="col-sm-12">

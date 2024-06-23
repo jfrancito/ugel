@@ -22,8 +22,15 @@
                   autocomplete="off" class="form-control input-sm {{$item->codigo}}_nombres" data-aw="4" readonly/>
 
           <span class="input-group-btn">
-            <button class="btn btn-primary modal-registro-variable"
+            <button class="btn btn-success modal-registro-oi"
+                    data_representante_id='{{$item->id}}'
+                    type="button" 
+                    style="margin-top: 26px;height: 38px;">
+                    MAS</button>
+          </span>
 
+          <span class="input-group-btn">
+            <button class="btn btn-primary modal-registro-variable"
                     data_rp_id_val        = "{{$item->id}}"
                     data_rp_no_val        = "{{$item->nombre}}"
                     data_rp_id            = "{{$item->codigo}}_i_representante_id"
@@ -39,7 +46,6 @@
                     style="margin-top: 26px;height: 38px;">
                     Buscar</button>
           </span>
-
 
           <input type="hidden" class='_i_representante_id' name="{{$item->codigo}}_i_representante_id" id = "{{$item->codigo}}_i_representante_id">
           <input type="hidden" class='_i_representante_nombre' name="{{$item->codigo}}_i_representante_nombre" id = "{{$item->codigo}}_i_representante_nombre">

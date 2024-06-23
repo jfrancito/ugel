@@ -175,6 +175,8 @@ class GestionConeiController extends Controller
         $data_o                                     =   $request['data_o'];
         $funcion                                    =   $this;
 
+        //dd($data_o);
+
         return View::make('requerimiento/modal/ajax/alistacertificado',
                          [
                             'array_detalle_producto'                        =>  $array_detalle_producto,
@@ -378,10 +380,12 @@ class GestionConeiController extends Controller
         $funcion       =   $this;
         $combotd       =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
         $selecttd      =   'TIDO00000001';
+        $representante_sel_id  =   $request['representante_sel_id'];
 
-        $arraynotr     =   array('ESRP00000001');
-        $comboor       =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
-        $selector      =   'ESRP00000002';
+
+        $arraynotr     =   array($representante_sel_id);
+        $comboor       =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
+        $selector      =   $representante_sel_id;
 
         return View::make('requerimiento/modal/ajax/amregistrooi',
                          [
@@ -663,19 +667,15 @@ class GestionConeiController extends Controller
             $mensaje                    =   'Seleccione periodos';
 
             $tarchivos                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
-
             $arrayrepresentante         =   $this->array_representante_obligatrio('M');
-
-            
             $lrepresentantes            =  Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->whereIn('id',$arrayrepresentante)->get();
+
 
             $director_i_tipodocumento_id = 'TIDO00000001';
             $director_i_tipodocumento_nombre = 'DNI';
 
             $director_i_representante_id = 'ESRP00000001';
             $director_i_representante_nombre = 'DIRECTOR';
-
-
 
             $director_i_documento        =  $director->dni;
             $director_i_nombres          =  $director->nombres;

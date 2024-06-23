@@ -178,7 +178,9 @@ $(document).ready(function(){
             _i_documento  = $(this).find('._i_documento').val();
             _i_nombres  = $(this).find('._i_nombres').val();
             _i_tipodocumento_nombre  = $(this).find('._i_tipodocumento_nombre').val();
+            _i_representante_nombre  = $(this).find('._i_representante_nombre').val();
 
+            
             if(_i_nombres ==''){
                 data_nombre_section = $(this).attr('data_nombre_section');
                 error = 1;
@@ -188,7 +190,7 @@ $(document).ready(function(){
                 _i_documento                : _i_documento,
                 _i_nombres                  : _i_nombres,
                  _i_tipodocumento_nombre                  : _i_tipodocumento_nombre,
-                
+                 _i_representante_nombre                  : _i_representante_nombre,    
             });
              
         });
@@ -329,9 +331,13 @@ $(document).ready(function(){
     $(".conei").on('click','.modal-registro-oi', function() {
         event.preventDefault();
         var _token                  =   $('#token').val();
+        var representante_sel_id    =   $(this).attr('data_representante_id');
+
+        debugger;
 
         data                        =   {
-                                            _token                  : _token
+                                            _token                  : _token,
+                                            representante_sel_id                  : representante_sel_id
                                         };
                               
         ajax_modal(data,"/ajax-modal-registro-oi",

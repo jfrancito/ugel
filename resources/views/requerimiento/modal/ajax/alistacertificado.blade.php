@@ -56,7 +56,7 @@
 	      	</tr> 
           @foreach($data_o as $index => $item)
             <tr>
-            	<td>{{$item['_i_tipodocumento_nombre']}}</td>
+            	<td>{{$item['_i_representante_nombre']}}</td>
             	<td>{{$item['_i_documento']}}</td>
               <td>{{$item['_i_nombres']}}</td>
               <td></td>

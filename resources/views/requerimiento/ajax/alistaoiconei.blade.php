@@ -2,7 +2,7 @@
   <div class="panel panel-default panel-table">
     <div class="panel-heading">Registre otros representantes
       <div class="tools">
-        <button class="btn btn-rounded btn-space btn-success modal-registro-oi">Agregar</button>
+        <button class="btn btn-rounded btn-space btn-success modal-registro-oi" data_representante_id='ESRP00000009'>Agregar</button>
       </div>
     </div>
     <div class="panel-body">

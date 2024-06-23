@@ -1,7 +1,7 @@
 <div class="modal-header">
 	<button type="button" data-dismiss="modal" aria-hidden="true" class="close modal-close"><span class="mdi mdi-close"></span></button>
 	<h3 class="modal-title">
-		 OTROS INTEGRANTES
+		 OTRO REPRESENTANTE
 	</h3>
 </div>
 <div class="modal-body">
@@ -57,7 +57,7 @@
 
             <div class="col-sm-6">
               <div class="form-group">
-                <label class="control-label"><b>NOMBRES <small class="">(OTROS INTEGRANTES)</small> : </b></label>
+                <label class="control-label"><b>NOMBRES : </b></label>
                 <input  type="text"
                         id="nombresgoi" 
                         name='nombresgoi'                        
@@ -68,10 +68,9 @@
 
               </div>
             </div>
-            <div class="col-sm-6 ocultar invitados">
-
-              <div class="form-group">
-                <label class="control-label"><b>CARGO  : </b></label>
+            <div class="col-sm-6 invitados">
+              <div class="form-group @if($selector!='ESRP00000009') ocultar @endif">
+                <label class="control-label " ><b>CARGO  : </b></label>
                 <input  type="text"
                         id="cargo" 
                         name='cargo'                        
