@@ -16,13 +16,9 @@ class Controller extends BaseController {
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 	public $funciones;
-
-
 	public $anio;
 	public $mes;
 	public $dia;
-
-
 	public $inicio;
 	public $fin;
 	public $hoy;

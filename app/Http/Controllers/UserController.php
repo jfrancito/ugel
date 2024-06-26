@@ -8,8 +8,8 @@ use App\Modelos\Rol;
 use App\Modelos\RolOpcion;
 use App\Modelos\Institucion;
 use App\Modelos\Director;
-
-
+use App\Modelos\Certificado;
+use App\Modelos\DetalleCertificado;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -130,8 +130,48 @@ class UserController extends Controller {
 	public function actionBienvenido() {
 		View::share('titulo','Bienvenido Sistema Administrativo');
 		
+
+		$anio 				=	$this->anio;
+
+
+		//CONEI
+		$conei_periodo 		= 	$anio;
+		$conei_estado 		= 	'SIN CONEI';
+		//CONEI
+		$detallecertificado = 	DetalleCertificado::where('periodo_nombre','=',$anio)
+								->where('procedente_id','=','APCN00000002')
+								->where('institucion_id','=',Session::get('institucion')->id)
+								->first();
+		if(count($detallecertificado)>0){
+			$certificado 		= 	Certificado::where('id','=',$detallecertificado->certificado_id)->first();
+			$conei_periodo 		= 	$certificado->periodo_nombre;
+			$conei_estado 		= 	$certificado->estado_nombre;
+		}
+
+		//APAFA
+		$apafa_periodo 		= 	$anio;
+		$apafa_estado 		= 	'SIN APAFA';
+		//CONEI
+		$detallecertificado = 	DetalleCertificado::where('periodo_nombre','=',$anio)
+								->where('procedente_id','=','APCN00000001')
+								->where('institucion_id','=',Session::get('institucion')->id)
+								->first();
+		if(count($detallecertificado)>0){
+			$certificado 		= 	Certificado::where('id','=',$detallecertificado->certificado_id)->first();
+			$apafa_periodo 		= 	$certificado->periodo_nombre;
+			$apafa_estado 		= 	$certificado->estado_nombre;
+		}
+
+
 		$fecha = date('Y-m-d');
-		return View::make('bienvenido');
+		return View::make('bienvenido',
+			[
+				'conei_periodo' => $conei_periodo,
+				'conei_estado'  => $conei_estado,
+				'apafa_periodo' => $apafa_periodo,
+				'apafa_estado'  => $apafa_estado,
+				
+			]);
 	}
 
 	public function actionObtenerTipoCambio()
