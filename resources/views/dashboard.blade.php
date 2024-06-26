@@ -65,7 +65,6 @@
 							<div class="titulo-profile">
 								CONEI
 							</div>
-							<h2 class="profile-username">{{$conei_periodo}}</h2>
 							<h2 class="profile-username"><span class="label label-warning">@include('usuario.estados', ['estado' => $conei_estado])</span></h2>
 						</article>
 					</div>
