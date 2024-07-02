@@ -165,36 +165,37 @@ $(document).ready(function(){
         event.preventDefault();
 
         var _token                                          =   $('#token').val();
-
-
         var error = 0;
-
         var data_o = [];
 
         $(".conei .itemrepresentante").each(function(){
-
 
             _i_tipodocumento_id  = $(this).find('._i_tipodocumento_id').val();
             _i_documento  = $(this).find('._i_documento').val();
             _i_nombres  = $(this).find('._i_nombres').val();
             _i_tipodocumento_nombre  = $(this).find('._i_tipodocumento_nombre').val();
             _i_representante_nombre  = $(this).find('._i_representante_nombre').val();
+            data_obligatorio = $(this).attr('data_obligatorio').trim();
 
-            
-            if(_i_nombres ==''){
-                data_nombre_section = $(this).attr('data_nombre_section');
-                error = 1;
+
+            if(data_obligatorio=="1" && error == 0){
+                if(_i_nombres ==''){
+                    data_nombre_section = $(this).attr('data_nombre_section');
+                    error = 1;
+                }
             }
-            data_o.push({
-                _i_tipodocumento_id         : _i_tipodocumento_id,
-                _i_documento                : _i_documento,
-                _i_nombres                  : _i_nombres,
-                 _i_tipodocumento_nombre                  : _i_tipodocumento_nombre,
-                 _i_representante_nombre                  : _i_representante_nombre,    
-            });
-             
-        });
 
+            if(_i_documento != ''){
+                data_o.push({
+                    _i_tipodocumento_id                      : _i_tipodocumento_id,
+                    _i_documento                             : _i_documento,
+                    _i_nombres                               : _i_nombres,
+                    _i_tipodocumento_nombre                  : _i_tipodocumento_nombre,
+                    _i_representante_nombre                  : _i_representante_nombre,    
+                });
+            }
+  
+        });
 
         var periodo_id              =   $('#periodo_id').val(); 
         var periodofin_id           =   $('#periodofin_id').val();
@@ -208,7 +209,7 @@ $(document).ready(function(){
         var array_detalle_producto                          =   $('#array_detalle_producto').val();
         var institucion_id                                  =   $('#institucion_id').val();
         var director_id                                     =   $('#director_id').val();
-        //if(error == 1){ alerterrorajax("Ingrese un "+data_nombre_section); return false;}
+        if(error == 1){ alerterrorajax("Ingrese un "+data_nombre_section); return false;}
 
         data                        =   {
                                             _token                        : _token,
@@ -292,6 +293,10 @@ $(document).ready(function(){
         var data_td_no              =   $(this).attr('data_td_no');
         var data_docu               =   $(this).attr('data_docu');
         var data_nombre             =   $(this).attr('data_nombre');
+
+        var data_cod_modular        =   $(this).attr('data_docu');
+        var data_nivel              =   $(this).attr('data_nombre');
+
         var data_nombre_visible     =   $(this).attr('data_nombre_visible');
         var data_titulo             =   $(this).attr('data_titulo');
 
@@ -300,7 +305,7 @@ $(document).ready(function(){
         var data_rp_id              =   $(this).attr('data_rp_id');
         var data_rp_no              =   $(this).attr('data_rp_no');
 
-
+        debugger;
         
         var data_nombre_visible     =   $(this).attr('data_nombre_visible');
 
@@ -313,10 +318,13 @@ $(document).ready(function(){
                                             data_nombre_visible     : data_nombre_visible,
                                             data_titulo             : data_titulo,
 
-                                            data_rp_id_val               : data_rp_id_val,
-                                            data_rp_no_val             : data_rp_no_val,
-                                            data_rp_id     : data_rp_id,
-                                            data_rp_no             : data_rp_no,
+                                            data_rp_id_val          : data_rp_id_val,
+                                            data_rp_no_val          : data_rp_no_val,
+                                            data_rp_id              : data_rp_id,
+                                            data_rp_no              : data_rp_no,
+                                            data_cod_modular        : data_cod_modular,
+                                            data_nivel              : data_nivel,
+
                                             
                                         };
                               

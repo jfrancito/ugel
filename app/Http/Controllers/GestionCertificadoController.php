@@ -108,14 +108,15 @@ class GestionCertificadoController extends Controller
 
         $comboperiodofin            =   array();
         $selectperiodofin           =   '';
-        $mensaje                    =   'Periodo libres asignar';
+        $mensaje                    =   'PERIODO LIBRES';
         $ind                        =   '0';
-
+        $color                      =   'sin_error';
 
 
         //si ya tiene
         if(count($certificado)>0){
-            $mensaje           =   'Ya existe un certificado en este periodo '.$periodo->nombre;
+            $mensaje                =   'YA EXISTE CERTIFICADO EN ESTE PERIODO '.$periodo->nombre;
+            $color                  =   'error';
         }else{
 
 
@@ -125,7 +126,8 @@ class GestionCertificadoController extends Controller
             if($checkconei == 'false'){
 
                 if(count($periodofin)<=0){
-                    $mensaje           =   'No existe el periodo '.$nombreperiodofin.' en la base de datos';
+                    $mensaje           =   'NO EXISTE EL PERIODO '.$nombreperiodofin.' EN LA BASE DE DATOS';
+                    $color                  =   'error';
                 }else{
 
                     $certificadofin             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
@@ -138,8 +140,8 @@ class GestionCertificadoController extends Controller
 
                     if(count($certificadofin)>0){
 
-                        $mensaje           =   'Ya existe un certificado en este periodo '.$nombreperiodofin;
-
+                        $mensaje                =   'YA EXISTE CERTIFICADO EN ESTE PERIODO '.$nombreperiodofin;
+                        $color                  =   'error';
                     }else{
 
                         $array_periodos             =   array($periodofin->id);
@@ -163,6 +165,8 @@ class GestionCertificadoController extends Controller
                             'selectperiodofin'         => $selectperiodofin,
                             'mensaje'                  => $mensaje,
                             'ind'                      => $ind,
+                            'color'                    => $color,
+
                             'ajax'                     => true,                            
                          ]);
     }

@@ -41,13 +41,33 @@ trait ApafaConeiTraits
 	 	
 	}
 
+
+	public function ordernar_array($array_detalle_producto){
+	    
+		//order array
+		$array_representante 		= array();
+		foreach ($array_detalle_producto as $clave=>$empleado){
+			$array_representante[$clave] 		= $empleado["representante_txt"];
+		}
+		array_multisort($array_representante, SORT_ASC, $array_detalle_producto);
+
+
+		return $array_detalle_producto;
+	}
+
+
 	private function array_representante_obligatrio($tipo_colegio) {
 
-
-		if('M'=='M'){
-			$array = array('ESRP00000001','ESRP00000002','ESRP00000003','ESRP00000004','ESRP00000005','ESRP00000006','ESRP00000007','ESRP00000008');
+		if($tipo_colegio=='POLIDOCENTE'){
+			$array = array('ESRP00000001','ESRP00000002','ESRP00000003','ESRP00000004');
 		}else{
-			$array = array('ESRP00000001','ESRP00000005','ESRP00000006');
+			if($tipo_colegio=='UNIDOCENTE'){
+				$array = array('ESRP00000001','ESRP00000002','ESRP00000003','ESRP00000004');
+			}else{
+				if($tipo_colegio=='MULTIGRADO'){
+					$array = array('ESRP00000001','ESRP00000002','ESRP00000003','ESRP00000004');
+				}
+			}
 		}
 		return $array;
 	

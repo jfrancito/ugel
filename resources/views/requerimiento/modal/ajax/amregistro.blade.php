@@ -8,6 +8,17 @@
 	<div  class="row regla-modal">
 		    <div class="col-md-12">
 
+            <div class="col-sm-12">
+              <div class="form-group">
+                <label class="control-label"><b>Nivel : </b></label>
+                {!! Form::select( 'codigo_modular_id', $combonivel, $selectnivel,
+                                  [
+                                    'class'       => 'select3 form-control control input-xs combo',
+                                    'id'          => 'codigo_modular_id',
+                                  ]) !!}
+              </div>
+            </div>
+
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label"><b>Tipo Documento : </b></label>
@@ -18,6 +29,7 @@
                                   ]) !!}
               </div>
             </div>
+
             <div class="col-sm-6">
               <div class="input-group my-group">
                   <label class="control-label"><b>Documento : </b></label>

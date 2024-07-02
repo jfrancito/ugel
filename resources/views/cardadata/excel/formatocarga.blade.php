@@ -17,6 +17,7 @@
                       <td>DEPARTAMENTO</td>
                       <td>PROVINCIA</td>
                       <td>DISTRITO</td>
+                      <td>TIPO_INSTITUCION</td>
                     </tr>
                   </thead>    
       </table>

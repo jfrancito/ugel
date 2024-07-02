@@ -9,11 +9,9 @@
                       ]) !!}
   </div>
 </div>
-
 <input type="hidden" name="periodofin_r_id" value="{{$selectperiodofin}}">
-
 <div class="col-sm-12">
-    <h5  style="text-align:center;font-size: 16px;">{{$mensaje}}</h5>
+    <h5  style="text-align:center;font-size: 16px;" class='{{$color}}'><b>{{$mensaje}}</b></h5>
     <input type="hidden" name="indb" id="indb" value='{{$ind}}'>
 </div>
 @if(isset($ajax))

@@ -138,7 +138,7 @@ class GestionConeiController extends Controller
                 array_push($array_detalle_producto,$item);
             }
         }
-
+        $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
         $funcion                =   $this;
 
         return View::make('requerimiento/ajax/alistaoiconei',
@@ -169,7 +169,7 @@ class GestionConeiController extends Controller
                 array_push($array_detalle_producto,$item);
             }
         }
-
+        $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
         //DD($array_detalle_producto);
 
         $data_o                                     =   $request['data_o'];
@@ -200,14 +200,10 @@ class GestionConeiController extends Controller
         $representante_id                   =   $request['representante_id'];
         $representante_txt                  =   $request['representante_txt'];
 
-
-
-
         $array_detalle_producto_request     =   json_decode($request['array_detalle_producto'],true);
         $array_detalle_producto             =   array();
 
         $fila                               =   count($array_detalle_producto_request) + 1;
-
 
         $arraynuevo                         =   array(
                                                     "fila"          => $fila,
@@ -228,9 +224,9 @@ class GestionConeiController extends Controller
             }
         }
 
+        $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
 
-
-        $funcion                =   $this;
+        $funcion                    =   $this;
 
         return View::make('requerimiento/ajax/alistaoiconei',
                          [
@@ -247,39 +243,50 @@ class GestionConeiController extends Controller
         $data_td_no             =   $request['data_td_no'];
         $data_docu              =   $request['data_docu'];
         $data_nombre            =   $request['data_nombre'];
+        $data_cod_modular       =   $request['data_cod_modular'];
+        $data_nivel             =   $request['data_nivel'];
+
         $data_nombre_visible    =   $request['data_nombre_visible'];
         $data_titulo            =   $request['data_titulo'];
 
-        $data_rp_id_val         =   $request['data_rp_id_val'];
+        $data_rp_id_val         =   $request['data_rp_id_val'];//SUB DIRECTOR // DOCENTE
         $data_rp_no_val         =   $request['data_rp_no_val'];
         $data_rp_id             =   $request['data_rp_id'];
         $data_rp_no             =   $request['data_rp_no'];
 
+        $combonivel             =   $this->gn_generacion_combo_niveles(Session::get('institucion')->codigo);
+        $selectnivel            =   '';
 
-
-        $funcion       =   $this;
-        $combotd       =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
-        $selecttd      =   'TIDO00000001';
-
+        $funcion                =   $this;
+        $combotd                =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+        $selecttd               =   'TIDO00000001';
 
         return View::make('requerimiento/modal/ajax/amregistro',
                          [
-                            'data_td_id'           =>  $data_td_id,
-                            'data_td_no'          =>  $data_td_no,
-                            'data_docu'       =>  $data_docu,
-                            'data_nombre'       =>  $data_nombre,
-                            'data_nombre_visible'       =>  $data_nombre_visible,
-                            'data_titulo'       =>  $data_titulo,                           
+                            'data_td_id'            =>  $data_td_id,
+                            'data_td_no'            =>  $data_td_no,
+                            'data_docu'             =>  $data_docu,
+                            'data_nombre'           =>  $data_nombre,
 
-                            'data_rp_id_val'       =>  $data_rp_id_val,
-                            'data_rp_no_val'       =>  $data_rp_no_val,
-                            'data_rp_id'       =>  $data_rp_id,
-                            'data_rp_no'       =>  $data_rp_no,  
+                            'data_cod_modular'      =>  $data_cod_modular,
+                            'data_nivel'            =>  $data_nivel,
 
-                            'combotd'           =>  $combotd,
-                            'selecttd'          =>  $selecttd,
-                            'funcion'           =>  $funcion,
-                            'ajax'              =>  true
+                            'data_nombre_visible'   =>  $data_nombre_visible,
+                            'data_titulo'           =>  $data_titulo,                           
+
+                            'data_rp_id_val'        =>  $data_rp_id_val,
+                            'data_rp_no_val'        =>  $data_rp_no_val,
+                            'data_rp_id'            =>  $data_rp_id,
+                            'data_rp_no'            =>  $data_rp_no,  
+
+                            'combotd'               =>  $combotd,
+                            'selecttd'              =>  $selecttd,
+
+                            'combonivel'            =>  $combonivel,
+                            'selectnivel'           =>  $selectnivel,
+
+                            'funcion'               =>  $funcion,
+                            'ajax'                  =>  true
                          ]);
     }
 
@@ -481,9 +488,6 @@ class GestionConeiController extends Controller
             $array_detalle_producto_request             =   json_decode($request['array_detalle_producto'],true);
             foreach($array_detalle_producto_request as $item => $row) {
 
-
-
-
                 $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
                 $oi                                     =   new OtroIntegranteConei;
                 $oi->id                                 =   $idoi;
@@ -649,7 +653,6 @@ class GestionConeiController extends Controller
             $array_detalle_producto     =   array();
             $disabled                   =   false;
 
-
             $procedencia_id             =   'APCN00000002';
             $array_periodos             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
                                             ->where('procedente_id','=',$procedencia_id)
@@ -664,11 +667,14 @@ class GestionConeiController extends Controller
             $selectperiodofin           =   '';
             $ind                        =   0;
             $checked                    =   false;
-            $mensaje                    =   'Seleccione periodos';
+            $mensaje                    =   'SELECCIONE PERIODOS';
+            $color                      =   '';
 
-            $tarchivos                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
-            $arrayrepresentante         =   $this->array_representante_obligatrio('M');
-            $lrepresentantes            =  Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->whereIn('id',$arrayrepresentante)->get();
+
+            $tarchivos                  =   DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
+
+            $arrayrepresentante         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
+            $lrepresentantes            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->get();
 
 
             $director_i_tipodocumento_id = 'TIDO00000001';
@@ -696,9 +702,13 @@ class GestionConeiController extends Controller
                             'disabled'                              =>  $disabled,
                             'checked'                               =>  $checked,
                             'mensaje'                               =>  $mensaje,
+                            'color'                                 =>  $color,
+
                             'procedencia_id'                        =>  $procedencia_id,
                             'tarchivos'                             =>  $tarchivos,
                             'lrepresentantes'                       =>  $lrepresentantes,
+                            'arrayrepresentante'                    =>  $arrayrepresentante,
+
                             'director_i_tipodocumento_id'           =>  $director_i_tipodocumento_id,
                             'director_i_tipodocumento_nombre'           =>  $director_i_tipodocumento_nombre,
 

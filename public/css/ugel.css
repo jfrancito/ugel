@@ -1,3 +1,17 @@
+.error{
+  color: #E74C3C;
+}
+.sin_error{
+  color: #34a853;
+}
+
+.btn-plus{
+  border-radius: 2px 0px 0px 2px;
+}
+.btn-buscar{
+  border-radius: 0px 2px 2px 0px;
+}
+
 .tituloarchivo{
   height: 50px;
 }

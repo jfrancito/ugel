@@ -105,12 +105,8 @@ class CargarDatosInstitucionController extends Controller
                         $fila=0;
                         $idproducto='';
 
-
-
-
                         foreach ($listadatos as $index => $item) 
                         {
-
 
                             if ($item->codigo_modular == null){$mensaje ='CODIGO MODULAR VACIO';throw new Exception($mensaje);}
                             if ($item->codigo_local == null){$mensaje ='CODIGO LOCAL VACIO';throw new Exception($mensaje);}
@@ -127,11 +123,27 @@ class CargarDatosInstitucionController extends Controller
                             if ($item->departamento == null){$mensaje ='DEPARTAMENTO VACIO';throw new Exception($mensaje);}
                             if ($item->provincia == null){$mensaje ='PROVINCIA VACIO';throw new Exception($mensaje);}
                             if ($item->distrito == null){$mensaje ='DISTRITO VACIO';throw new Exception($mensaje);}
+                            if ($item->tipo_institucion == null){$mensaje ='TIPO INSTITUCION VACIO';throw new Exception($mensaje);}
 
-                            $institucion = Institucion::where('codigo','=',$item->codigo_local)->first();
 
-                            $idinstitucion = '';
-                            $nivelstring = '';
+                            $institucion                = Institucion::where('codigo','=',$item->codigo_local)->first();
+                            $idinstitucion              = '';
+                            $nivelstring                = '';
+                            $nombre_tipo_institucion    = '';
+
+                            if($item->tipo_institucion=='UNIDOCENTE'){
+                                $nombre_tipo_institucion    = 'UNIDOCENTE';
+                            }else{
+                                if($item->tipo_institucion=='MULTIGRADO'){
+                                    $nombre_tipo_institucion    = 'MULTIGRADO';
+                                }else{
+                                    $nombre_tipo_institucion    = 'POLIDOCENTE';
+                                }             
+                            }
+
+
+
+
 
                             //AGREGAR
                             if(count($institucion)<=0){
@@ -151,9 +163,12 @@ class CargarDatosInstitucionController extends Controller
                                 $cabecera->distrito                         =   $item->distrito;
                                 $cabecera->localidad                        =   $item->localidad;
                                 $cabecera->centropoblado                    =   $item->centro_poblado;
+                                $cabecera->tipo_institucion                 =   $nombre_tipo_institucion;
                                 $cabecera->fecha_crea                       =   $this->fechaactual;
                                 $cabecera->usuario_crea                     =   Session::get('usuario')->id;
                                 $cabecera->save();
+
+
                                 //DIRECTOR
                                 $iddirector                                 =   $this->funciones->getCreateIdMaestra('directores');
                                 $director                                   =   new Director;
@@ -189,13 +204,13 @@ class CargarDatosInstitucionController extends Controller
                                 $institucion->codigo                        =   $item->codigo_local;
                                 $institucion->nombre                        =   $item->nombre_iiee; 
                                 $institucion->nivel                         =   '';
-
                                 $institucion->direccion                     =   $item->director;
                                 $institucion->departamento                  =   $item->departamento;
                                 $institucion->provincia                     =   $item->provincia;
                                 $institucion->distrito                      =   $item->distrito;
                                 $institucion->localidad                     =   $item->localidad;
                                 $institucion->centropoblado                 =   $item->centro_poblado;
+                                $institucion->tipo_institucion              =   $nombre_tipo_institucion;
                                 $institucion->fecha_mod                     =   $this->fechaactual;
                                 $institucion->usuario_mod                   =   Session::get('usuario')->id;
                                 $institucion->save();
@@ -214,6 +229,7 @@ class CargarDatosInstitucionController extends Controller
                             $detinstitucion = DetalleInstitucion::where('codigo','=',$item->codigo_local)->where('codigomodular','=',$item->codigo_modular)->first();
 
                             if(count($detinstitucion)<=0){
+
                                 //INSTITUCION
                                 $iddetinstitucion                           =   $this->funciones->getCreateIdMaestra('detalleinstituciones');
                                 $cabecera                                   =   new DetalleInstitucion;
@@ -225,14 +241,17 @@ class CargarDatosInstitucionController extends Controller
                                 $cabecera->fecha_crea                       =   $this->fechaactual;
                                 $cabecera->usuario_crea                     =   Session::get('usuario')->id;
                                 $cabecera->save();
+
                             }else{
-                                $detinstitucion->codigo                           =   $item->codigo_local;
-                                $detinstitucion->codigomodular                    =   $item->codigo_modular;
-                                $detinstitucion->nivel                            =   $item->nivel;
-                                $detinstitucion->institucion_id                   =   $idinstitucion;
-                                $detinstitucion->fecha_mod                        =   $this->fechaactual;
-                                $detinstitucion->usuario_mod                      =   Session::get('usuario')->id;
+
+                                $detinstitucion->codigo                     =   $item->codigo_local;
+                                $detinstitucion->codigomodular              =   $item->codigo_modular;
+                                $detinstitucion->nivel                      =   $item->nivel;
+                                $detinstitucion->institucion_id             =   $idinstitucion;
+                                $detinstitucion->fecha_mod                  =   $this->fechaactual;
+                                $detinstitucion->usuario_mod                =   Session::get('usuario')->id;
                                 $detinstitucion->save();
+
                             }
 
                             $contador = $contador + 1;
@@ -305,7 +324,7 @@ class CargarDatosInstitucionController extends Controller
                 $sheet->loadView('cardadata/excel/formatocarga')
                         ->with('funcion',$funcion);
 
-                $sheet->cells('A1:N1', function($cells) {
+                $sheet->cells('A1:O1', function($cells) {
                    $cells->setFontColor('#000000');
                    $cells->setAlignment('center');
                    $cells->setValignment('center');
@@ -318,7 +337,7 @@ class CargarDatosInstitucionController extends Controller
 
 
                                     });
-                $sheet->getStyle('A1:N1', $sheet->getHighestRow())->getAlignment()->setWrapText(true);
+                $sheet->getStyle('A1:O1', $sheet->getHighestRow())->getAlignment()->setWrapText(true);
 
                 $sheet->setWidth(array(
                     'A'     =>  '20',
@@ -334,8 +353,8 @@ class CargarDatosInstitucionController extends Controller
                     'K'     =>  '20',
                     'L'     =>  '20',
                     'M'     =>  '20',
-                    'N'     =>  '20'
-
+                    'N'     =>  '20',
+                    'O'     =>  '20',
                 ));
 
 

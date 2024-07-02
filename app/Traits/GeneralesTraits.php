@@ -149,6 +149,20 @@ trait GeneralesTraits
 		return [''=>'SELECCIONE DEPARTAMENTO']+$datos;
 	}
 
+
+
+	private function gn_generacion_combo_niveles($codigo) {
+		
+		$array 							= 	DB::table('detalleinstituciones')
+        									->where('activo','=',1)
+        									->where('codigo','=',$codigo)
+        									->orderby('codigo','desc')
+		        							->pluck('nivel','codigomodular')
+											->toArray();
+	 	return  $array;					 			
+	}
+
+
 	private function gn_generacion_combo_tabla($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado) {
 		
 		$array 							= 	DB::table($tabla)
