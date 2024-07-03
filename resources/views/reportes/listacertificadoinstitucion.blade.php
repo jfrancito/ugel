@@ -106,6 +106,21 @@
 
 
 
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte">
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label">Distrito : </label>
+                          <div class="col-sm-12">
+                            {!! Form::select( 'distrito', $combodistrito, array($selectdistrito),
+                                              [
+                                                'class'       => 'form-control control select2' ,
+                                                'id'          => 'distrito',
+                                                'required'    => '',
+                                                'data-aw'     => '3'
+                                              ]) !!}
+                          </div>
+                        </div>
+                      </div>
+
 
                       <input type="hidden" name="idopcion" id='idopcion' value='{{$idopcion}}'>
 

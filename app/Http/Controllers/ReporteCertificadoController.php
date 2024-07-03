@@ -60,25 +60,21 @@ class ReporteCertificadoController extends Controller
         $comboprocedencia   	=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','TODO','APAFA_CONEI');
         $selectprocedencia  	=   'TODO';
 
-        $comboestado   			=   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','TODO','CERTIFICADO_ESTADO');
+        $arrayestado            =   array('CEES00000001','CEES00000005','CEES00000007','CEES00000008');
+        $comboestado   			=   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','TODO','CERTIFICADO_ESTADO',$arrayestado);
         $selectestado  			=   'TODO';
 
+        $combodistrito   		=   $this->gn_generacion_combo_institucion_distrito('Seleccione distrito','TODO');
+        $selectdistrito  		=   'TODO';
 
         $arraydata   			=   $this->gn_array_certificados($selectperiodo,$selectperiodofin,$selectprocedencia,$selectestado);
-
-
         $listadatos     		=   $this->con_lista_certificados_xfiltro($arraydata);
-
-
-        //dd($listadatos);
 
         $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($arraydata);
         $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($arraydata);
         $listacertificadoestado =   $this->con_lista_certificados_xestado($arraydata);
+        $listacertificadodistrito =   $this->con_lista_certificados_xdistrito($arraydata);
 
-        // $listadatos     		=   array();
-        // $listacertificadoperiod =   array();
-        // $listacertificadoproced =   array();
 
 		$funcion 				= 	$this;
 		
@@ -88,15 +84,17 @@ class ReporteCertificadoController extends Controller
 						 	'listacertificadoperiod'=> $listacertificadoperiod,
 						 	'listacertificadoproced'=> $listacertificadoproced,
 						 	'listacertificadoestado'=> $listacertificadoestado,
-
+						 	'listacertificadodistrito'=> $listacertificadodistrito,
 						 	'comboperiodo'			=> $comboperiodo,
 						 	'selectperiodo'			=> $selectperiodo,
 						 	'comboperiodofin'		=> $comboperiodofin,
 						 	'selectperiodofin'		=> $selectperiodofin,
 
-
 						 	'comboprocedencia'		=> $comboprocedencia,
 						 	'selectprocedencia'	 	=> $selectprocedencia,
+
+						 	'combodistrito'		=> $combodistrito,
+						 	'selectdistrito'	 	=> $selectdistrito,
 
 						 	'comboestado'			=> $comboestado,
 						 	'selectestado'	 		=> $selectestado,
@@ -128,6 +126,10 @@ class ReporteCertificadoController extends Controller
         $listacertificadoperiod =   $this->con_lista_certificados_xperiodo($arraydata);
         $listacertificadoproced =   $this->con_lista_certificados_xprocedencia($arraydata);
         $listacertificadoestado =   $this->con_lista_certificados_xestado($arraydata);
+
+
+        $listacertificadodistrito =   $this->con_lista_certificados_xdistrito($arraydata);
+
         //dd($listacertificadoperiod);
 		$funcion 				= 	$this;
 		
@@ -138,6 +140,7 @@ class ReporteCertificadoController extends Controller
 						 	'listacertificadoperiod'=> $listacertificadoperiod,
 						 	'listacertificadoproced'=> $listacertificadoproced,
 						 	'listacertificadoestado'=> $listacertificadoestado,
+						 	'listacertificadodistrito'=> $listacertificadodistrito,
 						 	'funcion'				=> $funcion,	
 						 	'idopcion'				=> $idopcion,		 	
 						 	'ajax' 					=> true,						 	

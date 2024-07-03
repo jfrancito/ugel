@@ -140,9 +140,10 @@ trait CertificadoTraits
 
 	private function con_lista_certificados_xfiltro($arraydata) {
 
-		$listadatos 	= 	Certificado::whereIn('id', $arraydata)
-							->where('estado_id','<>','CEES00000002')
-							->orderby('fecha_crea','desc')
+		$listadatos 	= 	Certificado::join('instituciones','certificados.institucion_id','=','instituciones.id')
+							->whereIn('certificados.id', $arraydata)
+							->where('certificados.estado_id','<>','CEES00000002')
+							->orderby('certificados.fecha_crea','desc')
 							->get();
 							
 	 	return  $listadatos;
@@ -186,6 +187,18 @@ trait CertificadoTraits
 
 	}
 
+	private function con_lista_certificados_xdistrito($arraydata) {
+
+		$listadatos 	= 	Certificado::join('instituciones','certificados.institucion_id','=','instituciones.id')
+							->whereIn('certificados.id', $arraydata)
+							->where('certificados.estado_id','<>','CEES00000002')
+							->select(DB::raw('count(distrito) as cantidad,distrito'))
+							->groupby('distrito')
+							->orderby('distrito','asc')
+							->get();
+	 	return  $listadatos;
+
+	}
 
 
 }

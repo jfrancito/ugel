@@ -1,35 +1,37 @@
 <div class="container">
   <div class="main-content container-fluid">
           <div class="row">
-            <div class="col-xs-12 col-md-4">
-              <div class="panel panel-default" style="background-color: #eeefff;">
-                <div class="panel-heading panel-heading-divider xs-pb-15">Certificados por Periodos</div>
-                <div class="panel-body xs-pt-25">
-                  @foreach($listacertificadoperiod as $index => $item)
-                    <div class="row user-progress user-progress-small" style="margin-bottom: 15px !important;">
-                      <div class="col-md-5"><span class="title"><b>{{$item->periodo_nombre}}</b></span></div>
-                      <div class="col-md-7"><span class="badge badge-primary">{{$item->cantidad}}</span>
-                          
-                      </div>
-                    </div>
-                  @endforeach
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-4">
-              <div class="widget be-loading" style="background-color: #eeefff;">
-                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados por Procedencia</div>
+            <div class="col-xs-12 col-md-3">
 
-                <div class="widget-chart-container" >
-                  <div id="top-sales" style="height: 100px;"></div>
-                  <div class="chart-pie-counter">
-                        {{count($listadatos)}}<br>
-                  </div>
+              <div class="widget be-loading" style="background-color: #eeefff;">
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;font-size: 13px;"><b>CERTIFICADO X PERIODO</b>
+                  <span class="badge badge-default cecer">{{count($listadatos)}}</span>
                 </div>
                 <div class="chart-legend">
                   <table>
-
-
+                    @foreach($listacertificadoperiod as $index => $item)
+                      <tr>
+                        <td class="chart-legend-color"><span data-color="top-sales-color2 primary" style="background: #f7d292;"></span></td>
+                        <td>{{$item->periodo_nombre}} </td>
+                        <td class="chart-legend-value"><span class="badge badge-primary">{{$item->cantidad}}</span></td>
+                      </tr>
+                    @endforeach
+                  </table>
+                </div>
+                <div class="be-spinner">
+                  <svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle fill="none" stroke-width="4" stroke-linecap="round" cx="33" cy="33" r="30" class="circle"></circle>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-3">
+              <div class="widget be-loading" style="background-color: #eeefff;">
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;font-size: 13px;"><b>CERTIFICADO X PROCEDENCIA</b>
+                  <span class="badge badge-default cecer">{{count($listadatos)}}</span>
+                </div>
+                <div class="chart-legend">
+                  <table>
                     @foreach($listacertificadoproced as $index => $item)
                       <tr>
                         <td class="chart-legend-color"><span data-color="top-sales-color2 primary" style="background: #f7d292;"></span></td>
@@ -45,22 +47,17 @@
                   </svg>
                 </div>
               </div>
+
+
             </div>
 
-
-            <div class="col-xs-12 col-md-4">
+            <div class="col-xs-12 col-md-3">
               <div class="widget be-loading" style="background-color: #eeefff;">
-                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;">Certificados por Estados</div>
-
-                <div class="widget-chart-container" >
-                  <div id="top-sales" style="height: 100px;"></div>
-                  <div class="chart-pie-counter">
-                        {{count($listadatos)}}<br>
-                  </div>
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;font-size: 13px;"><b>CERTIFICADO X ESTADOS</b>
+                  <span class="badge badge-default cecer">{{count($listadatos)}}</span>
                 </div>
                 <div class="chart-legend">
                   <table>
-
 
                     @foreach($listacertificadoestado as $index => $item)
                       <tr>
@@ -79,9 +76,29 @@
               </div>
             </div>
 
-
-
-
+            <div class="col-xs-12 col-md-3">
+              <div class="widget be-loading" style="background-color: #eeefff;">
+                <div class="panel-heading panel-heading-divider xs-pb-15" style="padding-top: 0px;font-size: 13px;"><b>CERTIFICADO X DISTRITO</b>
+                  <span class="badge badge-default cecer">{{count($listadatos)}}</span>
+                </div>
+                <div class="chart-legend">
+                  <table>
+                    @foreach($listacertificadodistrito as $index => $item)
+                      <tr>
+                        <td class="chart-legend-color"><span data-color="top-sales-color2 primary" style="background: #f7d292;"></span></td>
+                        <td>{{$item->distrito}} </td>
+                        <td class="chart-legend-value"><span class="badge badge-primary">{{$item->cantidad}}</span></td>
+                      </tr>
+                    @endforeach
+                  </table>
+                </div>
+                <div class="be-spinner">
+                  <svg width="40px" height="40px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle fill="none" stroke-width="4" stroke-linecap="round" cx="33" cy="33" r="30" class="circle"></circle>
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
 
 
@@ -98,8 +115,8 @@
       <th>PERIODO</th>
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
+      <th>DISTRITO</th>
       <th>ESTADO</th>
-
       <th>OPCION</th>
     </tr>
   </thead>
@@ -112,27 +129,11 @@
         <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
+        <td>{{$item->distrito}}</td>
 
         <td>
-          @if($item->estado_id == 'CEES00000001') 
-              <span class="badge badge-success">{{$item->estado_nombre}}</span>
-          @else
-            @if($item->estado_id == 'CEES00000002') 
-                <span class="badge badge-danger">{{$item->estado_nombre}}</span>
-            @else
-              @if($item->estado_id == 'CEES00000003') 
-                  <span class="badge badge-danger">{{$item->estado_nombre}}</span>
-              @else    
-                @if($item->estado_id == 'CEES00000004') 
-                    <span class="badge badge-primary">{{$item->estado_nombre}}</span>
-                @else    
-                    <span class="badge badge-warning">{{$item->estado_nombre}}</span>
-                @endif
-              @endif
-            @endif
-          @endif
+          @include('requerimiento.ajax.estados')
         </td>
-
         <td class="rigth">
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
@@ -145,12 +146,8 @@
             </ul>
           </div>
         </td>
-
-
       </tr>                    
     @endforeach
-
-
   </tbody>
 </table>
 

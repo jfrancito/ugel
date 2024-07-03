@@ -63,6 +63,15 @@ class DetalleCertificado extends Model
         }
     }
 
+    public function scopeEstadoOriginal($query,$estado_id){
+        if(trim($estado_id) != 'TODO'){
+            $query->where('estado_id','=',$estado_id);
+        }else{
+            $query->whereIn('estado_id',['CEES00000001','CEES00000005','CEES00000007','CEES00000008']);
+        }
+    }
+
+
 
 
 }

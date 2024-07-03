@@ -1,3 +1,14 @@
+.cecer{
+  background-color: #fff;
+  color: #000;
+  font-size: 24px;
+  /* float: right; */
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border-radius: 1px;
+}
+
 .error{
   color: #E74C3C;
 }

@@ -194,7 +194,17 @@ trait GeneralesTraits
         									->orderby('codigo','desc')
 		        							->pluck($atributo2,$atributo1)
 											->toArray();
-		$combo  					= 	$array;
+
+
+		if($titulo==''){
+			$combo  					= 	$array;
+		}else{
+			if($todo=='TODO'){
+				$combo  				= 	array('' => $titulo , $todo => $todo) + $array;
+			}else{
+				$combo  				= 	array('' => $titulo) + $array;
+			}
+		}
 	 	return  $combo;					 			
 	}
 
@@ -221,6 +231,34 @@ trait GeneralesTraits
 
 	 	return  $combo;					 			
 	}
+
+
+
+	private function gn_generacion_combo_institucion_distrito($titulo,$todo) {
+		
+		$array 							= 	DB::table('instituciones')
+        									->where('activo','=',1)
+        									->where('id','<>','1CIX00000001')
+        									->groupby('instituciones.distrito')
+        									->orderby('instituciones.distrito','asc')
+		        							->pluck('distrito','distrito')
+											->toArray();
+		if($titulo==''){
+			$combo  					= 	$array;
+		}else{
+			if($todo=='TODO'){
+				$combo  				= 	array('' => $titulo , $todo => $todo) + $array;
+			}else{
+				$combo  				= 	array('' => $titulo) + $array;
+			}
+		}
+
+	 	return  $combo;					 			
+	}
+
+
+
+
 
 
 	private function gn_generacion_estados_sobrantes($tabla,$atributo1,$atributo2,$titulo,$todo,$tipoestado) {
