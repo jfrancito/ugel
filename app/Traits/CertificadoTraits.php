@@ -12,7 +12,7 @@ use App\Modelos\Conei;
 use App\Modelos\Certificado;
 use App\Modelos\DetalleCertificado;
 use App\Modelos\Estado;
-
+use App\Modelos\Institucion;
 
 
 
@@ -32,6 +32,60 @@ trait CertificadoTraits
 	 	return  $listadatos;
 
 	}
+
+
+	private function gn_instituciones_sin_certificados($periodo_id,$procedencia_id,$estado_id) {
+
+		$periodoinicio  =   Estado::where('id','=',$periodo_id)->first();
+
+		$estado_no_id   = 	'CEES00000002';
+
+		$instituciones  =   Institucion::leftJoin('detallecertificados', function($join) use ($periodo_id,$procedencia_id,$estado_id,$estado_no_id)
+	                        {
+	                             $join->on('instituciones.id', '=', 'detallecertificados.institucion_id');
+	                             $join->on('detallecertificados.estado_id','<>',DB::raw("'".$estado_no_id."'"));
+	                             $join->on('detallecertificados.periodo_id','=',DB::raw("'".$periodo_id."'"));
+	                             $join->on('detallecertificados.estado_id','=',DB::raw("'".$estado_id."'"));
+	                             $join->on('detallecertificados.procedente_id','=',DB::raw("'".$procedencia_id."'"));
+	                             $join->on('detallecertificados.activo','=',DB::raw("1"));
+	                        })
+							->where('instituciones.id','<>','1CIX00000001')
+							->whereNull('detallecertificados.id')
+							->select('instituciones.*')
+							->get();
+
+	 	return  $instituciones;
+	}
+
+
+	private function con_lista_sin_certificados_xdistrito($periodo_id,$procedencia_id,$estado_id){
+
+		$periodoinicio  =   Estado::where('id','=',$periodo_id)->first();
+
+		$estado_no_id   = 	'CEES00000002';
+
+		$instituciones  =   Institucion::leftJoin('detallecertificados', function($join) use ($periodo_id,$procedencia_id,$estado_id,$estado_no_id)
+	                        {
+	                             $join->on('instituciones.id', '=', 'detallecertificados.institucion_id');
+	                             $join->on('detallecertificados.estado_id','<>',DB::raw("'".$estado_no_id."'"));
+	                             $join->on('detallecertificados.periodo_id','=',DB::raw("'".$periodo_id."'"));
+	                             $join->on('detallecertificados.estado_id','=',DB::raw("'".$estado_id."'"));
+	                             $join->on('detallecertificados.procedente_id','=',DB::raw("'".$procedencia_id."'"));
+	                             $join->on('detallecertificados.activo','=',DB::raw("1"));
+	                        })
+							->where('instituciones.id','<>','1CIX00000001')
+							->whereNull('detallecertificados.id')
+							->select(DB::raw('count(distrito) as cantidad,distrito'))
+							->groupby('distrito')
+							->orderby('distrito','asc')
+							->get();
+
+	 	return  $instituciones;
+
+	}
+
+
+
 
 	private function gn_array_certificados($periodo_id,$periodofin_id,$procedencia_id,$estado_id) {
 
