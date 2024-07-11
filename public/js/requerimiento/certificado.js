@@ -56,8 +56,6 @@ $(document).ready(function(){
         var institucion_id          =   $('#institucion_id').val();
         var procedencia_id          =   $('#procedencia_id').val();
 
-        debugger;
-
         if(institucion_id ==''){ alerterrorajax("Seleccione una institucion."); return false;}
         if(procedencia_id ==''){ alerterrorajax("Seleccione una procedencia."); return false;}
         //debugger;
@@ -131,17 +129,65 @@ $(document).ready(function(){
 
         var activo       =   $('#activo').val();
         var descripcion       =   $('#descripcion').val();
-        debugger;
         if(activo == 'CEES00000003'){
-            if(descripcion == ''){ alerterrorajax("Ingrese un Motivo de Extorno/Baja."); return false;}
+            if(descripcion == ''){ alerterrorajax("Ingrese un Motivo de Baja."); return false;}
         }            
         return true;
         
 
     });
 
+    $(".certificado").on('click','.btn-agregar-certificado', function() {
+
+        var estado_id         =   $('#estado_id').val();
+        var descripcion       =   $('#descripcion').val();
+        var nro_tramite       =   $('#nro_tramite').val();
+        var certificado       =   $('#certificado');
+
+        if(estado_id == 'CEES00000001'){
+            console.log(filesSelected);
+            if (!filesSelected) {alerterrorajax("Ingrese un Certificado.");return false;}
+        }
+        // else{
+        //     if(descripcion == ''){ alerterrorajax("Ingrese un Motivo de obseravion."); return false;}
+        //     if(nro_tramite == ''){ alerterrorajax("Ingrese un Nro de Tramite."); return false;}
+        // }            
+
+        abrircargando();
+        return true;
+        
+    });
 
 
+
+
+
+
+    $(".certificado").on('change','.aestado_id', function() {
+
+        event.preventDefault();
+        var aestado_id       =   $('.aestado_id').val();
+                
+        if(aestado_id == 'CEES00000008'){
+
+            $( ".bajaextorno" ).addClass( "mostrar" );
+            $( ".bajaextorno" ).removeClass( "ocultar" );
+            $( ".iaprobado" ).addClass( "ocultar" );
+            $( ".iaprobado" ).removeClass( "mostrar" );
+
+
+        }else{
+            $( ".bajaextorno" ).addClass( "ocultar" );
+            $( ".bajaextorno" ).removeClass( "mostrar" );
+
+           $( ".iaprobado" ).addClass( "mostrar" );
+            $( ".iaprobado" ).removeClass( "ocultar" );
+
+        }
+
+
+
+    });
 
 
     $(".certificado").on('change','#activo', function() {

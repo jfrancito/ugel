@@ -49,11 +49,10 @@ class GestionCertificadoController extends Controller
             $disabled               =   false;
         }
 
-
         $array_periodos             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
                                         ->where('procedente_id','=',$procedencia_id)
                                         ->where('activo','=',1)
-                                        ->where('estado_id','=','CEES00000001')
+                                        ->whereIn('estado_id',['CEES00000001','CEES00000008'])
                                         ->pluck('periodo_id')                                   
                                         ->toArray();
 
@@ -377,39 +376,28 @@ class GestionCertificadoController extends Controller
 
                 $multimedia         =   Archivo::where('referencia_id','=',$certificado->id)->where('tipo_archivo','=','certificado')->where('activo','=',1)->first();
                 $rutafoto           =   !empty($multimedia) ? asset('storage/app/certificado_conei/'.$multimedia->lote.'/'.$multimedia->nombre_archivo) : asset('public/img/no-foto.png');
-                //dd($rutafoto);
+
+
                 if($certificado->estado_id == 'CEES00000003'){
-                    $array_estado       =   array('CEES00000001');
-                    $comboestado        =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
-                    $selectestado       =   $certificado->estado_id;          
+                    $array_estado       =   array('CEES00000002');
+                    $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+                    $selectestado       =   $certificado->estado_id;        
                 }else{
-
-                    if($certificado->estado_id == 'CEES00000004' || $certificado->estado_id == 'CEES00000006'){
-                        $array_estado       =   array('CEES00000002');
+                        $array_estado       =   array('CEES00000002','CEES00000003');
                         $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
-                        $selectestado       =   $certificado->estado_id;          
-                    }else{
-
-                        $comboestado        =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO');
                         $selectestado       =   $certificado->estado_id;  
-                    }
                 }
                 
-                //dd($selectestado);
                 return View::make('requerimiento/modificarcertificado', 
                                 [
                                     'certificado'           =>  $certificado,
                                     'idopcion'              =>  $idopcion,
                                     'comboinstituciones'    =>  $comboinstituciones, 
                                     'selectinstituciones'   =>  $selectinstituciones,
-                                    // 'comboperiodo'          =>  $comboperiodo, 
-                                    // 'selectperiodo'         =>  $selectperiodo,
                                     'comboprocedencia'      =>  $comboprocedencia, 
                                     'selectprocedencia'     =>  $selectprocedencia,
-
                                     'comboestado'           =>  $comboestado, 
                                     'selectestado'          =>  $selectestado,
-
                                     'rutafoto'              =>  $rutafoto,
                                     'multimedia'            =>  $multimedia,
                                 ]);
@@ -442,17 +430,20 @@ class GestionCertificadoController extends Controller
                     $periodofin_id                  =   $request['periodo_fin_id'];
                     $procedencia_id                 =   $request['procedencia_id'];
 
+                    $estado_id                      =   $request['estado_id'];
+                    $descripcion                    =   $request['descripcion'];
+                    $nro_tramite                    =   $request['nro_tramite'];
                     $nombreperiodog                 =   '';
                     $institucion                    =   Institucion::where('id','=',$institucion_id)->first();
                     $periodo                        =   Estado::where('id','=',$periodo_id)->first();
                     $periodofin                     =   Estado::where('id','=',$periodofin_id)->first();
+                    $estado                         =   Estado::where('id','=',$estado_id)->first();
 
                     if(count($periodofin)>0){
                         $nombreperiodog                 =   $periodo->nombre . '-' .$periodofin->nombre;
                     }else{
                         $nombreperiodog                 =   $periodo->nombre;
                     }
-
 
                     $procedencia                    =   Estado::where('id','=',$procedencia_id)->first();
                     $idcertificado                  =   $this->funciones->getCreateIdMaestra('certificados');
@@ -468,8 +459,10 @@ class GestionCertificadoController extends Controller
                     $cabecera->periodo_nombre       =   $nombreperiodog;
                     $cabecera->procedente_id        =   $procedencia_id;
                     $cabecera->procedente_nombre    =   $procedencia->nombre;
-                    $cabecera->estado_id            =   'CEES00000001';
-                    $cabecera->estado_nombre        =   'APROBADO';
+                    $cabecera->estado_id            =   $estado->id;
+                    $cabecera->estado_nombre        =   $estado->nombre;
+                    $cabecera->observacion          =   $descripcion;
+                    $cabecera->numero_tramite       =   $nro_tramite;
                     $cabecera->fecha_crea           =   $this->fechaactual;
                     $cabecera->usuario_crea         =   Session::get('usuario')->id;
                     $cabecera->save();
@@ -489,8 +482,8 @@ class GestionCertificadoController extends Controller
                     $cabeceradet->certificado_id       =   $idcertificado;
                     $cabeceradet->procedente_nombre    =   $procedencia->nombre;
                     $cabeceradet->inicio_fin           =   'I';
-                    $cabeceradet->estado_id            =   'CEES00000001';
-                    $cabeceradet->estado_nombre        =   'APROBADO';
+                    $cabeceradet->estado_id            =   $estado->id;
+                    $cabeceradet->estado_nombre        =   $estado->nombre;
                     $cabeceradet->fecha_crea           =   $this->fechaactual;
                     $cabeceradet->usuario_crea         =   Session::get('usuario')->id;
                     $cabeceradet->save();
@@ -513,8 +506,8 @@ class GestionCertificadoController extends Controller
                         $cabeceradet->certificado_id       =   $idcertificado;
                         $cabeceradet->procedente_nombre    =   $procedencia->nombre;
                         $cabeceradet->inicio_fin           =   'F';
-                        $cabeceradet->estado_id            =   'CEES00000001';
-                        $cabeceradet->estado_nombre        =   'APROBADO';
+                        $cabeceradet->estado_id            =   $estado->id;
+                        $cabeceradet->estado_nombre        =   $estado->nombre;
                         $cabeceradet->fecha_crea           =   $this->fechaactual;
                         $cabeceradet->usuario_crea         =   Session::get('usuario')->id;
                         $cabeceradet->save();  
@@ -599,10 +592,12 @@ class GestionCertificadoController extends Controller
             $comboperiodo_fin       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione periodo final','','APAFA_CONEI_PERIODO');
             $selectperiodo_fin      =   '';
 
+            $comboprocedencia       =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','','APAFA_CONEI');
+            $selectprocedencia      =   '';
 
-
-            $comboprocedencia   =   $this->gn_generacion_combo_tabla('estados','id','nombre','Seleccione procedencia','','APAFA_CONEI');
-            $selectprocedencia  =   '';
+            $arrayestado            =   array('CEES00000001','CEES00000008');
+            $comboestado            =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','CERTIFICADO_ESTADO',$arrayestado);
+            $selectestado           =   'CEES00000001';
 
 
 
@@ -620,7 +615,11 @@ class GestionCertificadoController extends Controller
                             'selectperiodo_fin'     =>  $selectperiodo_fin,
 
                             'comboprocedencia'      =>  $comboprocedencia, 
-                            'selectprocedencia'     =>  $selectprocedencia
+                            'selectprocedencia'     =>  $selectprocedencia,
+
+                            'comboestado'           =>  $comboestado, 
+                            'selectestado'          =>  $selectestado,
+
                         ]);
         }
 

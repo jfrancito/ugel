@@ -60,24 +60,7 @@
               <input type="hidden" id = 'procedencia_id' name="procedencia_id" value="{{$certificado->procedente_id}}">
 
 
-
-<!--               <div class="ajax_periodo">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Periodo : </label>
-                  <div class="col-sm-6">
-
-                  <input  type="text"
-                          id="periodo_nombre" name='periodo_nombre' 
-                          value="{{$certificado->periodo_nombre}}"                                           
-                          autocomplete="off" class="form-control input-sm nombre_director" data-aw="1" readonly/>
-
-                  </div>
-                </div> 
-              </div> -->
-
-
-
-              <div class="form-group sectioncargarimagen">
+              <div class="form-group sectioncargarimagen @if($selectestado <> 'CEES00000001') ocultar @endif" >
                   <label class="col-sm-3 control-label">Certificado</label>
                   <div class="col-sm-6">
                       <div class="file-loading">

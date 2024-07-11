@@ -9,8 +9,9 @@
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
       <th>ESTADO</th>
-      <th>MOTIVO</th>
+      <th>OBSERVACION</th>
       <th>NRO TRAMITE</th>
+      <th>MOTIVO BAJA</th>
       <th>OPCION</th>
     </tr>
   </thead>
@@ -29,25 +30,22 @@
         <td>
           @include('requerimiento.ajax.estados')
         </td>
-        <td>{{$item->msj_extorno}}</td>
+        <td>{{$item->observacion}}</td>
         <td>{{$item->numero_tramite}}</td>
-
+        <td>{{$item->msj_extorno}}</td>
         
         <td class="rigth">
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
             <ul role="menu" class="dropdown-menu pull-right">
-
-
-              @if($item->estado_id == 'CEES00000001' || $item->estado_id == 'CEES00000003' || $item->estado_id == 'CEES00000002') 
+              @if($item->estado_id == 'CEES00000001') 
               <li>
                 <a href="{{ url('/descargar-archivo-certificado/'.Hashids::encode(substr($item->id, -8)).'/'.Hashids::encode(substr($item->archivo_id, -8))) }}">
                   Descargar
                 </a>  
               </li>
               @endif
-
-              @if($item->estado_id == 'CEES00000001' || $item->estado_id == 'CEES00000003' || $item->estado_id == 'CEES00000004' || $item->estado_id == 'CEES00000006') 
+              @if($item->estado_id == 'CEES00000001' || $item->estado_id == 'CEES00000008'|| $item->estado_id == 'CEES00000003') 
                 <li>
                   <a href="{{ url('/modificar-certificado/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
                     Modificar
@@ -57,8 +55,6 @@
             </ul>
           </div>
         </td>
-
-
       </tr>                    
     @endforeach
 

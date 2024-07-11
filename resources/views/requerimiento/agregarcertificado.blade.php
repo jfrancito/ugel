@@ -75,45 +75,56 @@
               </div>
 
 
-<!--               <div class="ajax_periodo">
 
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Periodo Inicio : </label>
-                  <div class="col-sm-6">
-                    {!! Form::select( 'periodo_id', $comboperiodo, array($selectperiodo),
-                                      [
-                                        'class'       => 'form-control control select2' ,
-                                        'id'          => 'periodo_id',
-                                        'required'    => '',
-                                        'data-aw'     => '2'
-                                      ]) !!}
-                  </div>
-                </div> 
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Estado : </label>
+                <div class="col-sm-6">
+                  {!! Form::select( 'estado_id', $comboestado, array($selectestado),
+                                    [
+                                      'class'       => 'form-control control select2 aestado_id' ,
+                                      'id'          => 'estado_id',
+                                      'required'    => '',
+                                      'data-aw'     => '3'
+                                    ]) !!}
+                </div>
+              </div>
 
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Periodo Fin: </label>
-                  <div class="col-sm-6">
-                    {!! Form::select( 'periodofin_id', $comboperiodo_fin, array($selectperiodo_fin),
-                                      [
-                                        'class'       => 'form-control control select2' ,
-                                        'id'          => 'periodofin_id',
-                                        'required'    => '',
-                                        'data-aw'     => '2'
-                                      ]) !!}
-                  </div>
-                </div> 
+              <div class="form-group bajaextorno @if($selectestado <> 'CEES00000008') ocultar @endif" >
+                <label class="col-sm-3 control-label">Nro Tramite : </label>
+                <div class="col-sm-6">
+                    <input  type="text"
+                            id="nro_tramite" name='nro_tramite' 
+                            value="{{ old('nro_tramite') }}"                         
+                            placeholder="Nro Tramite"                 
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="4"/>
+                </div>
+              </div>
 
-              </div> -->
+              <div class="form-group bajaextorno  @if($selectestado <> 'CEES00000008') ocultar @endif">
+                <label class="col-sm-3 control-label">Motivo de Observacion :</label>
+                <div class="col-sm-6">
+                      <textarea 
+                      name="descripcion"
+                      id = "descripcion"
+                      class="form-control input-sm validarmayusculas"
+                      rows="5" 
+                      cols="50"    
+                      data-aw="2"></textarea>
+                </div>
+              </div>
 
 
-      				<div class="form-group sectioncargarimagen">
-      						<label class="col-sm-3 control-label">Certificado</label>
+      				<div class="form-group sectioncargarimagen iaprobado @if($selectestado <> 'CEES00000001') ocultar @endif">
+      						<label class="col-sm-3 control-label">Certificado :</label>
       						<div class="col-sm-6">
       								<div class="file-loading">
       				        		<input id="file-es" name="certificado[]" class="file-es" type="file" multiple data-max-file-count="1">
+
       				        </div>
       						</div>
       				</div>
+
+
               <div class="row xs-pt-15">
                 <div class="col-xs-6">
                     <div class="be-checkbox">
@@ -122,7 +133,7 @@
                 </div>
                 <div class="col-xs-6">
                   <p class="text-right">
-                    <button type="submit" class="btn btn-space btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-space btn-primary btn-agregar-certificado">Guardar</button>
                   </p>
                 </div>
               </div>
@@ -174,14 +185,27 @@
 
       });
 
-      $('#file-es').fileinput({
+      var fileInput = $('#file-es').fileinput({
             theme: 'fa5',
             language: 'es',
             allowedFileExtensions: ['pdf'],
             initialPreviewAsData: true,
+            showUpload: false,
+            showRemove: false,
 
+            maxFileCount: 1
+      });
+      var filesSelected = false;
+
+      // Evento de cambio en el input de archivo
+      fileInput.on('fileselect', function(event, numFiles, label) {
+          filesSelected = true;
       });
 
+      // Evento cuando se limpia la selección de archivos
+      fileInput.on('fileclear', function(event) {
+          filesSelected = false;
+      });
 
 
 
