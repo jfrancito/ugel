@@ -74,8 +74,8 @@ class GestionConeiController extends Controller
         $conei      =    Conei::where('id','=',$idconei)
                         ->first();
         $institucion=   Institucion::where('id','=',$conei->institucion_id)->first();
-        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->get();
-        $larchivos  =   Archivo::where('referencia_id','=',$idconei)->get();
+        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->orderby('representante_nombre','asc')->get();
+        $larchivos  =   Archivo::where('referencia_id','=',$idconei)->where('tipo_archivo','=','requerimiento_conei')->get();
         $funcion    =   $this;
 
 
@@ -200,6 +200,9 @@ class GestionConeiController extends Controller
         $representante_id                   =   $request['representante_id'];
         $representante_txt                  =   $request['representante_txt'];
 
+        $codigo_modular_id                  =   $request['codigo_modular_id'];
+        $niveltexto                         =   $request['niveltexto'];
+
         $array_detalle_producto_request     =   json_decode($request['array_detalle_producto'],true);
         $array_detalle_producto             =   array();
 
@@ -213,7 +216,10 @@ class GestionConeiController extends Controller
                                                     "nombresg"      => $nombresg,
                                                     "dcargoni"      => $dcargoni,
                                                     "representante_id"      => $representante_id,
-                                                    "representante_txt"      => $representante_txt
+                                                    "representante_txt"      => $representante_txt,
+                                                    "codigo_modular_id"      => $codigo_modular_id,
+                                                    "niveltexto"      => $niveltexto
+
                                                 );
 
         array_push($array_detalle_producto,$arraynuevo);
@@ -235,6 +241,42 @@ class GestionConeiController extends Controller
                             'ajax'                      =>  true
                          ]);
     }
+
+
+    public function actionModalRegistroOI(Request $request)
+    {
+
+        $funcion                =   $this;
+        $combotd                =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+        $selecttd               =   'TIDO00000001';
+        $representante_sel_id   =   $request['representante_sel_id'];
+
+
+        $arraynotr     =   array($representante_sel_id);
+        $comboor       =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
+        $selector      =   $representante_sel_id;
+
+        $combonivel             =   $this->gn_generacion_combo_niveles(Session::get('institucion')->codigo);
+        $selectnivel            =   '';
+
+
+        return View::make('requerimiento/modal/ajax/amregistrooi',
+                         [
+                            'combotd'           =>  $combotd,
+                            'selecttd'          =>  $selecttd,
+
+                            'combonivel'        =>  $combonivel,
+                            'selectnivel'       =>  $selectnivel,
+
+                            'comboor'           =>  $comboor,
+                            'selector'          =>  $selector,
+                            'representante_sel_id' =>  $representante_sel_id,
+
+                            'funcion'           =>  $funcion,
+                            'ajax'              =>  true
+                         ]);
+    }
+
 
     public function actionModalRegistro(Request $request)
     {
@@ -381,31 +423,7 @@ class GestionConeiController extends Controller
 
 
 
-    public function actionModalRegistroOI(Request $request)
-    {
 
-        $funcion       =   $this;
-        $combotd       =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
-        $selecttd      =   'TIDO00000001';
-        $representante_sel_id  =   $request['representante_sel_id'];
-
-
-        $arraynotr     =   array($representante_sel_id);
-        $comboor       =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
-        $selector      =   $representante_sel_id;
-
-        return View::make('requerimiento/modal/ajax/amregistrooi',
-                         [
-                            'combotd'           =>  $combotd,
-                            'selecttd'          =>  $selecttd,
-
-                            'comboor'           =>  $comboor,
-                            'selector'          =>  $selector,
-
-                            'funcion'           =>  $funcion,
-                            'ajax'              =>  true
-                         ]);
-    }
 
 
     public function actionAgregarConei($idopcion,Request $request)
@@ -452,7 +470,7 @@ class GestionConeiController extends Controller
             
 
             //FALTA LOS OBLIGATORIO
-            $arrayrepresentante                         =   $this->array_representante_obligatrio('M');
+            $arrayrepresentante                         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
             $lrepresentantes                            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->whereIn('id',$arrayrepresentante)->get();
 
             foreach($lrepresentantes as $index=>$item){
@@ -463,6 +481,9 @@ class GestionConeiController extends Controller
                 $_i_tipodocumento_id                    =   $request[$item->codigo.'_i_tipodocumento_id'];
                 $_i_documento                           =   $request[$item->codigo.'_i_documento'];
                 $_i_nombres                             =   $request[$item->codigo.'_i_nombres'];
+                $_i_codigo_modular                      =   $request[$item->codigo.'_i_codigo_modular'];
+                $_i_nivel                               =   $request[$item->codigo.'_i_nivel'];
+
 
                 $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
                 $oi                                     =   new OtroIntegranteConei;
@@ -473,7 +494,9 @@ class GestionConeiController extends Controller
                 $oi->tipo_documento_id                  =   $_i_tipodocumento_id ;
                 $oi->tipo_documento_nombre              =   $_i_tipodocumento_nombre; 
                 $oi->documento                          =   $_i_documento;
-                $oi->nombres                            =   $_i_nombres; 
+                $oi->nombres                            =   $_i_nombres;
+                $oi->nivel_id                           =   $_i_codigo_modular;
+                $oi->nivel_nombre                       =   $_i_nivel; 
                 $oi->cargo                              =   '';
                 $oi->ind_unico                          =   1;
                 $oi->fecha_crea                         =   $this->fechaactual;
@@ -497,7 +520,9 @@ class GestionConeiController extends Controller
                 $oi->tipo_documento_id                  =   $row['tdg'];
                 $oi->tipo_documento_nombre              =   $row['tdgtexto']; 
                 $oi->documento                          =   $row['documentog'];
-                $oi->nombres                            =   $row['nombresg']; 
+                $oi->nombres                            =   $row['nombresg'];
+                $oi->nivel_id                           =   $row['codigo_modular_id'];
+                $oi->nivel_nombre                       =   $row['niveltexto'];
                 $oi->cargo                              =   $row['dcargoni'];
                 $oi->ind_unico                          =   0;
 

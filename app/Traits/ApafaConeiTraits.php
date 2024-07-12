@@ -58,6 +58,8 @@ trait ApafaConeiTraits
 
 	private function array_representante_obligatrio($tipo_colegio) {
 
+		$array  = array();
+
 		if($tipo_colegio=='POLIDOCENTE'){
 			$array = array('ESRP00000001','ESRP00000002','ESRP00000003','ESRP00000004');
 		}else{

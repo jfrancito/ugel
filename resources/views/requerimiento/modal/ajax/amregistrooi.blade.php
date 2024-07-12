@@ -9,6 +9,19 @@
 		    <div class="col-md-12">
 
 
+
+            <div class="col-sm-12 @if($representante_sel_id=='ESRP00000002' || $representante_sel_id=='ESRP00000003') mostrar  @else ocultar @endif">
+              <div class="form-group">
+                <label class="control-label"><b>Nivel : </b></label>
+                {!! Form::select( 'codigo_modular_id', $combonivel, $selectnivel,
+                                  [
+                                    'class'       => 'select3 form-control control input-xs combo',
+                                    'id'          => 'codigo_modular_id',
+                                  ]) !!}
+              </div>
+            </div>
+
+
             <div class="col-sm-12">
               <div class="form-group">
                 <label class="control-label"><b>Representante : </b></label>

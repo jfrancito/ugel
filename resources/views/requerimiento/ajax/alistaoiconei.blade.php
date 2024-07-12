@@ -6,11 +6,12 @@
       </div>
     </div>
     <div class="panel-body">
-      <table class="table table-striped table-borderless">
+      <table class="table table-striped table-borderless totrosrepresentante">
         <thead>
           <tr>
             <th>Fila</th>
             <th>Representante</th>
+            <th>Nivel</th>
             <th>Tipo documento</th>
             <th>Documento</th>
             <th>Nombre</th>
@@ -20,9 +21,10 @@
         </thead>
         <tbody class="no-border-x">
           @foreach($array_detalle_producto as $index => $item)
-            <tr>
-              <td>{{$item['fila']}}</td>
+            <tr t_nivel="{{$item['codigo_modular_id']}}" t_representante_id="{{$item['representante_id']}}">
+              <td>{{$index+1}}</td>
               <td>{{$item['representante_txt']}}</td>
+              <td>{{$item['niveltexto']}}</td>
               <td>{{$item['tdgtexto']}}</td>
               <td>{{$item['documentog']}}</td>
               <td>{{$item['nombresg']}}</td>
@@ -33,6 +35,7 @@
                 </div>
               </td>
             </tr>
+
           @endforeach
         </tbody>
       </table>

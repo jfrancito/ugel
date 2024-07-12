@@ -8,7 +8,7 @@
 	<div  class="row regla-modal">
 		    <div class="col-md-12">
 
-            <div class="col-sm-12">
+            <div class="col-sm-12 @if($data_rp_id_val=='ESRP00000002' || $data_rp_id_val=='ESRP00000003') mostrar  @else ocultar @endif">
               <div class="form-group">
                 <label class="control-label"><b>Nivel : </b></label>
                 {!! Form::select( 'codigo_modular_id', $combonivel, $selectnivel,
@@ -86,7 +86,8 @@
           data_rp_id = '{{$data_rp_id}}'
           data_rp_no = '{{$data_rp_no}}'
 
-
+          data_cod_modular = '{{$data_cod_modular}}'
+          data_nivel = '{{$data_nivel}}'
 
 
   				>

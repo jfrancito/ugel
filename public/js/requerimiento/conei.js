@@ -294,8 +294,8 @@ $(document).ready(function(){
         var data_docu               =   $(this).attr('data_docu');
         var data_nombre             =   $(this).attr('data_nombre');
 
-        var data_cod_modular        =   $(this).attr('data_docu');
-        var data_nivel              =   $(this).attr('data_nombre');
+        var data_cod_modular        =   $(this).attr('data_cod_modular');
+        var data_nivel              =   $(this).attr('data_nivel');
 
         var data_nombre_visible     =   $(this).attr('data_nombre_visible');
         var data_titulo             =   $(this).attr('data_titulo');
@@ -420,6 +420,17 @@ $(document).ready(function(){
         var documentog              =   $('#documentog').val();
         var nombresg                =   $('#nombresg').val();
         var tdgtexto                =   $('select[name="tdg"] option:selected').text();
+        var data_rp_id_val          =   $(this).attr('data_rp_id_val');
+
+        var codigo_modular_id       =   '';
+        var niveltexto              =   '';
+
+        if(data_rp_id_val == 'ESRP00000002' || data_rp_id_val == 'ESRP00000003'){
+            codigo_modular_id       =   $('#codigo_modular_id').val();
+            niveltexto              =   ' - ' + $('select[name="codigo_modular_id"] option:selected').text();
+            swnivel = validar_no_existe_nivel(codigo_modular_id,data_rp_id_val);
+            
+        }
 
         var data_td_id              =   $(this).attr('data_td_id');
         var data_td_no              =   $(this).attr('data_td_no');
@@ -428,11 +439,13 @@ $(document).ready(function(){
         var data_nombre_visible     =   $(this).attr('data_nombre_visible');
         var data_rp_id              =   $(this).attr('data_rp_id');
         var data_rp_no              =   $(this).attr('data_rp_no');
-        var data_rp_id_val          =   $(this).attr('data_rp_id_val');
+
         var data_rp_no_val          =   $(this).attr('data_rp_no_val');
 
-        debugger;
+        var data_cod_modular        =   $(this).attr('data_cod_modular');
+        var data_nivel              =   $(this).attr('data_nivel');
 
+        if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
         if(tdg ==''){ alerterrorajax("Seleccione un tipo documento."); return false;}
         if(documentog ==''){ alerterrorajax("Ingrese un documento de identidad."); return false;}
         if(nombresg ==''){ alerterrorajax("Ingrese un nombre."); return false;}
@@ -440,10 +453,13 @@ $(document).ready(function(){
         $('#'+data_td_id).val(tdg);
         $('#'+data_docu).val(documentog);
         $('#'+data_nombre).val(nombresg);
-        $('#'+data_nombre_visible).val(documentog + ' - ' +nombresg);
+        $('#'+data_nombre_visible).val(documentog + ' - ' +nombresg + niveltexto);
         $('#'+data_td_no).val(tdgtexto);
         $('#'+data_rp_id).val(data_rp_id_val);
         $('#'+data_rp_no).val(data_rp_no_val);
+
+        $('#'+data_cod_modular).val(codigo_modular_id);
+        $('#'+data_nivel).val(niveltexto);
 
         $('#modal-conei-apafa').niftyModal('hide');
 
@@ -460,33 +476,53 @@ $(document).ready(function(){
         var representante_id        =   $('#representante_id').val();
         var representante_txt       =   $('select[name="representante_id"] option:selected').text();
 
+        var codigo_modular_id       =   '';
+        var niveltexto              =   '';
+        var swnivel                 =   0;
+        if(representante_id == 'ESRP00000002' || representante_id == 'ESRP00000003'){
+            codigo_modular_id       =   $('#codigo_modular_id').val();
+            niveltexto              =   $('select[name="codigo_modular_id"] option:selected').text();
+            //validar que el nivel no ya seleccionado
+            swnivel = validar_no_existe_nivel(codigo_modular_id,representante_id);
+
+        }
+
         var documentog              =   $('#documentogoi').val();
         var nombresg                =   $('#nombresgoi').val();
         var cargo                   =   $('#cargo').val();
         var _token                  =   $('#token').val();
         var array_detalle_producto  =   $('#array_detalle_producto').val();
 
-
+        if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
         if(representante_id ==''){ alerterrorajax("Seleccione un representante."); return false;}
         if(tdg ==''){ alerterrorajax("Seleccione un tipo documento."); return false;}
         if(documentog ==''){ alerterrorajax("Ingrese un documento de identidad."); return false;}
         if(nombresg ==''){ alerterrorajax("Ingrese un nombre."); return false;}
-
-
         if(representante_id=='ESRP00000009'){
             if(cargo ==''){ alerterrorajax("Seleccione un cargo."); return false;}
         }
+        actualizar_ajax_oi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,
+                            cargo,array_detalle_producto,representante_id,representante_txt,codigo_modular_id,niveltexto
+                          );
 
-
-
-
-
-        actualizar_ajax_oi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,cargo,array_detalle_producto,representante_id,representante_txt);
         $('#modal-conei-apafa').niftyModal('hide');
 
     });
 
 
+    function validar_no_existe_nivel(codigo_modular_id,representante_id){
+            var sw = 0;
+            $(".totrosrepresentante  tbody tr").each(function(){
+                t_nivel  = $(this).attr('t_nivel');
+                t_representante_id  = $(this).attr('t_representante_id');
+                if(representante_id==t_representante_id){
+                    if(t_nivel==codigo_modular_id){
+                        sw = 1;
+                    }
+                }
+            });
+            return sw;
+    }
 
     $(".conei").on('click','.eliminaroi', function(e) {
 
@@ -604,7 +640,7 @@ $(document).ready(function(){
         });
     }
 
-    function actualizar_ajax_oi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,cargo,array_detalle_producto,representante_id,representante_txt){
+    function actualizar_ajax_oi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,cargo,array_detalle_producto,representante_id,representante_txt,codigo_modular_id,niveltexto){
 
         abrircargando();
         $.ajax({
@@ -617,8 +653,10 @@ $(document).ready(function(){
                             documentog          : documentog,
                             nombresg            : nombresg,
                             dcargoni            : cargo,
-                            representante_id        : representante_id,
-                            representante_txt        : representante_txt,
+                            representante_id    : representante_id,
+                            representante_txt   : representante_txt,
+                            codigo_modular_id    : codigo_modular_id,
+                            niveltexto           : niveltexto,
 
                             array_detalle_producto : array_detalle_producto
                         },

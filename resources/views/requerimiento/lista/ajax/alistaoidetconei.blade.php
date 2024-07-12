@@ -1,12 +1,14 @@
 <div class="col-sm-12">
   <div class="panel panel-default panel-table">
-    <div class="panel-heading">Otros integrantes <small class="opcional">(**) Opcional</small>
     </div>
     <div class="panel-body">
       <table class="table table-striped table-borderless">
         <thead>
           <tr>
             <th>Fila</th>
+            <th>Representante</th>
+            <th>Nivel</th>
+
             <th>Tipo documento</th>
             <th>Documento</th>
             <th>Nombre</th>
@@ -16,7 +18,9 @@
         <tbody class="no-border-x">
           @foreach($listaoic as $index => $item)
             <tr>
-              <td>{{$index}}</td>
+              <td>{{$index+1}}</td>
+              <td>{{$item->representante_nombre}}</td>
+              <td>{{$item->nivel_nombre}}</td>
               <td>{{$item->tipo_documento_nombre}}</td>
               <td>{{$item->documento}}</td>
               <td>{{$item->nombres}}</td>
