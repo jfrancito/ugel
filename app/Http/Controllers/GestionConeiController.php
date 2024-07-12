@@ -682,7 +682,7 @@ class GestionConeiController extends Controller
             $array_periodos             =   DetalleCertificado::where('institucion_id','=',$institucion_id)
                                             ->where('procedente_id','=',$procedencia_id)
                                             ->where('activo','=',1)
-                                            ->where('estado_id','=','CEES00000001')
+                                            ->whereIn('estado_id',['CEES00000001','CEES00000005','CEES00000008'])
                                             ->pluck('periodo_id')                                   
                                             ->toArray();
 

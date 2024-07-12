@@ -102,9 +102,10 @@ class GestionCertificadoController extends Controller
                                         ->where('procedente_id','=',$procedencia_id)
                                         ->where('periodo_id','=',$periodo_id)
                                         ->where('activo','=',1)
-                                        ->where('estado_id','=','CEES00000001')
+                                        ->whereIn('estado_id',['CEES00000001','CEES00000005','CEES00000008'])
                                         ->pluck('periodo_id')                                   
                                         ->first();
+
 
         $comboperiodofin            =   array();
         $selectperiodofin           =   '';
@@ -134,7 +135,7 @@ class GestionCertificadoController extends Controller
                                                     ->where('procedente_id','=',$procedencia_id)
                                                     ->where('periodo_id','=',$periodofin->id)
                                                     ->where('activo','=',1)
-                                                    ->where('estado_id','=','CEES00000001')
+                                                    ->whereIn('estado_id',['CEES00000001','CEES00000005','CEES00000008'])
                                                     ->pluck('periodo_id')                                   
                                                     ->first();
 
