@@ -115,6 +115,8 @@
       <th>PERIODO</th>
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
+      <th>NRO TRAMITE</th>
+      <th>OBSERVACION</th>      
       <th>DISTRITO</th>
       <th>ESTADO</th>
       <th>OPCION</th>
@@ -129,8 +131,9 @@
         <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
+        <td>{{$item->observacion}}</td> 
+        <td>{{$item->numero_tramite}}</td>   
         <td>{{$item->distrito}}</td>
-
         <td>
           @include('requerimiento.ajax.estados')
         </td>

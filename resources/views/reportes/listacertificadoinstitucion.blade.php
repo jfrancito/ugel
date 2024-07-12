@@ -106,7 +106,7 @@
 
 
 
-                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte">
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 cajareporte ocultar">
                         <div class="form-group">
                           <label class="col-sm-12 control-label">Distrito : </label>
                           <div class="col-sm-12">

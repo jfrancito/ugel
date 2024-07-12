@@ -89,14 +89,42 @@
                 <label class="col-sm-3 control-label">Motivo de BAJA :</label>
                 <div class="col-sm-6">
                       <textarea 
-                      name="descripcion"
-                      id = "descripcion"
+                      name="bjamsj"
+                      id = "bjamsj"
                       class="form-control input-sm validarmayusculas"
                       rows="5" 
                       cols="50"    
                       data-aw="2">{{$certificado->msj_extorno}}</textarea>
                 </div>
               </div>
+
+
+
+              <div class="form-group bajaextornov @if($selectestado <> 'CEES00000008') ocultar @endif" >
+                <label class="col-sm-3 control-label">Nro Tramite : </label>
+                <div class="col-sm-6">
+                    <input  type="text"
+                            id="nro_tramite" name='nro_tramite' 
+                            value="{{$certificado->numero_tramite}}"                         
+                            placeholder="Nro Tramite"                 
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="4"/>
+                </div>
+              </div>
+
+              <div class="form-group bajaextornov  @if($selectestado <> 'CEES00000008') ocultar @endif">
+                <label class="col-sm-3 control-label">Motivo de Observacion :</label>
+                <div class="col-sm-6">
+                      <textarea 
+                      name="descripcion"
+                      id = "descripcion"
+                      class="form-control input-sm validarmayusculas"
+                      rows="5" 
+                      cols="50"    
+                      data-aw="2">{{$certificado->observacion}}</textarea>
+                </div>
+              </div>
+
+
 
 
               

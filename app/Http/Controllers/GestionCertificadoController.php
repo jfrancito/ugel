@@ -272,21 +272,32 @@ class GestionCertificadoController extends Controller
                     DB::beginTransaction();
                     /******************************/
                     $activo                             =   $request['activo'];
+                    $bjamsj                             =   $request['bjamsj'];
+                    $nro_tramite                        =   $request['nro_tramite'];
+                    $descripcion                        =   $request['descripcion'];
+
                     $estado                             =   Estado::where('id','=',$activo)->first();
                     $estado_activo                      =   1;
                     //BAJA
                     if($activo == 'CEES00000003'){
-
                         $certificado->estado_id         =   $estado->id;
                         $certificado->estado_nombre     =   $estado->nombre;
-                        $certificado->msj_extorno       =   $request['descripcion'];
+                        $certificado->msj_extorno       =   $bjamsj;
                         $estado_activo                  =   0;
-
                     }
                     //EXTORNO
                     if($activo == 'CEES00000002'){
                         $estado_activo                  =   0;
                     }
+                    //OBSERVADO
+                    if($activo == 'CEES00000008'){
+                        $certificado->estado_id         =   $estado->id;
+                        $certificado->estado_nombre     =   $estado->nombre;
+                        $certificado->observacion       =   $descripcion;
+                        $certificado->numero_tramite    =   $nro_tramite;
+                    }
+
+
 
                     $usuario                       =   User::where('id',Session::get('usuario')->id)->first();
                     $certificado->estado_id        =   $estado->id;
@@ -379,13 +390,23 @@ class GestionCertificadoController extends Controller
 
 
                 if($certificado->estado_id == 'CEES00000003'){
+
                     $array_estado       =   array('CEES00000002');
                     $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
                     $selectestado       =   $certificado->estado_id;        
                 }else{
-                        $array_estado       =   array('CEES00000002','CEES00000003');
+                    if($certificado->estado_id == 'CEES00000008'){
+
+                        $array_estado       =   array('CEES00000002','CEES00000008');
                         $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
-                        $selectestado       =   $certificado->estado_id;  
+                        $selectestado       =   $certificado->estado_id;
+
+
+                    }else{
+                            $array_estado       =   array('CEES00000002','CEES00000003');
+                            $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+                            $selectestado       =   $certificado->estado_id;
+                    }
                 }
                 
                 return View::make('requerimiento/modificarcertificado', 
