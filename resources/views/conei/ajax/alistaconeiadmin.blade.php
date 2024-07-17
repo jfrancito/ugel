@@ -3,6 +3,8 @@
     <tr>
       <th>CODIGO REQ.</th>
       <th>PERIODO</th>
+      <th>INSTITUCION</th>
+
       <th>FECHA CREA</th>
       <th>ESTADO</th>
       <th>OPCION</th>
@@ -14,6 +16,8 @@
 
         <td>{{$item->codigo}}</td>
         <td>{{$item->periodo_nombre}}</td>
+        <td>{{$item->institucion_nombre}}</td>
+
         <td>{{$item->fecha_crea}}</td>
         <td>
           @include('requerimiento.ajax.estados')
@@ -23,6 +27,11 @@
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
             <ul role="menu" class="dropdown-menu pull-right">
+              <li>
+                <a href="{{ url('/gestion-detalle-conei/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
+                  GESTION CONEI
+                </a>
+              </li>
               <li>
                 <a href="{{ url('/detalle-conei/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
                   DETALLLE

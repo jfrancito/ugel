@@ -29,6 +29,29 @@ use Keygen;
 
 trait GeneralesTraits
 {
+
+
+
+	public function ge_combo_estado_cnei($estado_id)
+	{
+
+		$array_estado       =   array();
+        if($estado_id == 'CEES00000005'){
+            $array_estado       =   array('CEES00000008','CEES00000006');
+            $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+        }else{
+            if($estado_id == 'CEES00000006'){
+                $array_estado       =   array('CEES00000001');
+                $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+            }else{
+                $comboestado        =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione estado','','CERTIFICADO_ESTADO',$array_estado);
+            }
+        }
+
+		return $comboestado;
+	}
+
+
 	public function ge_validarArchivoDuplicado($nombrearchivo,$registrodestino_id)
 	{
 		$valor = true;
@@ -168,7 +191,7 @@ trait GeneralesTraits
 		$array 							= 	DB::table($tabla)
         									->where('activo','=',1)
         									->where('tipoestado','=',$tipoestado)
-        									->orderby('codigo','desc')
+        									->orderby('codigo','asc')
 		        							->pluck($atributo2,$atributo1)
 											->toArray();
 		if($titulo==''){
@@ -216,7 +239,7 @@ trait GeneralesTraits
         									->where('activo','=',1)
         									->whereNotIn('id',$array)
         									->where('tipoestado','=',$tipoestado)
-        									->orderby('codigo','desc')
+        									->orderby('codigo','asc')
 		        							->pluck($atributo2,$atributo1)
 											->toArray();
 		if($titulo==''){

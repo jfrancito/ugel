@@ -1,26 +1,12 @@
 <div class="modal-header">
 	<button type="button" data-dismiss="modal" aria-hidden="true" class="close modal-close"><span class="mdi mdi-close"></span></button>
 	<h3 class="modal-title">
-		 OTRO REPRESENTANTE
+		 REPRESENTANTE
 	</h3>
 </div>
 <div class="modal-body">
 	<div  class="row regla-modal">
 		    <div class="col-md-12">
-
-
-
-            <div class="col-sm-12 @if($representante_sel_id=='ESRP00000002' || $representante_sel_id=='ESRP00000003') mostrar  @else ocultar @endif">
-              <div class="form-group">
-                <label class="control-label"><b>Nivel : </b></label>
-                {!! Form::select( 'codigo_modular_id', $combonivel, $selectnivel,
-                                  [
-                                    'class'       => 'select3 form-control control input-xs combo',
-                                    'id'          => 'codigo_modular_id',
-                                  ]) !!}
-              </div>
-            </div>
-
 
             <div class="col-sm-12">
               <div class="form-group">
@@ -29,6 +15,17 @@
                                   [
                                     'class'       => 'select3 form-control control input-xs combo',
                                     'id'          => 'representante_id',
+                                  ]) !!}
+              </div>
+            </div>
+
+            <div class="col-sm-12">
+              <div class="form-group nivel">
+                <label class="control-label"><b>Nivel : </b></label>
+                {!! Form::select( 'codigo_modular_id', $combonivel, $selectnivel,
+                                  [
+                                    'class'       => 'select3 form-control control input-xs combo',
+                                    'id'          => 'codigo_modular_id',
                                   ]) !!}
               </div>
             </div>
@@ -81,8 +78,8 @@
 
               </div>
             </div>
-            <div class="col-sm-6 invitados">
-              <div class="form-group @if($selector!='ESRP00000009') ocultar @endif">
+            <div class="col-sm-6 ">
+              <div class="form-group invitados @if($selector!='ESRP00000009') ocultar @endif">
                 <label class="control-label " ><b>CARGO  : </b></label>
                 <input  type="text"
                         id="cargo" 

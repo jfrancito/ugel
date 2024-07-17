@@ -140,8 +140,13 @@ class UserController extends Controller {
 		//CONEI
 		$detallecertificado = 	DetalleCertificado::where('periodo_nombre','=',$anio)
 								->where('procedente_id','=','APCN00000002')
+								->whereIn('estado_id',['CEES00000001','CEES00000007','CEES00000005','CEES00000008'])
+								
 								->where('institucion_id','=',Session::get('institucion')->id)
+								->orderBy('estado_id','asc')
+
 								->first();
+
 		if(count($detallecertificado)>0){
 			$certificado 		= 	Certificado::where('id','=',$detallecertificado->certificado_id)->first();
 			$conei_periodo 		= 	$certificado->periodo_nombre;
@@ -154,8 +159,12 @@ class UserController extends Controller {
 		//CONEI
 		$detallecertificado = 	DetalleCertificado::where('periodo_nombre','=',$anio)
 								->where('procedente_id','=','APCN00000001')
+								->whereIn('estado_id',['CEES00000001','CEES00000007','CEES00000005','CEES00000008'])
 								->where('institucion_id','=',Session::get('institucion')->id)
+								->orderBy('estado_id','asc')
 								->first();
+
+
 		if(count($detallecertificado)>0){
 			$certificado 		= 	Certificado::where('id','=',$detallecertificado->certificado_id)->first();
 			$apafa_periodo 		= 	$certificado->periodo_nombre;

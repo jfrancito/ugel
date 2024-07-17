@@ -9,16 +9,12 @@
       @include('requerimiento.form.tab.tabperiodo')
       @include('requerimiento.form.tab.tabintegrante')
       <br><br>
-
       <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
       <input type="hidden" name="procedencia_id" id = 'procedencia_id' value='{{$procedencia_id}}'>
-
       <div style="text-align: right;">
         <button type="button" class="btn btn-space btn-success btn-next">Siguiente</button>
       </div>
     </div>
-
-
 
     <div id="archivo" class="tab-pane cont">
       @include('requerimiento.form.tab.tabarchivos')

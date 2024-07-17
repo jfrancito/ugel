@@ -25,10 +25,14 @@ trait ApafaConeiTraits
 	 	return  $listadatos;
 	}
 
-
 	private function con_lista_conei() {
 		$listadatos 	= 	Conei::where('institucion_id','=',Session::get('institucion')->id)
 							->get();
+	 	return  $listadatos;
+	}
+
+	private function con_lista_conei_admin() {
+		$listadatos 	= 	Conei::get();
 	 	return  $listadatos;
 	}
 
@@ -47,7 +51,7 @@ trait ApafaConeiTraits
 		//order array
 		$array_representante 		= array();
 		foreach ($array_detalle_producto as $clave=>$empleado){
-			$array_representante[$clave] 		= $empleado["representante_txt"];
+			$array_representante[$clave] 		= $empleado["representante_id"];
 		}
 		array_multisort($array_representante, SORT_ASC, $array_detalle_producto);
 

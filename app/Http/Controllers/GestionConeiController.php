@@ -74,7 +74,7 @@ class GestionConeiController extends Controller
         $conei      =    Conei::where('id','=',$idconei)
                         ->first();
         $institucion=   Institucion::where('id','=',$conei->institucion_id)->first();
-        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->orderby('representante_nombre','asc')->get();
+        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->orderby('representante_id','asc')->get();
         $larchivos  =   Archivo::where('referencia_id','=',$idconei)->where('tipo_archivo','=','requerimiento_conei')->get();
         $funcion    =   $this;
 
@@ -141,9 +141,16 @@ class GestionConeiController extends Controller
         $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
         $funcion                =   $this;
 
+        $arrayrepresentante         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
+
+        $robligatorios              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')
+                                        ->whereIn('id',$arrayrepresentante)
+                                        ->get();   
+
         return View::make('requerimiento/ajax/alistaoiconei',
                          [
                             'array_detalle_producto'    =>  $array_detalle_producto,
+                            'robligatorios'             =>  $robligatorios,
                             'funcion'                   =>  $funcion,
                             'ajax'                      =>  true
                          ]);
@@ -172,15 +179,15 @@ class GestionConeiController extends Controller
         $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
         //DD($array_detalle_producto);
 
-        $data_o                                     =   $request['data_o'];
+        //$data_o                                     =   $request['data_o'];
         $funcion                                    =   $this;
 
-        //dd($data_o);
+        //dd($institucion);
 
         return View::make('requerimiento/modal/ajax/alistacertificado',
                          [
                             'array_detalle_producto'                        =>  $array_detalle_producto,
-                            'data_o'                                        =>  $data_o,
+                            //'data_o'                                        =>  $data_o,
                             'institucion'                                   =>  $institucion,
                             'director'                                      =>  $director,
 
@@ -232,11 +239,18 @@ class GestionConeiController extends Controller
 
         $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
 
+        $arrayrepresentante         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
+
+        $robligatorios              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')
+                                        ->whereIn('id',$arrayrepresentante)
+                                        ->get();   
+
         $funcion                    =   $this;
 
         return View::make('requerimiento/ajax/alistaoiconei',
                          [
                             'array_detalle_producto'    =>  $array_detalle_producto,
+                            'robligatorios'             =>  $robligatorios,
                             'funcion'                   =>  $funcion,
                             'ajax'                      =>  true
                          ]);
@@ -252,13 +266,13 @@ class GestionConeiController extends Controller
         $representante_sel_id   =   $request['representante_sel_id'];
 
 
-        $arraynotr     =   array($representante_sel_id);
-        $comboor       =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
-        $selector      =   $representante_sel_id;
-
+        $arraynotr              =   array($representante_sel_id);
+        $arraynotr              =   array('ESRP00000001');
+        $comboor                =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
+        $comboor                =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','','','ESTADO_REPRESENTANTE',$arraynotr);
+        $selector               =   'ESRP00000002';
         $combonivel             =   $this->gn_generacion_combo_niveles(Session::get('institucion')->codigo);
         $selectnivel            =   '';
-
 
         return View::make('requerimiento/modal/ajax/amregistrooi',
                          [
@@ -469,41 +483,41 @@ class GestionConeiController extends Controller
             $usuario                                    =   User::where('id',Session::get('usuario')->id)->first();
             
 
-            //FALTA LOS OBLIGATORIO
-            $arrayrepresentante                         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
-            $lrepresentantes                            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->whereIn('id',$arrayrepresentante)->get();
 
-            foreach($lrepresentantes as $index=>$item){
+            // $arrayrepresentante                         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
+            // $lrepresentantes                            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->whereIn('id',$arrayrepresentante)->get();
 
-                $_i_representante_id                    =   $request[$item->codigo.'_i_representante_id'];
-                $_i_representante_nombre                =   $request[$item->codigo.'_i_representante_nombre'];
-                $_i_tipodocumento_nombre                =   $request[$item->codigo.'_i_tipodocumento_nombre'];
-                $_i_tipodocumento_id                    =   $request[$item->codigo.'_i_tipodocumento_id'];
-                $_i_documento                           =   $request[$item->codigo.'_i_documento'];
-                $_i_nombres                             =   $request[$item->codigo.'_i_nombres'];
-                $_i_codigo_modular                      =   $request[$item->codigo.'_i_codigo_modular'];
-                $_i_nivel                               =   $request[$item->codigo.'_i_nivel'];
+            // foreach($lrepresentantes as $index=>$item){
+
+            //     $_i_representante_id                    =   $request[$item->codigo.'_i_representante_id'];
+            //     $_i_representante_nombre                =   $request[$item->codigo.'_i_representante_nombre'];
+            //     $_i_tipodocumento_nombre                =   $request[$item->codigo.'_i_tipodocumento_nombre'];
+            //     $_i_tipodocumento_id                    =   $request[$item->codigo.'_i_tipodocumento_id'];
+            //     $_i_documento                           =   $request[$item->codigo.'_i_documento'];
+            //     $_i_nombres                             =   $request[$item->codigo.'_i_nombres'];
+            //     $_i_codigo_modular                      =   $request[$item->codigo.'_i_codigo_modular'];
+            //     $_i_nivel                               =   $request[$item->codigo.'_i_nivel'];
 
 
-                $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
-                $oi                                     =   new OtroIntegranteConei;
-                $oi->id                                 =   $idoi;
-                $oi->conei_id                           =   $idrequerimiento;
-                $oi->representante_id                   =   $_i_representante_id;
-                $oi->representante_nombre               =   $_i_representante_nombre; 
-                $oi->tipo_documento_id                  =   $_i_tipodocumento_id ;
-                $oi->tipo_documento_nombre              =   $_i_tipodocumento_nombre; 
-                $oi->documento                          =   $_i_documento;
-                $oi->nombres                            =   $_i_nombres;
-                $oi->nivel_id                           =   $_i_codigo_modular;
-                $oi->nivel_nombre                       =   $_i_nivel; 
-                $oi->cargo                              =   '';
-                $oi->ind_unico                          =   1;
-                $oi->fecha_crea                         =   $this->fechaactual;
-                $oi->usuario_crea                       =   Session::get('usuario')->id;
-                $oi->save();
+            //     $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
+            //     $oi                                     =   new OtroIntegranteConei;
+            //     $oi->id                                 =   $idoi;
+            //     $oi->conei_id                           =   $idrequerimiento;
+            //     $oi->representante_id                   =   $_i_representante_id;
+            //     $oi->representante_nombre               =   $_i_representante_nombre; 
+            //     $oi->tipo_documento_id                  =   $_i_tipodocumento_id ;
+            //     $oi->tipo_documento_nombre              =   $_i_tipodocumento_nombre; 
+            //     $oi->documento                          =   $_i_documento;
+            //     $oi->nombres                            =   $_i_nombres;
+            //     $oi->nivel_id                           =   $_i_codigo_modular;
+            //     $oi->nivel_nombre                       =   $_i_nivel; 
+            //     $oi->cargo                              =   '';
+            //     $oi->ind_unico                          =   1;
+            //     $oi->fecha_crea                         =   $this->fechaactual;
+            //     $oi->usuario_crea                       =   Session::get('usuario')->id;
+            //     $oi->save();
 
-            }
+            // }
 
 
 
@@ -580,8 +594,6 @@ class GestionConeiController extends Controller
                     }
                 }
 
-
-
             }
 
 
@@ -606,8 +618,6 @@ class GestionConeiController extends Controller
             $cabecera->fecha_crea           =   $this->fechaactual;
             $cabecera->usuario_crea         =   Session::get('usuario')->id;
             $cabecera->save();
-
-
 
 
             $iddetcertificado               =   $this->funciones->getCreateIdMaestra('detallecertificados');
@@ -659,11 +669,7 @@ class GestionConeiController extends Controller
             }
 
 
-
-
-
             //dd("exitoxo");
-
 
             return Redirect::to('/gestion-conei/'.$idopcion)->with('bienhecho', 'Requerimiento '.$codigo.' registrado con exito');
 
@@ -675,7 +681,33 @@ class GestionConeiController extends Controller
             $director                   =   Director::where('institucion_id','=',$institucion_id)->where('activo','=','1')->first();
             $combotd                    =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
             $selecttd                   =   'TIDO00000001';
-            $array_detalle_producto     =   array();
+
+            $director_i_tipodocumento_id        = 'TIDO00000001';
+            $director_i_tipodocumento_nombre    = 'DNI';
+            $director_i_representante_id        = 'ESRP00000001';
+            $director_i_representante_nombre    = 'DIRECTOR';
+            $director_i_documento               =  $director->dni;
+            $director_i_nombres                 =  $director->nombres;
+
+            $array_detalle_producto             =   array();
+            $arraynuevo                         =   array(
+                                                        "fila"                      => 1,
+                                                        "tdg"                       => $director_i_tipodocumento_id,
+                                                        "tdgtexto"                  => $director_i_tipodocumento_nombre,
+                                                        "documentog"                => $director_i_documento,
+                                                        "nombresg"                  => $director_i_nombres,
+                                                        "dcargoni"                  => '',
+                                                        "representante_id"          => $director_i_representante_id,
+                                                        "representante_txt"         => $director_i_representante_nombre,
+                                                        "codigo_modular_id"         => '',
+                                                        "niveltexto"                => ''
+                                                    );
+
+            array_push($array_detalle_producto,$arraynuevo);
+
+            $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
+
+
             $disabled                   =   false;
 
             $procedencia_id             =   'APCN00000002';
@@ -695,25 +727,22 @@ class GestionConeiController extends Controller
             $mensaje                    =   'SELECCIONE PERIODOS';
             $color                      =   '';
 
-
             $tarchivos                  =   DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
-
             $arrayrepresentante         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
+
+            $robligatorios              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')
+                                            ->whereIn('id',$arrayrepresentante)
+                                            ->get();   
+
             $lrepresentantes            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')->get();
 
-
-            $director_i_tipodocumento_id = 'TIDO00000001';
-            $director_i_tipodocumento_nombre = 'DNI';
-
-            $director_i_representante_id = 'ESRP00000001';
-            $director_i_representante_nombre = 'DIRECTOR';
-
-            $director_i_documento        =  $director->dni;
-            $director_i_nombres          =  $director->nombres;
+            //dd($array_detalle_producto);
 
             return View::make('requerimiento.agregarconei',
                         [
                             'array_detalle_producto'                =>  $array_detalle_producto,
+                            'robligatorios'                         =>  $robligatorios,
+
                             'idopcion'                              =>  $idopcion,
                             'institucion'                           =>  $institucion,
                             'director'                              =>  $director,

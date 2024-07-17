@@ -49,25 +49,21 @@
 	      	   <td colspan="4" style="text-align: center;"><b>CONSEJO DIRECTIVO </b></td>
 	      	</tr>  
 	      	<tr>
-	      	   <td class="center"><b>REPRESENTANTE </b></td>
-	      		 <td class="center"><b>DOCUMENTO </b></td>
-	      	   <td class="center"><b>NOMBRES Y APELLIDOS </b></td>
-	      	   <td class="center"><b>CARGO </b></td>
+	      	   <td class=""><b>REPRESENTANTE </b></td>
+      		 	 <td class=""><b>NIVEL </b></td>
+
+	      		 <td class=""><b>DOCUMENTO </b></td>
+	      	   <td class=""><b>NOMBRES Y APELLIDOS </b></td>
+	      	   <td class=""><b>CARGO </b></td>
 	      	</tr> 
-          @foreach($data_o as $index => $item)
-            <tr>
-            	<td>{{$item['_i_representante_nombre']}}</td>
-            	<td>{{$item['_i_documento']}}</td>
-              <td>{{$item['_i_nombres']}}</td>
-              <td></td>
-            </tr>
-          @endforeach
+
           @foreach($array_detalle_producto as $index => $item)
             <tr>
-            	<td>{{$item['representante_txt']}}</td>
-            	<td>{{$item['documentog']}}</td>
-              <td>{{$item['nombresg']}}</td>
-              <td>{{$item['dcargoni']}}</td>
+            	<td class="">{{$item['representante_txt']}}</td>
+            	<td class="">{{$item['niveltexto']}}</td>
+            	<td class="">{{$item['documentog']}}</td>
+              <td class="">{{$item['nombresg']}}</td>
+              <td class="">{{$item['dcargoni']}}</td>
 
             </tr>
           @endforeach

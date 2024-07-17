@@ -11,7 +11,11 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+.alert-danger {
+    margin-bottom: 0px !important;
+    bottom: -57px !important;
 
+}
 
 .pintar_sel{
   background: #a2beed !important;

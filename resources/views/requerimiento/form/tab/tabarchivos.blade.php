@@ -16,7 +16,7 @@
                         class="file-es"  
                         type="file" 
                         multiple data-max-file-count="1"
-                        required>
+                        @if($item->ind_obligatorio == 1) required @endif>
                     </div>
                 </div>
             </div>

@@ -23,7 +23,7 @@
               <div class="panel panel-default">
                 <form method="POST" action="{{ url('/agregar-requerimiento-conei/'.$idopcion) }}" style="border-radius: 0px;" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                    @include('requerimiento.lista.detalleconei')
+                    @include('conei.lista.lgestiondetalleconei')
                 </form>
               </div>
             </div>
@@ -33,7 +33,6 @@
     </div>
   </div>
 
-  @include('requerimiento.modal.mconeiapafa')
 </div>  
 
 @stop
