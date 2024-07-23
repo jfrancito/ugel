@@ -162,7 +162,7 @@
     <script src="{{ asset('public/js/file/fileinput.js?v='.$version) }}" type="text/javascript"></script>
     <script src="{{ asset('public/js/file/locales/es.js') }}" type="text/javascript"></script>
     <script src="{{ asset('public/js/general/general.js') }}" type="text/javascript"></script>
-  <script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('public/lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 
     <script type="text/javascript">
 
@@ -210,7 +210,7 @@
 
 
     </script> 
-     <script src="{{ asset('public/js/requerimiento/certificado.js?v='.$version) }}" type="text/javascript"></script>
+    <script src="{{ asset('public/js/requerimiento/certificado.js?v='.$version) }}" type="text/javascript"></script>
 
     @stop
 

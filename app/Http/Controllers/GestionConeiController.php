@@ -615,6 +615,8 @@ class GestionConeiController extends Controller
             $cabecera->procedente_nombre    =   $procedencia->nombre;
             $cabecera->estado_id            =   'CEES00000005';
             $cabecera->estado_nombre        =   'EN PROCESO';
+            $cabecera->referencia_id        =   $idrequerimiento;
+
             $cabecera->fecha_crea           =   $this->fechaactual;
             $cabecera->usuario_crea         =   Session::get('usuario')->id;
             $cabecera->save();
@@ -635,7 +637,7 @@ class GestionConeiController extends Controller
             $cabeceradet->certificado_id       =   $idcertificado;
             $cabeceradet->procedente_nombre    =   $procedencia->nombre;
             $cabeceradet->inicio_fin           =   'I';
-
+            $cabeceradet->referencia_id        =   $idrequerimiento;
             $cabeceradet->estado_id            =   'CEES00000005';
             $cabeceradet->estado_nombre        =   'EN PROCESO';
             $cabeceradet->fecha_crea           =   $this->fechaactual;
@@ -660,6 +662,7 @@ class GestionConeiController extends Controller
                 $cabeceradet->certificado_id       =   $idcertificado;
                 $cabeceradet->procedente_nombre    =   $procedencia->nombre;
                 $cabeceradet->inicio_fin           =   'F';
+                $cabeceradet->referencia_id        =   $idrequerimiento;
                 $cabeceradet->estado_id            =   'CEES00000005';
                 $cabeceradet->estado_nombre        =   'EN PROCESO';
                 $cabeceradet->fecha_crea           =   $this->fechaactual;

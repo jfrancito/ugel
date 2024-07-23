@@ -387,6 +387,8 @@ class GestionCertificadoController extends Controller
                 $selectprocedencia  =   $certificado->procedente_id;
 
                 $multimedia         =   Archivo::where('referencia_id','=',$certificado->id)->where('tipo_archivo','=','certificado')->where('activo','=',1)->first();
+
+                
                 $rutafoto           =   !empty($multimedia) ? asset('storage/app/certificado_conei/'.$multimedia->lote.'/'.$multimedia->nombre_archivo) : asset('public/img/no-foto.png');
 
 

@@ -10,8 +10,10 @@
           <div class="panel-heading panel-heading-divider"><b>PERIODO</b>
           </div>
           <div class="panel-body">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <div class="col-sm-4">
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+
+              <div class="col-sm-12">
                 <div class="form-group">
                   <label class="control-label"><b>Periodo : </b></label>
                     <input  type="text"
@@ -21,7 +23,55 @@
                             autocomplete="off" class="form-control input-sm director_nombres" data-aw="4" readonly/>
                 </div>
               </div>
+
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label class="control-label">Estado : </label>
+
+                    {!! Form::select( 'estado_id', $comboestado, array($selectestado),
+                                      [
+                                        'class'       => 'form-control control select2 aestado_id' ,
+                                        'id'          => 'estado_id',
+                                        'required'    => '',
+                                        'data-aw'     => '3'
+                                      ]) !!}
+
+                </div>
+              </div>
+
             </div>
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <div class="form-group bajaextorno  @if($selectestado <> 'CEES00000008') ocultar @endif">
+                <label class=" control-label">Motivo de Observacion :</label>
+
+                      <textarea 
+                      name="descripcion"
+                      id = "descripcion"
+                      class="form-control input-sm validarmayusculas"
+                      rows="5" 
+                      cols="50"    
+                      data-aw="2"></textarea>
+
+              </div>
+              <div class="form-group sectioncargarimagen iaprobado @if($selectestado <> 'CEES00000001') ocultar @endif">
+                  <label class="control-label">Certificado :</label>
+                      <div class="file-loading">
+                          <input id="file-es" name="certificado[]" class="file-es" type="file" multiple data-max-file-count="1">
+                      </div>
+              </div>
+            </div>
+
+
+
+            <div class="col-xs-12">
+              <p class="text-right">
+                <button type="submit" class="btn btn-space btn-primary btn-agregar-certificado">Guardar</button>
+              </p>
+            </div>
+
+
+
           </div>
         </div>
       </div>

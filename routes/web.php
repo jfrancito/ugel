@@ -80,6 +80,10 @@ Route::group(['middleware' => ['authaw']], function () {
 	//gestion administrativo conei
 	Route::any('/gestion-admin-conei/{idopcion}', 'GestionAdminConeiController@actionListarConei');
 	Route::any('/gestion-detalle-conei/{idopcion}/{idconei}', 'GestionAdminConeiController@actionGestionDetalleConei');
+	Route::any('/gestion-admin-conei-estado/{idopcion}/{idconei}', 'GestionAdminConeiController@actionGestionConeiEstado');
+	Route::any('/gestion-observacion-conei/{idopcion}/{idconei}', 'GestionAdminConeiController@actionModificarConei');
+
+	Route::get('/serve-file', 'FileController@serveFile')->name('serve-file');
 
 	/* SUBIR DOCENTE Y INTITUCION */
 	Route::any('/gestion-de-institucion-docente/{idopcion}', 'CargarDatosInstitucionController@actionCargarDatos');

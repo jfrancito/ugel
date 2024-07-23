@@ -23,11 +23,24 @@
           <div class="btn-group btn-hspace">
             <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
             <ul role="menu" class="dropdown-menu pull-right">
+
               <li>
                 <a href="{{ url('/detalle-conei/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
                   DETALLLE
                 </a>
               </li>
+
+              @if($item->estado_id == 'CEES00000008')
+                <li>
+                  <a href="{{ url('/gestion-observacion-conei/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
+                    RESOLVER OBSERVACON
+                  </a>
+                </li>
+              @endif
+
+
+      
+
             </ul>
           </div>
         </td>
