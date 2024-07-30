@@ -32,7 +32,7 @@
             <th>Documento</th>
             <th>Nombre</th>
             <th>Cargo</th>
-            <th class="center">Eliminar</th>
+            <th class="center">Accion</th>
           </tr>
         </thead>
         <tbody class="no-border-x">
@@ -47,9 +47,17 @@
               <td>{{$item['dcargoni']}}</td>
               <td>
                 @if($item["representante_id"]!='ESRP00000001')
-                  <div class="icon" style="text-align: center;">
-                    <span class="mdi mdi-close-circle eliminaroi" data-fila= "{{$item['fila']}}" style="font-size: 20px;cursor: pointer;color: #E74C3C;"></span>
-                  </div>
+
+                  <button class="btn btn-danger eliminaroi"
+                          type="button" 
+                          data-fila= "{{$item['fila']}}"
+                          style="text-align: center;margin: 0 auto;">
+                          Eliminar</button>
+                @else
+                  <button class="btn btn-success editardirector"
+                          type="button" 
+                          style="text-align: center;margin: 0 auto;">
+                          Editar</button>
                 @endif
               </td>
             </tr>

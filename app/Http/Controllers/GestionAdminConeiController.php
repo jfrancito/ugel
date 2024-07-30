@@ -67,8 +67,8 @@ class GestionAdminConeiController extends Controller
         $conei              =   Conei::where('id','=',$idconei)
                                 ->first();
         $institucion        =   Institucion::where('id','=',$conei->institucion_id)->first();
-        $listaoic           =   OtroIntegranteConei::where('conei_id','=',$idconei)->orderby('representante_nombre','asc')->get();
-        $larchivos          =   Archivo::where('referencia_id','=',$idconei)->where('tipo_archivo','=','requerimiento_conei')->get();
+        $listaoic           =   OtroIntegranteConei::where('conei_id','=',$idconei)->orderby('representante_nombre','asc')->where('activo','=','1')->get();
+        $larchivos          =   Archivo::where('referencia_id','=',$idconei)->where('tipo_archivo','=','requerimiento_conei')->where('activo','=','1')->get();
         $selectestado       =   $conei->estado_id; 
         $comboestado        =   $this->ge_combo_estado_cnei($conei->estado_id);
 
@@ -228,6 +228,10 @@ class GestionAdminConeiController extends Controller
         if($_POST)
         {
 
+        try {
+                DB::beginTransaction();
+                /******************************/
+
             $institucion_id                             =   Session::get('institucion')->id;;
 
             $institucion                                =   Institucion::where('id','=',$institucion_id)->first();
@@ -241,12 +245,13 @@ class GestionAdminConeiController extends Controller
             $conei->usuario_mod                         =   Session::get('usuario')->id;
             $conei->save();
 
+            $idrequerimiento                            =   $idconei;
+            $codigo                                     =   $conei->codigo;
+
             OtroIntegranteConei::where("conei_id", '=',$conei->id)
                 ->update(["fecha_mod" => $this->fechaactual, "usuario_mod" => Session::get('usuario')->id, 
                             "activo" => 0
                         ]);
-
-            //OTRO REPRESENTANTE
             $array_detalle_producto_request             =   json_decode($request['array_detalle_producto'],true);
             foreach($array_detalle_producto_request as $item => $row) {
                 $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
@@ -268,17 +273,23 @@ class GestionAdminConeiController extends Controller
                 $oi->save();
             }
 
-            Archivo::where("referencia_id", '=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')
-                ->update(["fecha_mod" => $this->fechaactual, "usuario_mod" => Session::get('usuario')->id, 
-                            "activo" => 0
-                        ]);
 
-            $tarchivos                                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
+            $tarchivos                              =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
+
+                //dd($tarchivos);
+
             foreach($tarchivos as $index=>$item){
                 //01
-                $files                                      =   $request[$item->cod_archivo];
+
+                $files                              =   $request[$item->cod_archivo];
+
                 if(!is_null($files)){
                     foreach($files as $file){
+
+                        Archivo::where("referencia_id", '=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')->where('codigo_doc','=',$item->cod_archivo)
+                        ->update(["fecha_mod" => $this->fechaactual, "usuario_mod" => Session::get('usuario')->id, 
+                                    "activo" => 0
+                                ]);
 
                         $listadetalledoc            =   Archivo::where('referencia_id','=',$idrequerimiento)
                                                         ->get();
@@ -319,8 +330,9 @@ class GestionAdminConeiController extends Controller
                         $dcontrol->save();
                     }
                 }
-
             }
+
+
 
 
 
@@ -338,6 +350,15 @@ class GestionAdminConeiController extends Controller
                             "estado_id" => 'CEES00000005',
                             "estado_nombre" => 'EN PROCESO'
                         ]);
+                
+
+            DB::commit();
+            } catch (Exception $ex) {
+                DB::rollback();
+                  $msj =$this->ge_getMensajeError($ex);
+                return Redirect::to('/gestion-admin-conei/'.$idopcion)->with('errorurl', $msj);
+            }
+            /******************************/
 
             return Redirect::to('/gestion-admin-conei/'.$idopcion)->with('bienhecho', 'Requerimiento '.$conei->codigo.' modificado con exito');
 
@@ -394,6 +415,9 @@ class GestionAdminConeiController extends Controller
             $certificado                =   Certificado::where('referencia_id','=',$idconei)->where('procedente_id','=','APCN00000002')
                                                 ->first();
 
+
+
+
             $detallecerti               =   DetalleCertificado::where('certificado_id','=',$certificado->id)
                                             ->where('activo','=','1')->where('inicio_fin','=','I')->first();
 
@@ -415,6 +439,10 @@ class GestionAdminConeiController extends Controller
             $color                      =   '';
 
             $tarchivos                  =   DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
+
+
+
+
             $arrayrepresentante         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
 
             $robligatorios              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')
@@ -427,6 +455,12 @@ class GestionAdminConeiController extends Controller
             $archivo                    =   Archivo::where('referencia_id','=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')->where('activo','=','1')->first();
             $archivos                   =   Archivo::where('referencia_id','=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')->where('activo','=','1')->get();
             $rutafoto                   =   asset('storage/app/requerimiento_conei/'.$archivo->lote.'/');
+
+            $archivootro                =   Archivo::where('referencia_id','=',$conei->id)->where('codigo_doc','=','000006')->where('tipo_archivo','=','requerimiento_conei')->where('activo','=','1')->first();
+            $otro_doc                   =   '';
+            if(count($archivootro)>0){
+                $otro_doc                   =   'SI';
+            }
 
             //dd($array_detalle_producto);
 
@@ -453,6 +487,8 @@ class GestionAdminConeiController extends Controller
                             'certificado'                           =>  $certificado,
 
                             'color'                                 =>  $color,
+                            'otro_doc'                              =>  $otro_doc,
+
 
                             'procedencia_id'                        =>  $procedencia_id,
                             'tarchivos'                             =>  $tarchivos,

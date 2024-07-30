@@ -74,8 +74,8 @@ class GestionConeiController extends Controller
         $conei      =    Conei::where('id','=',$idconei)
                         ->first();
         $institucion=   Institucion::where('id','=',$conei->institucion_id)->first();
-        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->orderby('representante_id','asc')->get();
-        $larchivos  =   Archivo::where('referencia_id','=',$idconei)->where('tipo_archivo','=','requerimiento_conei')->get();
+        $listaoic   =   OtroIntegranteConei::where('conei_id','=',$idconei)->where('activo','=','1')->orderby('representante_id','asc')->get();
+        $larchivos  =   Archivo::where('referencia_id','=',$idconei)->where('activo','=','1')->where('tipo_archivo','=','requerimiento_conei')->get();
         $funcion    =   $this;
 
 
@@ -435,6 +435,71 @@ class GestionConeiController extends Controller
 
 
 
+
+    public function actionModalGuardarRegistroDirectorNuevo(Request $request)
+    {
+
+        $dni                        =   $request['dni'];
+        $nombres                    =   $request['nombres'];
+        $telefono                   =   $request['telefono'];
+        $correo                     =   $request['correo'];
+        $director_id                =   $request['director_id'];
+        $procedencia_id             =   $request['procedencia_id'];
+
+        $director                   =   Director::where('id','=',$director_id)->first();
+        $institucion                =   Institucion::where('id','=',$director->institucion_id)->first();
+
+        $director->dni              =   $dni;
+        $director->nombres          =   $nombres;
+        $director->telefono         =   $telefono;
+        $director->correo           =   $correo;
+        $director->fecha_mod        =   $this->fechaactual;
+        $director->usuario_mod      =   Session::get('usuario')->id;
+        $director->save();
+        $funcion                    =   $this;
+
+        $array_detalle_producto_request     =   json_decode($request['array_detalle_producto'],true);
+        $array_detalle_producto             =   array();
+        $directornuevo              =   Director::where('id','=',$director_id)->first();
+            
+        //dd($directornuevo);    
+
+
+        foreach ($array_detalle_producto_request as $key => $item) {
+            if($item['representante_id']=='ESRP00000001'){
+                $array_detalle_producto_request[$key]['documentog'] = $directornuevo->dni;
+                $array_detalle_producto_request[$key]['nombresg'] = $directornuevo->nombres;
+            }
+        }
+
+        //dd($array_detalle_producto_request);
+
+
+        if(count($array_detalle_producto_request)>0){
+            foreach ($array_detalle_producto_request as $key => $item) {
+                array_push($array_detalle_producto,$item);
+            }
+        }
+
+        $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
+
+        $arrayrepresentante         =   $this->array_representante_obligatrio(Session::get('institucion')->tipo_institucion);
+
+        $robligatorios              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE')
+                                        ->whereIn('id',$arrayrepresentante)
+                                        ->get();   
+
+        $funcion                    =   $this;
+
+        return View::make('requerimiento/ajax/alistaoiconei',
+                         [
+                            'array_detalle_producto'    =>  $array_detalle_producto,
+                            'robligatorios'             =>  $robligatorios,
+                            'funcion'                   =>  $funcion,
+                            'ajax'                      =>  true
+                         ]);
+
+    }
 
 
 

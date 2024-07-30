@@ -15,7 +15,7 @@
       </div>
     </div>
     <div id="archivo" class="tab-pane cont">
-      @include('requerimiento.form.tab.tabarchivos')
+      @include('requerimiento.form.tab.tabarchivosmod')
       <div class="row xs-pt-15">
         <div class="col-xs-6">
             <div class="be-checkbox">

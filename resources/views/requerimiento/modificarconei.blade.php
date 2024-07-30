@@ -20,7 +20,8 @@
         <div class="panel panel-default panel-border-color panel-border-color-primary">
           <div class="panel-heading panel-heading-divider">
             <span class="panel-subtitle">Modificar un nuevo requerimiento CONEI </span>
-            <span>{{$certificado->observacion}}</span>
+
+            <span style="font-size:16px;" class="label label-danger">{{$certificado->observacion}}</span>
           </div>
           <div class="panel-body">
             <div class="col-sm-12">
@@ -85,33 +86,59 @@
       $(':input[readonly]').css({'background-color':'#f6f6f6'});
       $('.form-control[disabled]').css({'background-color':'#f6f6f6'});
 
+
+
     });
 
   </script>
 
   <script type="text/javascript">
-      @foreach($archivos as $index => $item) 
 
-
-        $('#file-{{$item->codigo_doc}}').fileinput({
-            theme: 'fa5',
-            language: 'es',
-            allowedFileExtensions: ['pdf'],
-            initialPreviewAsData: true,
-            initialPreview: [
-              '{{$rutafoto.'/'.$item->nombre_archivo}}'
-            ],
-            initialPreviewConfig: [
-              {type: "pdf", description: "<h5>PDF File</h5> This is a representative description number ten for this file.", size: 8000, caption: "About.pdf", url: "/file-upload-batch/2", key: 10, downloadUrl: false},
-            ],
-
+      @if($otro_doc == '')
+        $('#file-000006').fileinput({
+          theme: 'fa5',
+          language: 'es',
+          allowedFileExtensions: ['pdf'],
         });
+      @endif
 
-      @endforeach
 
   </script>
 
 
+  <script>
+
+    @foreach($archivos as $index => $item) 
+                var initialPreview = [];
+                var initialPreviewConfig = [];
+                @if(!empty($item->nombre_archivo))
+                    initialPreview.push('{{ asset($rutafoto.'/'.$item->nombre_archivo) }}');
+                    initialPreviewConfig.push(
+                        {
+                            type: "pdf", 
+                            caption: "{{$item->nombre_archivo}}", 
+                            downloadUrl: "{{$rutafoto.'/'.$item->nombre_archivo}}"
+                        }
+                    );
+                @endif
+                $('#file-{{$item->codigo_doc}}').fileinput({
+
+                    theme: 'fa5',
+                    language: 'es',
+                    allowedFileExtensions: ['pdf'],
+                    initialPreviewAsData: true,
+                    initialPreview: initialPreview,
+                    initialPreviewConfig: initialPreviewConfig
+                });
+                
+                $('.file-es').on('filedeleted', function(event, key) {
+                    removedFiles.push(key);
+                });
+
+
+    @endforeach
+
+  </script>
 
 
 

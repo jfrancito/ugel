@@ -11,6 +11,36 @@ $(document).ready(function(){
 
 
 
+    // $(".conei").on('click','.btn_guardar_editar', function(e) {
+
+    //     event.preventDefault();
+    //     var _token                  =   $('#token').val();
+    //     var dni                     =   $('#dni').val();
+    //     var nombres                 =   $('#nombres').val();
+    //     var telefono                =   $('#telefono').val();
+    //     var correo                  =   $('#correo').val();
+    //     if(dni ==''){ alerterrorajax("Ingrese un DNI."); return false;}
+    //     if(nombres ==''){ alerterrorajax("Ingrese un nombre."); return false;}
+    //     if(telefono ==''){ alerterrorajax("Ingrese un telefono."); return false;}
+    //     if(correo ==''){ alerterrorajax("Ingrese un correo."); return false;}
+    //     var director_id             =   $('#director_id').val();
+    //     var procedencia_id          =   $('#procedencia_id').val();
+    //     data            =   {
+    //                             _token              : _token,
+    //                             dni                 : dni,
+    //                             nombres             : nombres,
+    //                             telefono            : telefono,
+    //                             correo              : correo,
+    //                             director_id         : director_id,
+    //                             procedencia_id      : procedencia_id,
+    //                         };
+
+    //     ajax_normal_section(data,"/ajax-guardar-registro-director","ajax_input_director") 
+    //     $('#modal-conei-apafa').niftyModal('hide');
+
+    // });
+
+
     $(".conei").on('click','.btn_guardar_editar', function(e) {
 
         event.preventDefault();
@@ -25,6 +55,9 @@ $(document).ready(function(){
         if(correo ==''){ alerterrorajax("Ingrese un correo."); return false;}
         var director_id             =   $('#director_id').val();
         var procedencia_id          =   $('#procedencia_id').val();
+        var array_detalle_producto  =   $('#array_detalle_producto').val();
+
+
         data            =   {
                                 _token              : _token,
                                 dni                 : dni,
@@ -33,13 +66,66 @@ $(document).ready(function(){
                                 correo              : correo,
                                 director_id         : director_id,
                                 procedencia_id      : procedencia_id,
+                                array_detalle_producto      : array_detalle_producto,
+
                             };
 
-        ajax_normal_section(data,"/ajax-guardar-registro-director","ajax_input_director") 
+        ajax_normal_section(data,"/ajax-guardar-registro-director-nuevo","listaajaxoi") 
         $('#modal-conei-apafa').niftyModal('hide');
 
     });
 
+
+
+
+    $(".conei").on('click','.btn_asignar_nombre_oi', function(e) {
+
+        event.preventDefault();
+        var tdg                     =   $('#tdgoi').val();
+        var tdgtexto                =   $('select[name="tdgoi"] option:selected').text();
+
+        var representante_id        =   $('#representante_id').val();
+        var representante_txt       =   $('select[name="representante_id"] option:selected').text();
+
+        var codigo_modular_id       =   '';
+        var niveltexto              =   '';
+        var swnivel                 =   0;
+        if(representante_id == 'ESRP00000002' || representante_id == 'ESRP00000003'){
+            codigo_modular_id       =   $('#codigo_modular_id').val();
+            niveltexto              =   $('select[name="codigo_modular_id"] option:selected').text();
+            //validar que el nivel no ya seleccionado
+            swnivel = validar_no_existe_nivel(codigo_modular_id,representante_id);
+
+        }
+        var documentog              =   $('#documentogoi').val();
+        var swdni                   =   0;
+        swdni = validar_dni_repetido(documentog);
+
+
+
+
+        var nombresg                =   $('#nombresgoi').val();
+        var cargo                   =   $('#cargo').val();
+        var _token                  =   $('#token').val();
+        var array_detalle_producto  =   $('#array_detalle_producto').val();
+
+
+        if(swdni ==1){ alerterrorajax("Existe ya este documento registrado"); return false;}
+        if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
+        if(representante_id ==''){ alerterrorajax("Seleccione un representante."); return false;}
+        if(tdg ==''){ alerterrorajax("Seleccione un tipo documento."); return false;}
+        if(documentog ==''){ alerterrorajax("Ingrese un documento de identidad."); return false;}
+        if(nombresg ==''){ alerterrorajax("Ingrese un nombre."); return false;}
+        if(representante_id=='ESRP00000009'){
+            if(cargo ==''){ alerterrorajax("Seleccione un cargo."); return false;}
+        }
+        actualizar_ajax_oi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,
+                            cargo,array_detalle_producto,representante_id,representante_txt,codigo_modular_id,niveltexto
+                          );
+
+        $('#modal-conei-apafa').niftyModal('hide');
+
+    });
 
 
     $(".conei").on('change','#representante_id', function() {
@@ -487,54 +573,7 @@ $(document).ready(function(){
     });
 
 
-    $(".conei").on('click','.btn_asignar_nombre_oi', function(e) {
 
-        event.preventDefault();
-        var tdg                     =   $('#tdgoi').val();
-        var tdgtexto                =   $('select[name="tdgoi"] option:selected').text();
-
-        var representante_id        =   $('#representante_id').val();
-        var representante_txt       =   $('select[name="representante_id"] option:selected').text();
-
-        var codigo_modular_id       =   '';
-        var niveltexto              =   '';
-        var swnivel                 =   0;
-        if(representante_id == 'ESRP00000002' || representante_id == 'ESRP00000003'){
-            codigo_modular_id       =   $('#codigo_modular_id').val();
-            niveltexto              =   $('select[name="codigo_modular_id"] option:selected').text();
-            //validar que el nivel no ya seleccionado
-            swnivel = validar_no_existe_nivel(codigo_modular_id,representante_id);
-
-        }
-        var documentog              =   $('#documentogoi').val();
-        var swdni                   =   0;
-        swdni = validar_dni_repetido(documentog);
-
-
-
-
-        var nombresg                =   $('#nombresgoi').val();
-        var cargo                   =   $('#cargo').val();
-        var _token                  =   $('#token').val();
-        var array_detalle_producto  =   $('#array_detalle_producto').val();
-
-
-        if(swdni ==1){ alerterrorajax("Existe ya este documento registrado"); return false;}
-        if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
-        if(representante_id ==''){ alerterrorajax("Seleccione un representante."); return false;}
-        if(tdg ==''){ alerterrorajax("Seleccione un tipo documento."); return false;}
-        if(documentog ==''){ alerterrorajax("Ingrese un documento de identidad."); return false;}
-        if(nombresg ==''){ alerterrorajax("Ingrese un nombre."); return false;}
-        if(representante_id=='ESRP00000009'){
-            if(cargo ==''){ alerterrorajax("Seleccione un cargo."); return false;}
-        }
-        actualizar_ajax_oi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,
-                            cargo,array_detalle_producto,representante_id,representante_txt,codigo_modular_id,niveltexto
-                          );
-
-        $('#modal-conei-apafa').niftyModal('hide');
-
-    });
 
 
     function validar_no_existe_nivel(codigo_modular_id,representante_id){

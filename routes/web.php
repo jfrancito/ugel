@@ -76,6 +76,8 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-editar-director', 'GestionConeiController@actionModalEditarDirector');
 	Route::any('/ajax-guardar-registro-director', 'GestionConeiController@actionModalGuardarRegistroDirector');
 
+	Route::any('/ajax-guardar-registro-director-nuevo', 'GestionConeiController@actionModalGuardarRegistroDirectorNuevo');
+
 
 	//gestion administrativo conei
 	Route::any('/gestion-admin-conei/{idopcion}', 'GestionAdminConeiController@actionListarConei');
@@ -118,7 +120,15 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/gestion-de-instituciones-sin-certificado/{idopcion}', 'ReporteCertificadoController@actionListarSinCertificadosInstituciones');
 	Route::any('/ajax-lista-instituciones-sin-certificado', 'ReporteCertificadoController@actionAjaxListarInstitucionSinCertificado');
 
+	Route::get('/descargar-pdf/{filename}', function ($filename) {
+	    $path = storage_path('app/plantillas/' . $filename);
 
+	    if (!file_exists($path)) {
+	        abort(404);
+	    }
+
+	    return Response::download($path);
+	})->name('descargar.pdf');
 
 
 
