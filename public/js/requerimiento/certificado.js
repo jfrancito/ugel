@@ -128,7 +128,7 @@ $(document).ready(function(){
     $(".certificado").on('click','.btn-guardar-certificado', function() {
 
         var activo       =   $('#activo').val();
-        var descripcion       =   $('#descripcion').val();
+        var descripcion       =   $('#bjamsj').val();
         if(activo == 'CEES00000003'){
             if(descripcion == ''){ alerterrorajax("Ingrese un Motivo de Baja."); return false;}
         }            
