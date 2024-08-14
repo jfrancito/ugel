@@ -4,10 +4,9 @@
     <li ><a href="#archivo" class="conei" data-toggle="tab"><b> EXPEDIENTES </b></a></li>
   </ul>
   <div class="tab-content">
-
     <div id="conei" class="tab-pane active cont">
-      @include('requerimiento.form.tab.tabperiodoapafa')
-      @include('requerimiento.form.tab.tabintegranteapafa')
+      @include('requerimiento.form.tab.tabperiodomodificar')
+      @include('requerimiento.form.tab.tabintegrante')
       <br><br>
       <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
       <input type="hidden" name="procedencia_id" id = 'procedencia_id' value='{{$procedencia_id}}'>
@@ -16,7 +15,7 @@
       </div>
     </div>
     <div id="archivo" class="tab-pane cont">
-      @include('requerimiento.form.tab.tabarchivosapafa')
+      @include('requerimiento.form.tab.tabarchivosmod')
       <div class="row xs-pt-15">
         <div class="col-xs-6">
             <div class="be-checkbox">

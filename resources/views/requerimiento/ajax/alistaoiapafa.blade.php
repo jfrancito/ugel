@@ -18,7 +18,7 @@
           @endforeach
       </p>
       <div class="tools">
-        <button class="btn btn-rounded btn-space btn-success modal-registro-oi" data_representante_id='ESRP00000009'>Agregar</button>
+        <button class="btn btn-rounded btn-space btn-success modal-registro-oi" data_representante_id='ESRA00000001'>Agregar</button>
       </div>
     </div>
     <div class="panel-body">
@@ -27,11 +27,11 @@
           <tr>
             <th>Fila</th>
             <th>Representante</th>
-            <th>Nivel</th>
+            <!-- <th>Nivel</th> -->
             <th>Tipo documento</th>
             <th>Documento</th>
             <th>Nombre</th>
-            <th>Cargo</th>
+            <!-- <th>Cargo</th> -->
             <th class="center">Accion</th>
           </tr>
         </thead>
@@ -40,11 +40,11 @@
             <tr t_nivel="{{$item['codigo_modular_id']}}" t_representante_id="{{$item['representante_id']}}" t_documento="{{$item['documentog']}}">
               <td>{{$index+1}}</td>
               <td><b>{{$item['representante_txt']}}</b></td>
-              <td>{{$item['niveltexto']}}</td>
+              <!-- <td>{{$item['niveltexto']}}</td> -->
               <td>{{$item['tdgtexto']}}</td>
               <td>{{$item['documentog']}}</td>
               <td>{{$item['nombresg']}}</td>
-              <td>{{$item['dcargoni']}}</td>
+              <!-- <td>{{$item['dcargoni']}}</td> -->
               <td>
                 @if($item["representante_id"]!='ESRP00000001')
 

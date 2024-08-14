@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
 use App\Modelos\Requerimiento;
 use App\Modelos\Conei;
-
+use App\Modelos\Apafa;
 
 use View;
 use Session;
@@ -19,6 +19,11 @@ use Keygen;
 
 trait ApafaConeiTraits
 {
+
+
+
+
+
 
 	private function con_lista_requerimiento() {
 		$listadatos 	= 	Requerimiento::get();
@@ -31,10 +36,23 @@ trait ApafaConeiTraits
 	 	return  $listadatos;
 	}
 
+	private function con_lista_apafa() {
+		$listadatos 	= 	Apafa::where('institucion_id','=',Session::get('institucion')->id)
+							->get();
+	 	return  $listadatos;
+	}
+
+
 	private function con_lista_conei_admin() {
 		$listadatos 	= 	Conei::get();
 	 	return  $listadatos;
 	}
+
+	private function con_lista_apafa_admin() {
+		$listadatos 	= 	Apafa::get();
+	 	return  $listadatos;
+	}
+
 
 	private function array_documentos_cargar() {
 
@@ -79,6 +97,14 @@ trait ApafaConeiTraits
 	
 	}
 
+	private function array_representante_obligatrio_apafa($tipo_colegio) {
+
+		$array  = array();
+		$array = array('ESRA00000001','ESRA00000003','ESRA00000004');
+
+		return $array;
+	
+	}
 
 
 }

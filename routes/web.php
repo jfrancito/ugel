@@ -56,14 +56,16 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/modificar-opcion/{idopcion}/{idregistro}', 'GestionMenuController@actionModificarOpcion');
 
 
-	Route::any('/gestion-apafa/{idopcion}', 'GestionApafaConeiController@actionListarApafa');
-	Route::any('/agregar-requerimiento-apafa/{idopcion}', 'GestionApafaConeiController@actionAgregarApafa');
+	//Route::any('/gestion-apafa/{idopcion}', 'GestionApafaConeiController@actionListarApafa');
+	//Route::any('/agregar-requerimiento-apafa/{idopcion}', 'GestionApafaConeiController@actionAgregarApafa');
 	Route::any('/ajax-buscar-dni-ugel', 'GestionApafaConeiController@actionBuscardni');
 
 	Route::any('/buscar-dni-01/{dni}', 'GestionApafaConeiController@actionBuscardni01');
 	Route::any('/buscar-dni-02/{dni}', 'GestionApafaConeiController@actionBuscardni02');
 	Route::any('/buscar-dni-03/{dni}', 'GestionApafaConeiController@actionBuscardni03');
 
+
+	//CONEI
 	Route::any('/gestion-conei/{idopcion}', 'GestionConeiController@actionListarConei');
 	Route::any('/agregar-requerimiento-conei/{idopcion}', 'GestionConeiController@actionAgregarConei');
 	Route::any('/ajax-modal-registro', 'GestionConeiController@actionModalRegistro');
@@ -75,8 +77,15 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/descargar-archivo-requerimiento/{idopcion}/{idrequerimiento}/{idarchivo}', 'GestionConeiController@actionDescargarArchivosRequerimiento');
 	Route::any('/ajax-modal-editar-director', 'GestionConeiController@actionModalEditarDirector');
 	Route::any('/ajax-guardar-registro-director', 'GestionConeiController@actionModalGuardarRegistroDirector');
-
 	Route::any('/ajax-guardar-registro-director-nuevo', 'GestionConeiController@actionModalGuardarRegistroDirectorNuevo');
+
+	//APAFA
+	Route::any('/gestion-apafa/{idopcion}', 'GestionApafaController@actionListarApafa');
+	Route::any('/agregar-requerimiento-apafa/{idopcion}', 'GestionApafaController@actionAgregarApafa');
+	Route::any('/ajax-modal-registro-oi-apafa', 'GestionApafaController@actionModalRegistroOIApafa');
+	Route::any('/ajax-lista-tabla-oi-apafa', 'GestionApafaController@actionListaTablaOIApafa');
+	Route::any('/ajax-elminar-fila-tabla-oi-apafa', 'GestionApafaController@actionEliminarFilaTablaOIApafa');
+	Route::any('/ajax-modal-confirmar-registro-apafa', 'GestionApafaController@actionModalConfirmarRegistroApafa');
 
 
 	//gestion administrativo conei
@@ -84,6 +93,16 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/gestion-detalle-conei/{idopcion}/{idconei}', 'GestionAdminConeiController@actionGestionDetalleConei');
 	Route::any('/gestion-admin-conei-estado/{idopcion}/{idconei}', 'GestionAdminConeiController@actionGestionConeiEstado');
 	Route::any('/gestion-observacion-conei/{idopcion}/{idconei}', 'GestionAdminConeiController@actionModificarConei');
+
+
+
+	//gestion administrativo apafa
+	Route::any('/gestion-admin-apafa/{idopcion}', 'GestionAdminApafaController@actionListarApafa');
+	Route::any('/gestion-detalle-apafa/{idopcion}/{idconei}', 'GestionAdminApafaController@actionGestionDetalleApafa');
+	Route::any('/detalle-apafa/{idopcion}/{idconei}', 'GestionAdminApafaController@actionDetalleApafa');
+	Route::any('/gestion-admin-apafa-estado/{idopcion}/{idconei}', 'GestionAdminApafaController@actionGestionApafaEstado');
+	Route::any('/gestion-observacion-apafa/{idopcion}/{idconei}', 'GestionAdminApafaController@actionModificarApafa');
+
 
 	Route::get('/serve-file', 'FileController@serveFile')->name('serve-file');
 
