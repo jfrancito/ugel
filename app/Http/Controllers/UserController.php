@@ -222,7 +222,7 @@ class UserController extends Controller {
 		
 		$listausuarios = 	User::join('instituciones','instituciones.id','=','users.institucion_id')
 							->join('directores','directores.institucion_id','=','instituciones.id')
-							->select('users.*','directores.nombres')
+							->select('users.*','directores.nombres','directores.dni','directores.telefono','directores.correo')
 							->where('users.id', '<>', $this->prefijomaestro . '00000001')->orderBy('users.id', 'asc')->get();
 
 		return View::make('usuario/listausuarios',

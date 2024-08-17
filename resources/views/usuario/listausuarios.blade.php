@@ -20,8 +20,12 @@
                   <table id="table1" class="table table-striped table-hover table-fw-widget">
                     <thead>
                       <tr>
-                        <th>IIEE</th>
+                        <th>IE</th>
                         <th>Director</th>
+                        <th>DNI</th>
+
+                        <th>Celular</th>
+                        <th>Correo</th>
 
                         <th>Perfil</th>
                         <th>Activo</th>
@@ -32,7 +36,11 @@
                       @foreach($listausuarios as $item)
                         <tr>
                             <td>{{$item->nombre}} </td>
+
                             <td>{{$item->nombres}} </td>
+                            <td>{{$item->dni}} </td>
+                            <td>{{$item->telefono}} </td>
+                            <td>{{$item->correo}} </td>
 
                             <td>{{$item->rol->nombre}}</td>
 
