@@ -97,6 +97,54 @@ $(document).ready(function(){
     });
 
 
+    $(".apafa").on('click','.btn_asignar_nombre_oi_vi', function(e) {
+
+        event.preventDefault();
+        var tdg                     =   $('#tdgoi').val();
+        var tdgtexto                =   $('select[name="tdgoi"] option:selected').text();
+
+        var representante_id        =   $('#representante_id').val();
+        var representante_txt       =   $('select[name="representante_id"] option:selected').text();
+
+        var codigo_modular_id       =   '';
+        var niveltexto              =   '';
+        var swnivel                 =   0;
+        if(representante_id == 'ESRP00000002' || representante_id == 'ESRP00000003'){
+            codigo_modular_id       =   $('#codigo_modular_id').val();
+            niveltexto              =   $('select[name="codigo_modular_id"] option:selected').text();
+            //validar que el nivel no ya seleccionado
+            swnivel = validar_no_existe_nivel(codigo_modular_id,representante_id);
+
+        }
+        var documentog              =   $('#documentogoi').val();
+        var swdni                   =   0;
+        swdni = validar_dni_repetido_vi(documentog);
+
+        var nombresg                =   $('#nombresgoi').val();
+        var cargo                   =   $('#cargo').val();
+        var _token                  =   $('#token').val();
+        var array_detalle_producto  =   $('#array_detalle_vigilancia').val();
+
+
+        if(swdni ==1){ alerterrorajax("Existe ya este documento registrado"); return false;}
+        if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
+        if(representante_id ==''){ alerterrorajax("Seleccione un representante."); return false;}
+        if(tdg ==''){ alerterrorajax("Seleccione un tipo documento."); return false;}
+        if(documentog ==''){ alerterrorajax("Ingrese un documento de identidad."); return false;}
+        if(nombresg ==''){ alerterrorajax("Ingrese un nombre."); return false;}
+        if(representante_id=='ESRP00000009'){
+            if(cargo ==''){ alerterrorajax("Seleccione un cargo."); return false;}
+        }
+        actualizar_ajax_oi_vi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,
+                            cargo,array_detalle_producto,representante_id,representante_txt,codigo_modular_id,niveltexto
+                          );
+
+        $('#modal-conei-apafa').niftyModal('hide');
+
+    });
+
+
+
     $(".apafa").on('change','#representante_id', function() {
         event.preventDefault();
         var representante_id           =   $('#representante_id').val();
@@ -228,11 +276,21 @@ $(document).ready(function(){
         var _token                                          =   $('#token').val();
         var error = 0;
         var data_o = [];
+        var errorvi = 0;
+
         $(".cto .tag_obligado").each(function(){
             color = $(this).hasClass('btn-success');
             if(color == false && error == 0){
                 data_nombre_section = $(this).attr('data_nombre_section');
                 error = 1;
+            }
+        });
+
+        $(".cto .tag_obligadovi").each(function(){
+            color = $(this).hasClass('btn-success');
+            if(color == false && error == 0){
+                data_nombre_section_vi = $(this).attr('data_nombre_section');
+                errorvi = 1;
             }
         });
 
@@ -246,11 +304,18 @@ $(document).ready(function(){
         }
         if(indb =='0'){ alerterrorajax("Hay errores en la seleccion de periodos."); return false;}
 
+
+
+
         var array_detalle_producto                          =   $('#array_detalle_producto').val();
+        var array_detalle_vigilancia                          =   $('#array_detalle_vigilancia').val();
+
         var institucion_id                                  =   $('#institucion_id').val();
         var director_id                                     =   $('#director_id').val();
 
-        if(error == 1){ alerterrorajax("Ingrese un "+data_nombre_section); return false;}
+        if(error == 1){ alerterrorajax("Ingrese un "+data_nombre_section+" CONSEJO DIRECTIVO"); return false;}
+        if(errorvi == 1){ alerterrorajax("Ingrese un "+data_nombre_section_vi+" CONSEJO VIGILANCIA"); return false;}
+
 
         data                        =   {
                                             _token                        : _token,
@@ -260,7 +325,7 @@ $(document).ready(function(){
                                             periodo_id                    : periodo_id,
                                             periodofin_id                 : periodofin_id,
                                             array_detalle_producto        : array_detalle_producto,
-
+                                            array_detalle_vigilancia        : array_detalle_vigilancia,
                                         };
                               
         ajax_modal(data,"/ajax-modal-confirmar-registro-apafa",
@@ -375,6 +440,23 @@ $(document).ready(function(){
     });
 
 
+
+    $(".apafa").on('click','.modal-registro-oi-vi', function() {
+        event.preventDefault();
+        var _token                  =   $('#token').val();
+        var representante_sel_id    =   $(this).attr('data_representante_id');
+
+        debugger;
+
+        data                        =   {
+                                            _token                  : _token,
+                                            representante_sel_id                  : representante_sel_id
+                                        };
+                              
+        ajax_modal(data,"/ajax-modal-registro-oi-apafa-vi",
+                  "modal-conei-apafa","modal-conei-apafa-container");
+
+    });
 
 
     $(".apafa").on('click','.modal-registro-oi', function() {
@@ -534,6 +616,16 @@ $(document).ready(function(){
             });
             return sw;
     }
+    function validar_dni_repetido_vi(documento){
+            var sw = 0;
+            $(".totrosrepresentantevi  tbody tr").each(function(){
+                t_documento  = $(this).attr('t_documento');
+                if(documento==t_documento){
+                        sw = 1;
+                }
+            });
+            return sw;
+    }
 
 
 
@@ -548,6 +640,18 @@ $(document).ready(function(){
 
 
     });
+
+    $(".apafa").on('click','.eliminaroivi', function(e) {
+
+        event.preventDefault();
+        var fila                   =   $(this).attr('data-fila');
+        var _token                  =   $('#token').val();
+        var array_detalle_producto  =   $('#array_detalle_vigilancia').val();
+        eliminar_ajax_oi_vi(_token,carpeta,fila,array_detalle_producto);
+
+
+    });
+
 
 
 
@@ -685,6 +789,37 @@ $(document).ready(function(){
         });
     }
 
+    function actualizar_ajax_oi_vi(_token,carpeta,tdg,tdgtexto,documentog,nombresg,cargo,array_detalle_producto,representante_id,representante_txt,codigo_modular_id,niveltexto){
+
+        abrircargando();
+        $.ajax({
+            type    :   "POST",
+            url     :   carpeta+"/ajax-lista-tabla-oi-apafa-vi",
+            data    :   {
+                            _token              : _token,
+                            tdg                 : tdg,
+                            tdgtexto            : tdgtexto,
+                            documentog          : documentog,
+                            nombresg            : nombresg,
+                            dcargoni            : cargo,
+                            representante_id    : representante_id,
+                            representante_txt   : representante_txt,
+                            codigo_modular_id    : codigo_modular_id,
+                            niveltexto           : niveltexto,
+                            array_detalle_producto : array_detalle_producto
+                        },
+            success: function (data){
+                cerrarcargando();
+                $('.listaajaxoivi').html(data);
+            },
+            error: function (data) {
+                cerrarcargando();
+                error500(data);
+            }
+        });
+    }
+
+
 
     function eliminar_ajax_oi(_token,carpeta,fila,array_detalle_producto){
 
@@ -708,6 +843,28 @@ $(document).ready(function(){
         });
     }
 
+
+    function eliminar_ajax_oi_vi(_token,carpeta,fila,array_detalle_producto){
+
+        abrircargando();
+        $.ajax({
+            type    :   "POST",
+            url     :   carpeta+"/ajax-elminar-fila-tabla-oi-apafa-vi",
+            data    :   {
+                            _token          : _token,
+                            fila            : fila,
+                            array_detalle_producto : array_detalle_producto
+                        },
+            success: function (data){
+                cerrarcargando();
+                $('.listaajaxoivi').html(data);
+            },
+            error: function (data) {
+                cerrarcargando();
+                error500(data);
+            }
+        });
+    }
 
 
 

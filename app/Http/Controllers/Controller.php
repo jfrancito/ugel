@@ -36,7 +36,7 @@ class Controller extends BaseController {
 	public $evaluado;
 	public $pathFiles='requerimiento_conei/';
 	public $pathFilesCer='certificado_conei/';
-
+	public $pathFilesApafa='requerimiento_apafa/';
 
 	public function __construct() {
 		$this->funciones 		= new Funcion();

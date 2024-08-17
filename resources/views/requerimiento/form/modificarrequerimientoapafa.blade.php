@@ -6,7 +6,9 @@
   <div class="tab-content">
     <div id="conei" class="tab-pane active cont">
       @include('requerimiento.form.tab.tabperiodomodificar')
-      @include('requerimiento.form.tab.tabintegrante')
+      @include('requerimiento.form.tab.tabintegranteapafa')
+      @include('requerimiento.form.tab.tabintegrantevigilancia')
+      
       <br><br>
       <input type="hidden" name="director_id" id = 'director_id' value='{{$director->id}}'>
       <input type="hidden" name="procedencia_id" id = 'procedencia_id' value='{{$procedencia_id}}'>

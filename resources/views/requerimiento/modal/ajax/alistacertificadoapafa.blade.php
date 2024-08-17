@@ -67,6 +67,31 @@
 	    </tbody>
 	</table>
 
+
+	<table class="table table-condensed table-striped">
+	    <tbody>
+	      	<tr>
+	      	   <td colspan="4" style="text-align: center;"><b>CONSEJO VIGILANCIA </b></td>
+	      	</tr>  
+	      	<tr>
+	      	   <td class=""><b>REPRESENTANTE </b></td>
+      		 	 <!-- <td class=""><b>NIVEL </b></td> -->
+	      		 <td class=""><b>DOCUMENTO </b></td>
+	      	   <td class=""><b>NOMBRES Y APELLIDOS </b></td>
+	      	   <!-- <td class=""><b>CARGO </b></td> -->
+	      	</tr> 
+          @foreach($array_detalle_vigilancia as $index => $item)
+            <tr>
+            	<td class="">{{$item['representante_txt']}}</td>
+            	<!-- <td class="">{{$item['niveltexto']}}</td> -->
+            	<td class="">{{$item['documentog']}}</td>
+              <td class="">{{$item['nombresg']}}</td>
+              <!-- <td class="">{{$item['dcargoni']}}</td> -->
+            </tr>
+          @endforeach
+	    </tbody>
+	</table>
+
 	</div>
 </div>
 

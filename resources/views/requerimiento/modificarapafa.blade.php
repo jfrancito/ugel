@@ -95,7 +95,7 @@
   <script type="text/javascript">
 
       @if($otro_doc == '')
-        $('#file-000006').fileinput({
+        $('#file-000009').fileinput({
           theme: 'fa5',
           language: 'es',
           allowedFileExtensions: ['pdf'],
@@ -111,6 +111,7 @@
     @foreach($archivos as $index => $item) 
                 var initialPreview = [];
                 var initialPreviewConfig = [];
+                
                 @if(!empty($item->nombre_archivo))
                     initialPreview.push('{{ asset($rutafoto.'/'.$item->nombre_archivo) }}');
                     initialPreviewConfig.push(
@@ -121,6 +122,7 @@
                         }
                     );
                 @endif
+
                 $('#file-{{$item->codigo_doc}}').fileinput({
 
                     theme: 'fa5',

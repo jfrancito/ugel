@@ -107,4 +107,14 @@ trait ApafaConeiTraits
 	}
 
 
+	private function array_representante_obligatrio_apafa_vigilancia($tipo_colegio) {
+
+		$array  = array();
+		$array = array('ESRV00000001');
+
+		return $array;
+	
+	}
+
+
 }

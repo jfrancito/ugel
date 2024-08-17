@@ -67,7 +67,10 @@ class GestionAdminApafaController extends Controller
         $conei              =   Apafa::where('id','=',$idconei)
                                 ->first();
         $institucion        =   Institucion::where('id','=',$conei->institucion_id)->first();
-        $listaoic           =   OtroIntegranteApafa::where('conei_id','=',$idconei)->orderby('representante_nombre','asc')->where('activo','=','1')->get();
+        $listaoic           =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('tipo','=','CONSEJO_DIRECTIVO')->orderby('representante_nombre','asc')->where('activo','=','1')->get();
+        $listaoicvi           =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('tipo','=','CONSEJO_VIGILANCIA')->orderby('representante_nombre','asc')->where('activo','=','1')->get();
+
+
         $larchivos          =   Archivo::where('referencia_id','=',$idconei)->where('tipo_archivo','=','requerimiento_apafa')->where('activo','=','1')->get();
         $selectestado       =   $conei->estado_id; 
         $comboestado        =   $this->ge_combo_estado_cnei($conei->estado_id);
@@ -97,6 +100,8 @@ class GestionAdminApafaController extends Controller
                             'conei'             =>  $conei,
                             'institucion'       =>  $institucion,
                             'listaoic'          =>  $listaoic,
+                            'listaoicvi'        =>  $listaoicvi,
+
                             'larchivos'         =>  $larchivos,
 
                             'selectestado'      =>  $selectestado,
@@ -116,7 +121,10 @@ class GestionAdminApafaController extends Controller
         $conei      =    Apafa::where('id','=',$idconei)
                         ->first();
         $institucion=   Institucion::where('id','=',$conei->institucion_id)->first();
-        $listaoic   =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('activo','=','1')->orderby('representante_id','asc')->get();
+        $listaoic   =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('activo','=','1')->where('tipo','=','CONSEJO_DIRECTIVO')->orderby('representante_id','asc')->get();
+
+        $listaoicvi   =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('activo','=','1')->where('tipo','=','CONSEJO_VIGILANCIA')->orderby('representante_id','asc')->get();
+
         $larchivos  =   Archivo::where('referencia_id','=',$idconei)->where('activo','=','1')->where('tipo_archivo','=','requerimiento_apafa')->get();
         $funcion    =   $this;
 
@@ -126,6 +134,8 @@ class GestionAdminApafaController extends Controller
                             'conei'             =>  $conei,
                             'institucion'       =>  $institucion,
                             'listaoic'          =>  $listaoic,
+                            'listaoicvi'          =>  $listaoicvi,
+
                             'larchivos'         =>  $larchivos,
                             'unidad'            =>  $this->unidadmb,
                             'funcion'           =>  $funcion,
@@ -258,7 +268,7 @@ class GestionAdminApafaController extends Controller
             $usuario                                    =   User::where('id',Session::get('usuario')->id)->first();
 
 
-            $conei                                      =   Conei::where('id','=',$idconei)->first();
+            $conei                                      =   Apafa::where('id','=',$idconei)->first();
             $conei->estado_id                           =   'CEES00000005';
             $conei->estado_nombre                       =   'EN PROCESO';
             $conei->fecha_mod                           =   $this->fechaactual;
@@ -268,14 +278,16 @@ class GestionAdminApafaController extends Controller
             $idrequerimiento                            =   $idconei;
             $codigo                                     =   $conei->codigo;
 
-            OtroIntegranteConei::where("conei_id", '=',$conei->id)
+            OtroIntegranteApafa::where("conei_id", '=',$conei->id)
                 ->update(["fecha_mod" => $this->fechaactual, "usuario_mod" => Session::get('usuario')->id, 
                             "activo" => 0
                         ]);
+
+
             $array_detalle_producto_request             =   json_decode($request['array_detalle_producto'],true);
             foreach($array_detalle_producto_request as $item => $row) {
-                $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteconeis');
-                $oi                                     =   new OtroIntegranteConei;
+                $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteapafas');
+                $oi                                     =   new OtroIntegranteApafa;
                 $oi->id                                 =   $idoi;
                 $oi->conei_id                           =   $idrequerimiento;
                 $oi->representante_id                   =   $row['representante_id'];
@@ -288,15 +300,37 @@ class GestionAdminApafaController extends Controller
                 $oi->nivel_nombre                       =   $row['niveltexto'];
                 $oi->cargo                              =   $row['dcargoni'];
                 $oi->ind_unico                          =   0;
+                $oi->tipo                               =   'CONSEJO_DIRECTIVO';
+                $oi->fecha_crea                         =   $this->fechaactual;
+                $oi->usuario_crea                       =   Session::get('usuario')->id;
+                $oi->save();
+            }
+
+            $array_detalle_producto_request             =   json_decode($request['array_detalle_vigilancia'],true);
+            foreach($array_detalle_producto_request as $item => $row) {
+                $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteapafas');
+                $oi                                     =   new OtroIntegranteApafa;
+                $oi->id                                 =   $idoi;
+                $oi->conei_id                           =   $idrequerimiento;
+                $oi->representante_id                   =   $row['representante_id'];
+                $oi->representante_nombre               =   $row['representante_txt']; 
+                $oi->tipo_documento_id                  =   $row['tdg'];
+                $oi->tipo_documento_nombre              =   $row['tdgtexto']; 
+                $oi->documento                          =   $row['documentog'];
+                $oi->nombres                            =   $row['nombresg'];
+                $oi->nivel_id                           =   $row['codigo_modular_id'];
+                $oi->nivel_nombre                       =   $row['niveltexto'];
+                $oi->cargo                              =   $row['dcargoni'];
+                $oi->ind_unico                          =   0;
+                $oi->tipo                               =   'CONSEJO_VIGILANCIA';
                 $oi->fecha_crea                         =   $this->fechaactual;
                 $oi->usuario_crea                       =   Session::get('usuario')->id;
                 $oi->save();
             }
 
 
-            $tarchivos                              =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
+            $tarchivos                              =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000001')->get();
 
-                //dd($tarchivos);
 
             foreach($tarchivos as $index=>$item){
                 //01
@@ -306,7 +340,7 @@ class GestionAdminApafaController extends Controller
                 if(!is_null($files)){
                     foreach($files as $file){
 
-                        Archivo::where("referencia_id", '=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')->where('codigo_doc','=',$item->cod_archivo)
+                        Archivo::where("referencia_id", '=',$conei->id)->where('tipo_archivo','=','requerimiento_apafa')->where('codigo_doc','=',$item->cod_archivo)
                         ->update(["fecha_mod" => $this->fechaactual, "usuario_mod" => Session::get('usuario')->id, 
                                     "activo" => 0
                                 ]);
@@ -314,12 +348,12 @@ class GestionAdminApafaController extends Controller
                         $listadetalledoc            =   Archivo::where('referencia_id','=',$idrequerimiento)
                                                         ->get();
 
-                        $rutafile                   =   storage_path('app/').$this->pathFiles.$codigo.'/';
+                        $rutafile                   =   storage_path('app/').$this->pathFilesApafa.$codigo.'/';
                         $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
                         $numero                     =   count($listadetalledoc)+1;
                         $nombre                     =   $codigo.'-'.$numero.'-'.$file->getClientOriginalName();
 
-                        $rutadondeguardar           =   $this->pathFiles.$codigo.'/';
+                        $rutadondeguardar           =   $this->pathFilesApafa.$codigo.'/';
                         $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                         $nombreoriginal             =   $file->getClientOriginalName();
@@ -344,7 +378,7 @@ class GestionAdminApafaController extends Controller
                         $dcontrol->codigo_doc       =   $item->cod_archivo;
                         $dcontrol->nombre_doc       =   $item->nombre_archivo;
                         $dcontrol->usuario_nombre   =   $usuario->nombre;
-                        $dcontrol->tipo_archivo     =   'requerimiento_conei';
+                        $dcontrol->tipo_archivo     =   'requerimiento_apafa';
                         $dcontrol->fecha_crea       =   $this->fechaactual;
                         $dcontrol->usuario_crea     =   Session::get('usuario')->id;
                         $dcontrol->save();
@@ -356,7 +390,7 @@ class GestionAdminApafaController extends Controller
 
 
 
-            $cabecera                       =   Certificado::where('referencia_id','=',$conei->id)->where('procedente_id','=','APCN00000002')
+            $cabecera                       =   Certificado::where('referencia_id','=',$conei->id)->where('procedente_id','=','APCN00000001')
                                                 ->first();
             $cabecera->estado_id            =   'CEES00000005';
             $cabecera->estado_nombre        =   'EN PROCESO';
@@ -376,11 +410,11 @@ class GestionAdminApafaController extends Controller
             } catch (Exception $ex) {
                 DB::rollback();
                   $msj =$this->ge_getMensajeError($ex);
-                return Redirect::to('/gestion-admin-conei/'.$idopcion)->with('errorurl', $msj);
+                return Redirect::to('/gestion-admin-apafa/'.$idopcion)->with('errorurl', $msj);
             }
             /******************************/
 
-            return Redirect::to('/gestion-admin-conei/'.$idopcion)->with('bienhecho', 'Requerimiento '.$conei->codigo.' modificado con exito');
+            return Redirect::to('/gestion-admin-apafa/'.$idopcion)->with('bienhecho', 'Requerimiento '.$conei->codigo.' modificado con exito');
 
         }else{
 
@@ -392,7 +426,9 @@ class GestionAdminApafaController extends Controller
             $combotd                            =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
             $selecttd                           =   'TIDO00000001';
             $conei                              =   Apafa::where('id','=',$idconei)->first();
-            $otrosintegrantes                   =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('activo','=','1')->get();
+
+
+            $otrosintegrantes                   =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('tipo','=','CONSEJO_DIRECTIVO')->where('activo','=','1')->get();
 
             $director_i_tipodocumento_id        =   'TIDO00000001';
             $director_i_tipodocumento_nombre    =   'DNI';
@@ -420,6 +456,42 @@ class GestionAdminApafaController extends Controller
 
 
             $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
+
+
+
+
+
+
+            $otrosintegrantesvi                   =   OtroIntegranteApafa::where('conei_id','=',$idconei)->where('tipo','=','CONSEJO_VIGILANCIA')->where('activo','=','1')->get();
+
+            $array_detalle_vigilancia             =   array();
+            foreach($otrosintegrantesvi as $index=>$item){
+                $arraynuevo                         =   array(
+                                                            "fila"                      => $index + 1,
+                                                            "tdg"                       => $item->tipo_documento_id,
+                                                            "tdgtexto"                  => $item->tipo_documento_nombre,
+                                                            "documentog"                => $item->documento,
+                                                            "nombresg"                  => $item->nombres,
+                                                            "dcargoni"                  => $item->cargo,
+                                                            "representante_id"          => $item->representante_id,
+                                                            "representante_txt"         => $item->representante_nombre,
+                                                            "codigo_modular_id"         => $item->nivel_id,
+                                                            "niveltexto"                => $item->nivel_nombre,
+                                                        );
+                array_push($array_detalle_vigilancia,$arraynuevo);
+            }
+            $array_detalle_vigilancia     =   $this->ordernar_array($array_detalle_vigilancia);
+
+
+
+
+
+
+
+
+
+
+
 
 
             $disabled                   =   false;
@@ -466,22 +538,32 @@ class GestionAdminApafaController extends Controller
             $lrepresentantes            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA')->get();
 
 
-            $archivo                    =   Archivo::where('referencia_id','=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')->where('activo','=','1')->first();
-            $archivos                   =   Archivo::where('referencia_id','=',$conei->id)->where('tipo_archivo','=','requerimiento_conei')->where('activo','=','1')->get();
+            $archivo                    =   Archivo::where('referencia_id','=',$conei->id)->where('tipo_archivo','=','requerimiento_apafa')->where('activo','=','1')->first();
+            $archivos                   =   Archivo::where('referencia_id','=',$conei->id)->where('tipo_archivo','=','requerimiento_apafa')->where('activo','=','1')->get();
             $rutafoto                   =   asset('storage/app/requerimiento_apafa/'.$archivo->lote.'/');
-
-            $archivootro                =   Archivo::where('referencia_id','=',$conei->id)->where('codigo_doc','=','000006')->where('tipo_archivo','=','requerimiento_apafa')->where('activo','=','1')->first();
+            $archivootro                =   Archivo::where('referencia_id','=',$conei->id)->where('codigo_doc','=','000009')->where('tipo_archivo','=','requerimiento_apafa')->where('activo','=','1')->first();
             $otro_doc                   =   '';
             if(count($archivootro)>0){
                 $otro_doc                   =   'SI';
             }
 
-            //dd($array_detalle_producto);
+            $arrayrepresentantevi         =   $this->array_representante_obligatrio_apafa_vigilancia(Session::get('institucion')->tipo_institucion);
 
+            $robligatoriosvi              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA')
+                                                ->whereIn('id',$arrayrepresentantevi)
+                                                ->get();  
+
+            //dd($array_detalle_vigilancia);                               
             return View::make('requerimiento.modificarapafa',
                         [
                             'array_detalle_producto'                =>  $array_detalle_producto,
                             'robligatorios'                         =>  $robligatorios,
+                            'array_detalle_vigilancia'              =>  $array_detalle_vigilancia,
+
+
+                            'robligatoriosvi'                       =>  $robligatoriosvi,
+                            'robligatorios'                         =>  $robligatorios,
+
                             'archivos'                              =>  $archivos,
                             'conei'                                 =>  $conei,
                             'rutafoto'                              =>  $rutafoto,

@@ -120,12 +120,42 @@ class GestionApafaController extends Controller
                 $oi->nivel_nombre                       =   $row['niveltexto'];
                 $oi->cargo                              =   $row['dcargoni'];
                 $oi->ind_unico                          =   0;
-
+                $oi->tipo                               =   'CONSEJO_DIRECTIVO';
                 $oi->fecha_crea                         =   $this->fechaactual;
                 $oi->usuario_crea                       =   Session::get('usuario')->id;
                 $oi->save();
 
             }
+
+
+            //OTRO REPRESENTANTE
+            $array_detalle_producto_request             =   json_decode($request['array_detalle_vigilancia'],true);
+            foreach($array_detalle_producto_request as $item => $row) {
+
+                $idoi                                   =   $this->funciones->getCreateIdMaestra('otrointegranteapafas');
+                $oi                                     =   new OtroIntegranteApafa;
+                $oi->id                                 =   $idoi;
+                $oi->conei_id                           =   $idrequerimiento;
+                $oi->representante_id                   =   $row['representante_id'];
+                $oi->representante_nombre               =   $row['representante_txt']; 
+                $oi->tipo_documento_id                  =   $row['tdg'];
+                $oi->tipo_documento_nombre              =   $row['tdgtexto']; 
+                $oi->documento                          =   $row['documentog'];
+                $oi->nombres                            =   $row['nombresg'];
+                $oi->nivel_id                           =   $row['codigo_modular_id'];
+                $oi->nivel_nombre                       =   $row['niveltexto'];
+                $oi->cargo                              =   $row['dcargoni'];
+                $oi->ind_unico                          =   0;
+                $oi->tipo                               =   'CONSEJO_VIGILANCIA';
+                $oi->fecha_crea                         =   $this->fechaactual;
+                $oi->usuario_crea                       =   Session::get('usuario')->id;
+                $oi->save();
+
+            }
+
+
+
+
 
             $tarchivos                                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000001')->get();
 
@@ -138,12 +168,12 @@ class GestionApafaController extends Controller
                         $listadetalledoc            =   Archivo::where('referencia_id','=',$idrequerimiento)
                                                         ->get();
 
-                        $rutafile                   =   storage_path('app/').$this->pathFiles.$codigo.'/';
+                        $rutafile                   =   storage_path('app/').$this->pathFilesApafa.$codigo.'/';
                         $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
                         $numero                     =   count($listadetalledoc)+1;
                         $nombre                     =   $codigo.'-'.$numero.'-'.$file->getClientOriginalName();
 
-                        $rutadondeguardar           =   $this->pathFiles.$codigo.'/';
+                        $rutadondeguardar           =   $this->pathFilesApafa.$codigo.'/';
                         $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                         $nombreoriginal             =   $file->getClientOriginalName();
@@ -306,13 +336,24 @@ class GestionApafaController extends Controller
                                             ->get();   
 
             $lrepresentantes            =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA')->get();
+            $array_detalle_vigilancia   =   array();
 
-            //dd($array_detalle_producto);
+
+            $arrayrepresentantevi       =   $this->array_representante_obligatrio_apafa_vigilancia(Session::get('institucion')->tipo_institucion);
+            $robligatoriosvi             =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA')
+                                            ->whereIn('id',$arrayrepresentantevi)
+                                            ->get();   
+
+            //dd($robligatoriosvi);                             
 
             return View::make('requerimiento.agregarapafa',
                         [
                             'array_detalle_producto'                =>  $array_detalle_producto,
+                            'array_detalle_vigilancia'              =>  $array_detalle_vigilancia,
+
+
                             'robligatorios'                         =>  $robligatorios,
+                            'robligatoriosvi'                       =>  $robligatoriosvi,
 
                             'idopcion'                              =>  $idopcion,
                             'institucion'                           =>  $institucion,
@@ -408,6 +449,66 @@ class GestionApafaController extends Controller
     }
 
 
+    public function actionListaTablaOIApafaVi(Request $request)
+    {
+
+        $tdg                                =   $request['tdg'];
+        $tdgtexto                           =   $request['tdgtexto'];
+        $documentog                         =   $request['documentog'];
+        $nombresg                           =   $request['nombresg'];
+        $dcargoni                           =   $request['dcargoni'];
+        $representante_id                   =   $request['representante_id'];
+        $representante_txt                  =   $request['representante_txt'];
+
+        $codigo_modular_id                  =   $request['codigo_modular_id'];
+        $niveltexto                         =   $request['niveltexto'];
+
+        $array_detalle_producto_request     =   json_decode($request['array_detalle_producto'],true);
+        $array_detalle_producto             =   array();
+
+        $fila                               =   count($array_detalle_producto_request) + 1;
+
+        $arraynuevo                         =   array(
+                                                    "fila"          => $fila,
+                                                    "tdg"           => $tdg,
+                                                    "tdgtexto"      => $tdgtexto,
+                                                    "documentog"    => $documentog,
+                                                    "nombresg"      => $nombresg,
+                                                    "dcargoni"      => $dcargoni,
+                                                    "representante_id"      => $representante_id,
+                                                    "representante_txt"      => $representante_txt,
+                                                    "codigo_modular_id"      => $codigo_modular_id,
+                                                    "niveltexto"      => $niveltexto
+
+                                                );
+
+        array_push($array_detalle_producto,$arraynuevo);
+
+        if(count($array_detalle_producto_request)>0){
+            foreach ($array_detalle_producto_request as $key => $item) {
+                array_push($array_detalle_producto,$item);
+            }
+        }
+
+        $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
+
+        $arrayrepresentante         =   $this->array_representante_obligatrio_apafa(Session::get('institucion')->tipo_institucion);
+
+        $robligatoriosvi              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA')
+                                        ->whereIn('id',$arrayrepresentante)
+                                        ->get();   
+
+        $funcion                    =   $this;
+
+        return View::make('requerimiento/ajax/alistaoiapafavi',
+                         [
+                            'array_detalle_vigilancia'    =>  $array_detalle_producto,
+                            'robligatoriosvi'             =>  $robligatoriosvi,
+                            'funcion'                   =>  $funcion,
+                            'ajax'                      =>  true
+                         ]);
+    }
+
     public function actionEliminarFilaTablaOIApafa(Request $request)
     {
 
@@ -452,6 +553,49 @@ class GestionApafaController extends Controller
     }
 
 
+    public function actionEliminarFilaTablaOIApafaVi(Request $request)
+    {
+
+        $fila                                =   $request['fila'];
+        $array_detalle_producto_request      =   json_decode($request['array_detalle_producto'],true);
+        $array_detalle_producto              =   array();
+
+        //eliminar la fila del array
+        foreach ($array_detalle_producto_request as $key => $item) {
+            if((int)$item['fila'] == $fila) {
+                unset($array_detalle_producto_request[$key]);
+            }
+        }
+
+        $cont = 1;
+        foreach ($array_detalle_producto_request as $key => $item) {
+            $array_detalle_producto_request[$key]['fila'] = $cont;
+            $cont = $cont +1;
+        }
+
+        if(count($array_detalle_producto_request)>0){
+            foreach ($array_detalle_producto_request as $key => $item) {
+                array_push($array_detalle_producto,$item);
+            }
+        }
+        $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
+        $funcion                =   $this;
+
+        $arrayrepresentante         =   $this->array_representante_obligatrio_apafa(Session::get('institucion')->tipo_institucion);
+
+        $robligatoriosvi              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA')
+                                        ->whereIn('id',$arrayrepresentante)
+                                        ->get();   
+
+        return View::make('requerimiento/ajax/alistaoiapafavi',
+                         [
+                            'array_detalle_vigilancia'    =>  $array_detalle_producto,
+                            'robligatoriosvi'             =>  $robligatoriosvi,
+                            'funcion'                   =>  $funcion,
+                            'ajax'                      =>  true
+                         ]);
+    }
+
     public function actionModalConfirmarRegistroApafa(Request $request)
     {
 
@@ -474,6 +618,18 @@ class GestionApafaController extends Controller
             }
         }
         $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
+
+
+        $array_detalle_vigilancia_request           =   json_decode($request['array_detalle_vigilancia'],true);
+        $array_detalle_vigilancia                     =   array();
+        if(count($array_detalle_vigilancia_request)>0){
+            foreach ($array_detalle_vigilancia_request as $key => $item) {
+                array_push($array_detalle_vigilancia,$item);
+            }
+        }
+        $array_detalle_vigilancia     =   $this->ordernar_array($array_detalle_vigilancia);
+
+
         //DD($array_detalle_producto);
 
         //$data_o                                     =   $request['data_o'];
@@ -484,6 +640,7 @@ class GestionApafaController extends Controller
         return View::make('requerimiento/modal/ajax/alistacertificadoapafa',
                          [
                             'array_detalle_producto'                        =>  $array_detalle_producto,
+                             'array_detalle_vigilancia'                        =>  $array_detalle_vigilancia,
                             //'data_o'                                        =>  $data_o,
                             'institucion'                                   =>  $institucion,
                             'director'                                      =>  $director,
@@ -527,5 +684,41 @@ class GestionApafaController extends Controller
                             'ajax'              =>  true
                          ]);
     }
+
+
+    public function actionModalRegistroOIApafaVi(Request $request)
+    {
+
+        $funcion                =   $this;
+        $combotd                =   $this->gn_generacion_combo_tabla('estados','id','nombre','','','TIPO_DOCUMENTO');
+        $selecttd               =   'TIDO00000001';
+        $representante_sel_id   =   $request['representante_sel_id'];
+
+
+        $arraynotr              =   array($representante_sel_id);
+        $arraynotr              =   array('ESRP00000001');
+        $comboor                =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','','','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA',$arraynotr);
+        $comboor                =   $this->gn_generacion_combo_tabla_not_array('estados','id','nombre','','','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA',$arraynotr);
+        $selector               =   'ESRP00000002';
+        $combonivel             =   $this->gn_generacion_combo_niveles(Session::get('institucion')->codigo);
+        $selectnivel            =   '';
+
+        return View::make('requerimiento/modal/ajax/amregistrooiapafavi',
+                         [
+                            'combotd'           =>  $combotd,
+                            'selecttd'          =>  $selecttd,
+
+                            'combonivel'        =>  $combonivel,
+                            'selectnivel'       =>  $selectnivel,
+
+                            'comboor'           =>  $comboor,
+                            'selector'          =>  $selector,
+                            'representante_sel_id' =>  $representante_sel_id,
+
+                            'funcion'           =>  $funcion,
+                            'ajax'              =>  true
+                         ]);
+    }
+
 
 }

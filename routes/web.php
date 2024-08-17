@@ -91,6 +91,10 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-elminar-fila-tabla-oi-apafa', 'GestionApafaController@actionEliminarFilaTablaOIApafa');
 	Route::any('/ajax-modal-confirmar-registro-apafa', 'GestionApafaController@actionModalConfirmarRegistroApafa');
 
+	Route::any('/ajax-modal-registro-oi-apafa-vi', 'GestionApafaController@actionModalRegistroOIApafaVi');
+	Route::any('/ajax-lista-tabla-oi-apafa-vi', 'GestionApafaController@actionListaTablaOIApafaVi');
+	Route::any('/ajax-elminar-fila-tabla-oi-apafa-vi', 'GestionApafaController@actionEliminarFilaTablaOIApafaVi');
+
 
 	//gestion administrativo conei
 	Route::any('/gestion-admin-conei/{idopcion}', 'GestionAdminConeiController@actionListarConei');

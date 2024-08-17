@@ -78,11 +78,23 @@
 
       <div class="col-md-12">
         <div class="panel panel-default" style="border: 3px solid #EEEEEE;">
-          <div class="panel-heading panel-heading-divider"><b>REPRESENTANTES</b>
+          <div class="panel-heading panel-heading-divider"><b>CONSEJO DIRECTIVO</b>
           </div>
           <div class="panel-body">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             @include('requerimiento.lista.ajax.alistaoidetconei')
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="panel panel-default" style="border: 3px solid #EEEEEE;">
+          <div class="panel-heading panel-heading-divider"><b>CONSEJO VIGILANCIA</b>
+          </div>
+          <div class="panel-body">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            @include('requerimiento.lista.ajax.alistaoidetconeivi')
             </div>
           </div>
         </div>
