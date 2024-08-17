@@ -141,10 +141,6 @@ class CargarDatosInstitucionController extends Controller
                                 }             
                             }
 
-
-
-
-
                             //AGREGAR
                             if(count($institucion)<=0){
 
@@ -204,7 +200,8 @@ class CargarDatosInstitucionController extends Controller
                                 $institucion->codigo                        =   $item->codigo_local;
                                 $institucion->nombre                        =   $item->nombre_iiee; 
                                 $institucion->nivel                         =   '';
-                                $institucion->direccion                     =   $item->director;
+                                
+                                $institucion->direccion                     =   $item->direccion_iiee;
                                 $institucion->departamento                  =   $item->departamento;
                                 $institucion->provincia                     =   $item->provincia;
                                 $institucion->distrito                      =   $item->distrito;
@@ -216,13 +213,13 @@ class CargarDatosInstitucionController extends Controller
                                 $institucion->save();
 
                                 //DOCTOR
-                                $director_sel                               =   Director::where('institucion_id','=',$institucion->id)->first();
-                                $director_sel->nombres                      =   $item->director;
-                                $director_sel->telefono                     =   $item->telefono;
-                                $director_sel->correo                       =   $item->correo_electronico;
-                                $director_sel->fecha_mod                    =   $this->fechaactual;
-                                $director_sel->usuario_mod                  =   Session::get('usuario')->id;
-                                $director_sel->save();
+                                //$director_sel                               =   Director::where('institucion_id','=',$institucion->id)->first();
+                                //$director_sel->nombres                      =   $item->director;
+                                //$director_sel->telefono                     =   $item->telefono;
+                                //$director_sel->correo                       =   $item->correo_electronico;
+                                //$director_sel->fecha_mod                    =   $this->fechaactual;
+                                //$director_sel->usuario_mod                  =   Session::get('usuario')->id;
+                                //$director_sel->save();
 
                             } 
 

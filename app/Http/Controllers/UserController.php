@@ -220,7 +220,10 @@ class UserController extends Controller {
 
 	    View::share('titulo','Lista de usuarios');
 		
-		$listausuarios = User::where('id', '<>', $this->prefijomaestro . '00000001')->orderBy('id', 'asc')->get();
+		$listausuarios = 	User::join('instituciones','instituciones.id','=','users.institucion_id')
+							->join('directores','directores.institucion_id','=','instituciones.id')
+							->select('users.*','directores.nombres')
+							->where('users.id', '<>', $this->prefijomaestro . '00000001')->orderBy('users.id', 'asc')->get();
 
 		return View::make('usuario/listausuarios',
 			[

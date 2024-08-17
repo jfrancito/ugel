@@ -20,7 +20,9 @@
                   <table id="table1" class="table table-striped table-hover table-fw-widget">
                     <thead>
                       <tr>
-                        <th>Nombre</th>
+                        <th>IIEE</th>
+                        <th>Director</th>
+
                         <th>Perfil</th>
                         <th>Activo</th>
                         <th>Opción</th>
@@ -30,7 +32,12 @@
                       @foreach($listausuarios as $item)
                         <tr>
                             <td>{{$item->nombre}} </td>
+                            <td>{{$item->nombres}} </td>
+
                             <td>{{$item->rol->nombre}}</td>
+
+
+
                             <td> 
                               @if($item->activo == 1)  
                                 <span class="icon mdi mdi-check"></span> 
