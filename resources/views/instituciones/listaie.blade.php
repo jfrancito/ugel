@@ -20,27 +20,25 @@
                   <table id="table1" class="table table-striped table-hover table-fw-widget">
                     <thead>
                       <tr>
-                        <th>Nombre</th>
-                        <th>Usuario</th>
-                        <th>Clave</th>
+                        <th>IE</th>
+                        <th>Director</th>
+                        <th>DNI</th>
 
-                        <th>Perfil</th>
+                        <th>Celular</th>
+                        <th>Correo</th>
+
                         <th>Activo</th>
-                        <th>Opción</th>
+
                       </tr>
                     </thead>
                     <tbody>
                       @foreach($listausuarios as $item)
                         <tr>
                             <td>{{$item->nombre}} </td>
-                            <td>{{$item->name}} </td>
-                            <td>{{Crypt::decrypt($item->password)}} </td>
-
-
-
-                            <td>{{$item->rol->nombre}}</td>
-
-
+                            <td>{{$item->nombres}} </td>
+                            <td>{{$item->dni}} </td>
+                            <td>{{$item->telefono}} </td>
+                            <td>{{$item->correo}} </td>
 
                             <td> 
                               @if($item->activo == 1)  
@@ -48,18 +46,6 @@
                               @else 
                                 <span class="icon mdi mdi-close"></span> 
                               @endif
-                            </td>
-                            <td class="rigth">
-                              <div class="btn-group btn-hspace">
-                                <button type="button" data-toggle="dropdown" class="btn btn-default dropdown-toggle">Acción <span class="icon-dropdown mdi mdi-chevron-down"></span></button>
-                                <ul role="menu" class="dropdown-menu pull-right">
-                                  <li>
-                                    <a href="{{ url('/modificar-usuario/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
-                                      Modificar
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
                             </td>
                         </tr>                    
                       @endforeach

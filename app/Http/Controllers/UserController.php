@@ -231,6 +231,28 @@ class UserController extends Controller {
 				'idopcion' => $idopcion,
 			]);
 	}
+	public function actionListarIE($idopcion) {
+		/******************* validar url **********************/
+		$validarurl = $this->funciones->getUrl($idopcion, 'Ver');
+
+		if ($validarurl != 'true') {return $validarurl;}
+		/******************************************************/
+
+	    View::share('titulo','Lista de usuarios');
+		
+		$listausuarios = 	Institucion::join('directores','directores.institucion_id','=','instituciones.id')
+							->select('instituciones.*','directores.nombres','directores.dni','directores.telefono','directores.correo')
+							->where('instituciones.id', '<>', '1CIX00000001')->orderBy('instituciones.nombre', 'asc')->get();
+
+		return View::make('instituciones/listaie',
+			[
+				'listausuarios' => $listausuarios,
+				'idopcion' => $idopcion,
+			]);
+	}
+
+
+
 
 	public function actionAgregarUsuario($idopcion, Request $request) {
 		/******************* validar url **********************/
