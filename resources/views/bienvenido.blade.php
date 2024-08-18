@@ -6,7 +6,28 @@
     	<link rel="stylesheet" type="text/css" href="{{ asset('public/css/dashboard.css?v='.$version) }} "/>
 @stop
 @section('section')
-	@include('dashboard')
+
+    <style>
+        .container5 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+    </style>
+
+	@if(Session::get('rol')->id=='1CIX00000002')
+		@include('dashboard')
+	@else
+
+    <div class="container5">
+        <img src="{{ asset('public/img/ugel.jpg') }}" alt="Imagen centrada" width="800">
+    </div>
+
+	@endif
+
+
+
 @stop 
 @section('script')
 

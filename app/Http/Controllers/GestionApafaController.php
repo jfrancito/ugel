@@ -74,6 +74,8 @@ class GestionApafaController extends Controller
             $periodofin_id                              =   $request['periodofin_r_id'];
 
             $institucion                                =   Institucion::where('id','=',$institucion_id)->first();
+            $director                                   =   Director::where('id','=',Session::get('direccion')->id)->first();
+
             $periodo                                    =   Estado::where('id','=',$periodo_id)->first();
             $periodofin                                 =   Estado::where('id','=',$periodofin_id)->first();
 
@@ -92,6 +94,11 @@ class GestionApafaController extends Controller
             $cabecera->codigo                           =   $codigo;
             $cabecera->institucion_id                   =   $institucion_id;
             $cabecera->institucion_nombre               =   $institucion->nombre;
+
+            $cabecera->director_id                      =   $director->id;
+            $cabecera->director_dni                     =   $director->dni;
+            $cabecera->director_nombre                  =   $director->nombres;
+            
             $cabecera->estado_id                        =   'CEES00000005';
             $cabecera->estado_nombre                    =   'EN PROCESO';
             $cabecera->periodo_nombre                   =   $nombreperiodog;
@@ -492,7 +499,7 @@ class GestionApafaController extends Controller
 
         $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
 
-        $arrayrepresentante         =   $this->array_representante_obligatrio_apafa(Session::get('institucion')->tipo_institucion);
+        $arrayrepresentante         =   $this->array_representante_obligatrio_apafa_vigilancia(Session::get('institucion')->tipo_institucion);
 
         $robligatoriosvi              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA')
                                         ->whereIn('id',$arrayrepresentante)
@@ -581,7 +588,7 @@ class GestionApafaController extends Controller
         $array_detalle_producto     =   $this->ordernar_array($array_detalle_producto);
         $funcion                =   $this;
 
-        $arrayrepresentante         =   $this->array_representante_obligatrio_apafa(Session::get('institucion')->tipo_institucion);
+        $arrayrepresentante         =   $this->array_representante_obligatrio_apafa_vigilancia(Session::get('institucion')->tipo_institucion);
 
         $robligatoriosvi              =   Estado::where('tipoestado','=','ESTADO_REPRESENTANTE_APAFA_VIGILANCIA')
                                         ->whereIn('id',$arrayrepresentante)

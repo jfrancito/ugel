@@ -4,7 +4,8 @@
       <th>CODIGO REQ.</th>
       <th>PERIODO</th>
       <th>INSTITUCION</th>
-
+      <th>DIRECTOR</th>
+      <th>DNI</th>
       <th>FECHA CREA</th>
       <th>ESTADO</th>
       <th>OPCION</th>
@@ -17,6 +18,9 @@
         <td>{{$item->codigo}}</td>
         <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->institucion_nombre}}</td>
+
+        <td>{{$item->director_nombre}}</td>
+        <td>{{$item->director_dni}}</td>
 
         <td>{{$item->fecha_crea}}</td>
         <td>

@@ -69,7 +69,7 @@ $(document).ready(function(){
         var documentog              =   $('#documentogoi').val();
         var swdni                   =   0;
         swdni = validar_dni_repetido(documentog);
-
+        swcategria = validar_representante_repetido(representante_id);
 
 
 
@@ -79,6 +79,7 @@ $(document).ready(function(){
         var array_detalle_producto  =   $('#array_detalle_producto').val();
 
 
+        if(swcategria ==1){ alerterrorajax("Existe ya este representante registrado"); return false;}
         if(swdni ==1){ alerterrorajax("Existe ya este documento registrado"); return false;}
         if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
         if(representante_id ==''){ alerterrorajax("Seleccione un representante."); return false;}
@@ -120,6 +121,9 @@ $(document).ready(function(){
         var swdni                   =   0;
         swdni = validar_dni_repetido_vi(documentog);
 
+        swcategria = validar_representante_repetido_vi(representante_id);
+
+
         var nombresg                =   $('#nombresgoi').val();
         var cargo                   =   $('#cargo').val();
         var _token                  =   $('#token').val();
@@ -127,6 +131,8 @@ $(document).ready(function(){
 
 
         if(swdni ==1){ alerterrorajax("Existe ya este documento registrado"); return false;}
+        if(swcategria ==1){ alerterrorajax("Existe ya este representante registrado"); return false;}
+
         if(swnivel ==1){ alerterrorajax("Existe ya un registro con el mismo nivel"); return false;}
         if(representante_id ==''){ alerterrorajax("Seleccione un representante."); return false;}
         if(tdg ==''){ alerterrorajax("Seleccione un tipo documento."); return false;}
@@ -616,6 +622,19 @@ $(document).ready(function(){
             });
             return sw;
     }
+
+    function validar_representante_repetido(representante_id){
+            var sw = 0;
+            $(".totrosrepresentante  tbody tr").each(function(){
+                t_documento  = $(this).attr('t_representante_id');
+                if(representante_id==t_documento){
+                        sw = 1;
+                }
+            });
+            return sw;
+    }
+
+
     function validar_dni_repetido_vi(documento){
             var sw = 0;
             $(".totrosrepresentantevi  tbody tr").each(function(){
@@ -627,7 +646,16 @@ $(document).ready(function(){
             return sw;
     }
 
-
+    function validar_representante_repetido_vi(representante_id){
+            var sw = 0;
+            $(".totrosrepresentantevi  tbody tr").each(function(){
+                t_documento  = $(this).attr('t_representante_id');
+                if(representante_id==t_documento){
+                        sw = 1;
+                }
+            });
+            return sw;
+    }
 
 
     $(".apafa").on('click','.eliminaroi', function(e) {

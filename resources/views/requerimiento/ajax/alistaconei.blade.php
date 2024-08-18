@@ -3,6 +3,9 @@
     <tr>
       <th>CODIGO REQ.</th>
       <th>PERIODO</th>
+      <th>DIRECTOR</th>
+      <th>DNI</th>
+
       <th>FECHA CREA</th>
       <th>ESTADO</th>
       <th>OPCION</th>
@@ -14,6 +17,9 @@
 
         <td>{{$item->codigo}}</td>
         <td>{{$item->periodo_nombre}}</td>
+        <td>{{$item->director_nombre}}</td>
+        <td>{{$item->director_dni}}</td>
+
         <td>{{$item->fecha_crea}}</td>
         <td>
           @include('requerimiento.ajax.estados')
@@ -37,7 +43,13 @@
                   </a>
                 </li>
               @endif
-
+              @if($item->estado_id == 'CEES00000001') 
+              <li>
+                <a href="{{ url('/descargar-archivo-certificado/'.Hashids::encode(substr($item->certificado_id, -8)).'/'.Hashids::encode(substr($item->archivo_id, -8))) }}">
+                  Descargar
+                </a>  
+              </li>
+              @endif
 
       
 

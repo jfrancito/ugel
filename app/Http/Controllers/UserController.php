@@ -90,6 +90,10 @@ class UserController extends Controller {
 					$tinstitucion 	= 	Institucion::where('id','=',$tusuario->institucion_id)
 										->where('activo', '=', 1)
 										->first();
+
+					$rol 			= 	Rol::where('id','=',$tusuario->rol_id)
+										->first();
+
 					$tdireccion  	= 	Director::where('id','=',$tusuario->institucion_id)
 										->where('activo', '=', 1)
 										->first();
@@ -101,7 +105,7 @@ class UserController extends Controller {
 					Session::put('listaopciones', $listaopciones);
 					Session::put('institucion', $tinstitucion);
 					Session::put('direccion', $tdireccion);
-
+					Session::put('rol', $rol);
 
 					return Redirect::to('bienvenido');
 
@@ -122,6 +126,8 @@ class UserController extends Controller {
 		Session::forget('listamenu');
 		Session::forget('listaopciones');
 		Session::forget('institucion');
+		Session::forget('rol');
+		
 		Session::forget('direccion');
 		return Redirect::to('/login');	
 

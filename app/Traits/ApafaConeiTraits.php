@@ -31,13 +31,19 @@ trait ApafaConeiTraits
 	}
 
 	private function con_lista_conei() {
-		$listadatos 	= 	Conei::where('institucion_id','=',Session::get('institucion')->id)
+		$listadatos 	= 	Conei::join('certificados','certificados.referencia_id','=','coneis.id')
+							->select('coneis.*','certificados.id as certificado_id','certificados.archivo_id')
+							->where('coneis.institucion_id','=',Session::get('institucion')->id)
+							->where('certificados.procedente_id','=','APCN00000002')
 							->get();
 	 	return  $listadatos;
 	}
 
 	private function con_lista_apafa() {
-		$listadatos 	= 	Apafa::where('institucion_id','=',Session::get('institucion')->id)
+		$listadatos 	= 	Apafa::join('certificados','certificados.referencia_id','=','apafas.id')
+							->select('apafas.*','certificados.id as certificado_id','certificados.archivo_id')
+							->where('apafas.institucion_id','=',Session::get('institucion')->id)
+							->where('certificados.procedente_id','=','APCN00000001')
 							->get();
 	 	return  $listadatos;
 	}

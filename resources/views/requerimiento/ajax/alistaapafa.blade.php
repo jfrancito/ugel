@@ -35,6 +35,16 @@
                   </a>
                 </li>
               @endif
+
+
+              @if($item->estado_id == 'CEES00000001') 
+              <li>
+                <a href="{{ url('/descargar-archivo-certificado/'.Hashids::encode(substr($item->certificado_id, -8)).'/'.Hashids::encode(substr($item->archivo_id, -8))) }}">
+                  Descargar
+                </a>  
+              </li>
+              @endif
+              
             </ul>
           </div>
         </td>

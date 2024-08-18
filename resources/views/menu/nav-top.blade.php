@@ -7,7 +7,7 @@
 
     <div class="be-right-navbar {{Session::get('color_meta')}}">
       <ul class="nav navbar-nav navbar-right be-user-nav">
-        <li><div class="page-title"><span>{{Session::get('institucion')->nombre}}</span></div></li>
+        <li><div class="page-title"><span>{{Session::get('rol')->nombre}}</span></div></li>
 
         <li class="dropdown">
           <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">
