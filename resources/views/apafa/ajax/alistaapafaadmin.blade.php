@@ -3,6 +3,8 @@
     <tr>
       <th>CODIGO REQ.</th>
       <th>PERIODO</th>
+
+      <th>CODIGO LOCAL.</th> 
       <th>INSTITUCION</th>
       <th>DIRECTOR</th>
       <th>DNI</th>
@@ -17,6 +19,9 @@
 
         <td>{{$item->codigo}}</td>
         <td>{{$item->periodo_nombre}}</td>
+
+        <td>{{$item->codigo_institutcion}}</td>
+        
         <td>{{$item->institucion_nombre}}</td>
 
         <td>{{$item->director_nombre}}</td>
@@ -41,6 +46,15 @@
                   DETALLLE
                 </a>
               </li>
+
+              @if($item->estado_id == 'CEES00000007' || $item->estado_id == 'CEES00000001')
+                <li>
+                  <a href="{{ url('/descargar-apafa-folio/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
+                    DESCARGAR FOLIO
+                  </a>
+                </li>
+              @endif
+              
             </ul>
           </div>
         </td>

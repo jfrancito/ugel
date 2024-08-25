@@ -15,7 +15,7 @@ use App\Modelos\Certificado;
 use App\Modelos\DetalleCertificado;
 use App\Modelos\Estado;
 use App\Modelos\Institucion;
-
+use App\Modelos\Archivo;
 use App\Traits\GeneralesTraits;
 use App\Traits\ReporteTraits;
 use App\Traits\CertificadoTraits;
@@ -29,7 +29,8 @@ Use Nexmo;
 use Keygen;
 use ZipArchive;
 use Maatwebsite\Excel\Facades\Excel;
-
+use setasign\Fpdi\Fpdi;
+use iio\libmergepdf\Merger;
 
 class ReporteCertificadoController extends Controller
 {
@@ -37,6 +38,86 @@ class ReporteCertificadoController extends Controller
 	use GeneralesTraits;
 	use ReporteTraits;
     use CertificadoTraits;
+
+
+
+	public function actionUnirpdf(Request $request)
+	{
+
+
+		// $inputFile = storage_path('app/requerimiento_conei/00000001/00000001-7-DNI.pdf');
+
+		// // Ruta al archivo PDF de salida
+		// $outputFile = storage_path('app/pdf/output.pdf');
+
+		// // Comando Ghostscript
+		// $gsCommand = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$outputFile $inputFile";
+
+		// dd($gsCommand);
+
+
+		// exec($gsCommand, $output, $return_var);
+
+		// if ($return_var !== 0) {
+		//     echo "Error al convertir el PDF. Código de salida: $return_var";
+		//     echo "Salida detallada: " . implode("\n", $output);
+		// } else {
+		//     echo "PDF convertido exitosamente.";
+		// }
+
+		// dd("excelnte");
+
+		$archivos 			=	Archivo::where('tipo_archivo','=','requerimiento_conei')
+								->where('referencia_id','=','1CIX00000001')
+								//->where('id','<>','1CIX00000380')
+								->where('activo','=','1')->get();
+	    $merger = new Merger;
+	    foreach ($archivos as $file) {
+	    	$ruta = str_replace("app/", "", $file->url_archivo);
+		    $merger->addFile(Storage::path($ruta));
+	    }
+
+
+
+	    // Guardar el archivo combinado
+	    $combinedPdf = $merger->merge();
+	    $outputFile = storage_path('app/pdf/merged_file.pdf');
+	    file_put_contents($outputFile, $combinedPdf);
+	    return response()->download($outputFile);
+
+		// //dd($archivos);
+	    // // Crear una instancia de FPDI
+	    // $pdf = new Fpdi();
+	    // foreach ($archivos as $file) {
+	    //     // Obtener el archivo desde el almacenamiento
+	    //     $filePath = storage_path($file->url_archivo);
+	        
+	    //     // Contar el número de páginas en el PDF
+	    //     $pageCount = $pdf->setSourceFile($filePath);
+	        
+	    //     // Importar cada página del archivo
+	    //     for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+	    //         $templateId = $pdf->importPage($pageNo);
+	    //         $size = $pdf->getTemplateSize($templateId);
+
+	    //         // Crear una nueva página con las mismas dimensiones
+	    //         $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+	            
+	    //         // Usar la página importada
+	    //         $pdf->useTemplate($templateId);
+	    //     }
+	    // }
+
+	    // // Guardar el PDF combinado en el almacenamiento
+	    // $outputFile = storage_path('app/public/pdf/merged_file.pdf');
+	    // $pdf->Output($outputFile, 'F');
+
+	    // return response()->download($outputFile);
+
+	}
+
+
+
 
 	public function actionListarCertificadosInstituciones($idopcion)
 	{

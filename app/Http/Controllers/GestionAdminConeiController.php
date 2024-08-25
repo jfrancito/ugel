@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+
+
+
 use App\Modelos\Grupoopcion;
 use App\Modelos\Opcion;
 use App\Modelos\Rol;
@@ -18,23 +26,74 @@ use App\Modelos\DetalleCertificado;
 use App\Modelos\DocumentosAsociado;
 use App\Modelos\Certificado;
 
-
-
 use App\User;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Session;
 use View;
 use App\Traits\GeneralesTraits;
 use App\Traits\ApafaConeiTraits;
 use Hashids;
 use SplFileInfo;
+use iio\libmergepdf\Merger;
 
 class GestionAdminConeiController extends Controller
 {
     use GeneralesTraits;
     use ApafaConeiTraits;
+
+
+
+    public function actionDescargarFolioConei($idopcion,$idconei,Request $request)
+    {
+
+        $idconei            =   $this->funciones->decodificarmaestra($idconei);
+        $conei              =   Conei::where('id','=',$idconei)->first();
+        $archivos           =   Archivo::where('tipo_archivo','=','requerimiento_conei')
+                                ->where('referencia_id','=',$idconei)
+                                //->where('id','<>','1CIX00000380')
+                                ->where('activo','=','1')->get();
+
+        $filefolio = storage_path('app/requerimiento_conei/'.$conei->codigo.'/folio-'.$conei->codigo.'.pdf');
+        if (file_exists($filefolio)) {
+            return response()->download($filefolio);
+        }else{
+            dd("no existe folio");
+        }
+
+        // $merger = new Merger;
+        // foreach ($archivos as $item=>$file) {
+        //     $inputFile = storage_path($file->url_archivo);
+        //     // Ruta al archivo PDF de salida
+        //     $outputFile = storage_path('app/requerimiento_conei/'.$conei->codigo.'/u-'.$file->nombre_archivo);
+        //     // Comando Ghostscript
+        //     $gsPath = "C:\\Program Files\\gs\\gs10.03.1\\bin\\gswin64c.exe"; // Actualiza esta ruta si es necesario
+        //     $gsCommand = "\"$gsPath\" -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$outputFile\" \"$inputFile\"";
+        //     exec($gsCommand, $output, $return_var);
+        //     if ($return_var !== 0) {
+        //         echo "Error al convertir el PDF. Código de salida: $return_var";
+        //         echo "Salida detallada: " . implode("\n", $output);
+        //     }else{
+        //         echo "PDF convertido exitosamente.";
+        //     }
+        //     //dd("entro");
+        // }
+        // foreach ($archivos as $file) {
+        //     $ruta = str_replace("app/", "", $file->url_archivo);
+        //     $merger->addFile(Storage::path('requerimiento_conei/'.$conei->codigo.'/u-'.$file->nombre_archivo));
+        // }
+        // // Guardar el archivo combinado
+        // $combinedPdf = $merger->merge();
+        // $outputFilereal = storage_path('app/requerimiento_conei/'.$conei->codigo.'/folio-'.$conei->codigo.'.pdf');
+        // file_put_contents($outputFilereal, $combinedPdf);
+
+        // foreach ($archivos as $item=>$file) {
+        //     $outputFile = storage_path('app/requerimiento_conei/'.$conei->codigo.'/u-'.$file->nombre_archivo);
+        //     if (file_exists($outputFile)) {
+        //         unlink($outputFile);
+        //     }
+        // }
+        // return response()->download($outputFilereal);
+
+    }
 
 
 
@@ -195,11 +254,46 @@ class GestionAdminConeiController extends Controller
                 }
             }
 
+            if($estado->id=='CEES00000007'){
+                $conei              =   Conei::where('id','=',$idconei)->first();
+                $archivos           =   Archivo::where('tipo_archivo','=','requerimiento_conei')
+                                        ->where('referencia_id','=',$idconei)
+                                        //->where('id','<>','1CIX00000380')
+                                        ->where('activo','=','1')->get();
+                $merger = new Merger;
+                foreach ($archivos as $item=>$file) {
+                    $inputFile = storage_path($file->url_archivo);
+                    // Ruta al archivo PDF de salida
+                    $outputFile = storage_path('app/requerimiento_conei/'.$conei->codigo.'/u-'.$file->nombre_archivo);
+                    // Comando Ghostscript
+                    $gsPath = "C:\\Program Files\\gs\\gs10.03.1\\bin\\gswin64c.exe"; // Actualiza esta ruta si es necesario
+                    $gsCommand = "\"$gsPath\" -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$outputFile\" \"$inputFile\"";
+                    exec($gsCommand, $output, $return_var);
+                    if ($return_var !== 0) {
+                        echo "Error al convertir el PDF. Código de salida: $return_var";
+                        echo "Salida detallada: " . implode("\n", $output);
+                    }else{
+                        echo "PDF convertido exitosamente.";
+                    }
+                    //dd("entro");
+                }
+                foreach ($archivos as $file) {
+                    $ruta = str_replace("app/", "", $file->url_archivo);
+                    $merger->addFile(Storage::path('requerimiento_conei/'.$conei->codigo.'/u-'.$file->nombre_archivo));
+                }
+                // Guardar el archivo combinado
+                $combinedPdf = $merger->merge();
+                $outputFilereal = storage_path('app/requerimiento_conei/'.$conei->codigo.'/folio-'.$conei->codigo.'.pdf');
+                file_put_contents($outputFilereal, $combinedPdf);
 
-
-
-                DB::commit();
-            
+                foreach ($archivos as $item=>$file) {
+                    $outputFile = storage_path('app/requerimiento_conei/'.$conei->codigo.'/u-'.$file->nombre_archivo);
+                    if (file_exists($outputFile)) {
+                        unlink($outputFile);
+                    }
+                }
+            }
+            DB::commit();
         } catch (Exception $ex) {
             DB::rollback();
               $msj =$this->ge_getMensajeError($ex);

@@ -21,7 +21,7 @@
 	@else
 
     <div class="container5">
-        <img src="{{ asset('public/img/ugel.jpg') }}" alt="Imagen centrada" width="800">
+        <img src="{{ asset('public/img/ugel_i.jpg') }}" alt="Imagen centrada" width="800">
     </div>
 
 	@endif

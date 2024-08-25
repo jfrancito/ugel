@@ -90,7 +90,7 @@ $(document).ready(function(){
         var codigo_modular_id       =   '';
         var niveltexto              =   '';
         var swnivel                 =   0;
-        if(representante_id == 'ESRP00000002' || representante_id == 'ESRP00000003'){
+        if(representante_id == 'ESRP00000002'){
             codigo_modular_id       =   $('#codigo_modular_id').val();
             niveltexto              =   $('select[name="codigo_modular_id"] option:selected').text();
             //validar que el nivel no ya seleccionado

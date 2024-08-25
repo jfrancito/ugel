@@ -101,7 +101,8 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/gestion-detalle-conei/{idopcion}/{idconei}', 'GestionAdminConeiController@actionGestionDetalleConei');
 	Route::any('/gestion-admin-conei-estado/{idopcion}/{idconei}', 'GestionAdminConeiController@actionGestionConeiEstado');
 	Route::any('/gestion-observacion-conei/{idopcion}/{idconei}', 'GestionAdminConeiController@actionModificarConei');
-
+	Route::any('/descargar-conei-folio/{idopcion}/{idconei}', 'GestionAdminConeiController@actionDescargarFolioConei');
+	Route::any('/unir-pdf', 'ReporteCertificadoController@actionUnirpdf');
 
 
 	//gestion administrativo apafa
@@ -110,6 +111,7 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/detalle-apafa/{idopcion}/{idconei}', 'GestionAdminApafaController@actionDetalleApafa');
 	Route::any('/gestion-admin-apafa-estado/{idopcion}/{idconei}', 'GestionAdminApafaController@actionGestionApafaEstado');
 	Route::any('/gestion-observacion-apafa/{idopcion}/{idconei}', 'GestionAdminApafaController@actionModificarApafa');
+	Route::any('/descargar-apafa-folio/{idopcion}/{idconei}', 'GestionAdminApafaController@actionDescargarFolioApafa');
 
 
 	Route::get('/serve-file', 'FileController@serveFile')->name('serve-file');
@@ -137,15 +139,15 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/ajax-modal-periodo-xinstitucion-xprocedencia', 'GestionCertificadoController@actionAjaxListarPeriodos');
 	Route::any('/ajax-periodo-fin-certificado', 'GestionCertificadoController@actionAjaxListarPeriodoFin');
 
-
-
-
 	Route::any('/gestion-de-instituciones-certificado/{idopcion}', 'ReporteCertificadoController@actionListarCertificadosInstituciones');
 	Route::any('/ajax-lista-instituciones-certificado', 'ReporteCertificadoController@actionAjaxListarInstitucionCertificado');
 
-
 	Route::any('/gestion-de-instituciones-sin-certificado/{idopcion}', 'ReporteCertificadoController@actionListarSinCertificadosInstituciones');
 	Route::any('/ajax-lista-instituciones-sin-certificado', 'ReporteCertificadoController@actionAjaxListarInstitucionSinCertificado');
+
+
+
+
 
 	Route::get('/descargar-pdf/{filename}', function ($filename) {
 	    $path = storage_path('app/plantillas/' . $filename);

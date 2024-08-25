@@ -11,12 +11,15 @@
         "barryvdh/laravel-dompdf": "^0.8.2",
         "elibyy/tcpdf-laravel": "5.4.*",
         "gladcodes/keygen": "~1.1",
+        "iio/libmergepdf": "^4.0",
         "laravel/framework": "5.4.*",
         "laravel/homestead": "^7.20",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
         "maatwebsite/excel": "~2.1.0",
         "nesbot/carbon": "1.25.0",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6",
         "torann/hashids": "^2.0"
     },
     "require-dev": {

@@ -50,12 +50,18 @@ trait ApafaConeiTraits
 
 
 	private function con_lista_conei_admin() {
-		$listadatos 	= 	Conei::get();
+		$listadatos 	= 	Conei::join('instituciones','instituciones.id','=','coneis.institucion_id')
+							->select('coneis.*','instituciones.codigo as codigo_institutcion')
+							->get();
+
+
 	 	return  $listadatos;
 	}
 
 	private function con_lista_apafa_admin() {
-		$listadatos 	= 	Apafa::get();
+		$listadatos 	= 	Apafa::join('instituciones','instituciones.id','=','apafas.institucion_id')
+							->select('apafas.*','instituciones.codigo as codigo_institutcion')
+							->get();
 	 	return  $listadatos;
 	}
 
