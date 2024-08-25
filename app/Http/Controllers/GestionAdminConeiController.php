@@ -35,11 +35,14 @@ use Hashids;
 use SplFileInfo;
 use iio\libmergepdf\Merger;
 
+use App\Traits\WhatsappTraits;
+
+
 class GestionAdminConeiController extends Controller
 {
     use GeneralesTraits;
     use ApafaConeiTraits;
-
+    use WhatsappTraits;
 
 
     public function actionDescargarFolioConei($idopcion,$idconei,Request $request)
@@ -253,6 +256,31 @@ class GestionAdminConeiController extends Controller
 
                 }
             }
+
+
+            $director   =   Director::where('id','=',$conei->director_id)->first();
+            //OBSERVADO
+            if($estado->id=='CEES00000008'){
+                $mensaje            =   'SOLICITUD DE CONEI: '.$codigo
+                                        .'%0D%0A'.'INSTITUCION : '.$conei->institucion_nombre
+                                        .'%0D%0A'.'ESTADO : '.$estado->nombre
+                                        .'%0D%0A'.'OBSERVACION : '.$descripcion;
+                $this->insertar_whatsaap('51'.$director->telefono,$director->nombres,$mensaje,'');
+                $this->insertar_whatsaap('51979820173','FRANK',$mensaje,'');
+            }
+            if($estado->id=='CEES00000001'){
+
+                $mensaje            =   'SOLICITUD DE CONEI: '.$codigo
+                                        .'%0D%0A'.'INSTITUCION : '.$conei->institucion_nombre
+                                        .'%0D%0A'.'ESTADO : '.$estado->nombre;
+                $this->insertar_whatsaap('51'.$director->telefono,$director->nombres,$mensaje,'');
+                $this->insertar_whatsaap('51979820173','FRANK',$mensaje,'');
+                
+            }
+
+
+
+
 
             if($estado->id=='CEES00000007'){
                 $conei              =   Conei::where('id','=',$idconei)->first();

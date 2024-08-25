@@ -28,6 +28,9 @@ use Session;
 use View;
 use App\Traits\GeneralesTraits;
 use App\Traits\ApafaConeiTraits;
+
+use App\Traits\WhatsappTraits;
+
 use Hashids;
 use SplFileInfo;
 
@@ -35,7 +38,7 @@ class GestionConeiController extends Controller
 {
     use GeneralesTraits;
     use ApafaConeiTraits;
-
+    use WhatsappTraits;
 
     public function actionDescargarArchivosRequerimiento($idopcion,$idregistro,$idarchivo)
     {
@@ -745,6 +748,10 @@ class GestionConeiController extends Controller
             }
 
 
+            $mensaje            =   'SOLICITUD DE CONEI: '.$codigo
+                                    .'%0D%0A'.'INSTITUCION : '.$institucion->nombre.'%0D%0A';
+            $this->insertar_whatsaap('51959757000','CINTHIA MIRELLA',$mensaje,'');
+            $this->insertar_whatsaap('51979820173','FRANK',$mensaje,'');
             //dd("exitoxo");
 
             return Redirect::to('/gestion-conei/'.$idopcion)->with('bienhecho', 'Requerimiento '.$codigo.' registrado con exito');

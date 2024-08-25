@@ -78,6 +78,18 @@ return [
             'port'      =>  '1433'
         ],
 
+        'sqlsrv_osiris' => [
+            'driver' => 'sqlsrv',
+            'host' => '10.1.0.201\JIREH',
+            'database' => 'pOSCH2024',
+            'username' => 'Osiris',
+            'password' => '*uSt4dru@',
+            'charset' => 'utf8',
+            'prefix' => '',
+        ],
+
+
+
     ],
 
     /*

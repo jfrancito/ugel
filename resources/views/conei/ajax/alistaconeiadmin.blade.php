@@ -47,7 +47,7 @@
               @if($item->estado_id == 'CEES00000007' || $item->estado_id == 'CEES00000001')
                 <li>
                   <a href="{{ url('/descargar-conei-folio/'.$idopcion.'/'.Hashids::encode(substr($item->id, -8))) }}">
-                    DESCARGAR FOLIO
+                    DESCARGAR EXPEDIENTE
                   </a>
                 </li>
               @endif

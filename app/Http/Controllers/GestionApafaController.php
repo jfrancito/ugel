@@ -28,6 +28,8 @@ use Session;
 use View;
 use App\Traits\GeneralesTraits;
 use App\Traits\ApafaConeiTraits;
+use App\Traits\WhatsappTraits;
+
 use Hashids;
 use SplFileInfo;
 
@@ -35,7 +37,7 @@ class GestionApafaController extends Controller
 {
     use GeneralesTraits;
     use ApafaConeiTraits;
-
+    use WhatsappTraits;
 
     public function actionListarApafa($idopcion)
     {
@@ -290,7 +292,10 @@ class GestionApafaController extends Controller
             }
 
 
-            //dd("exitoxo");
+            $mensaje            =   'SOLICITUD DE APAFA: '.$codigo
+                                    .'%0D%0A'.'INSTITUCION : '.$institucion->nombre.'%0D%0A';
+            $this->insertar_whatsaap('51959757000','CINTHIA MIRELLA',$mensaje,'');
+            $this->insertar_whatsaap('51979820173','FRANK',$mensaje,'');
 
             return Redirect::to('/gestion-apafa/'.$idopcion)->with('bienhecho', 'Requerimiento '.$codigo.' registrado con exito');
 
