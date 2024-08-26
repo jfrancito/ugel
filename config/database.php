@@ -80,10 +80,10 @@ return [
 
         'sqlsrv_w' => [
             'driver' => 'sqlsrv',
-            'host' => '10.1.0.12',
-            'database' => 'BDEOSCH',
-            'username' => 'sa',
-            'password' => 'Bup8A=Um',
+            'host' => '10.1.0.20',
+            'database' => 'ISLCIX',
+            'username' => 'sqlrepli',
+            'password' => 'sqlrepli',
             'charset' => 'utf8',
             'prefix' => '',
         ],
