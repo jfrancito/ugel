@@ -9,10 +9,8 @@ class Whatsapp extends Model
     protected $table = 'whatsapp';
     public $timestamps=false;
     protected $primaryKey = 'id';
-	public $incrementing = false;
+    public $incrementing = false;
     protected $connection = 'sqlsrv_w';    
 
 }
-
-
 

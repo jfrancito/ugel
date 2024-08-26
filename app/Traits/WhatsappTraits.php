@@ -8,7 +8,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Crypt;
 
-
 use App\Modelos\Whatsapp;
 
 use View;
@@ -24,18 +23,17 @@ trait WhatsappTraits
 	public function insertar_whatsaap($numero,$nombre,$mensaje,$rutaimagen){
 
 			$cabecera            	 	=	new Whatsapp;
-			$cabecera->NumeroContacto 	=   $numero;
-			$cabecera->NombreContacto 	=	$nombre;
-			$cabecera->Mensaje  		=	$mensaje;
-			$cabecera->IndArchivo   	=	0;
-			$cabecera->RutaArchivo   	=	'';
-			$cabecera->SizeArchivo   	=	0;
-			$cabecera->IndProgramado   	=	0;
-			$cabecera->IndManual   		=	0;
-			$cabecera->IndEnvio  		=	0;
-			$cabecera->FechaCreacion 	=  	date('d-m-Y H:i:s');
+			$cabecera->numero_contacto 	=   $numero;
+			$cabecera->nombre_contacto 	=	$nombre;
+			$cabecera->mensaje  		=	$mensaje;
+			$cabecera->ruta_imagen  	=	$rutaimagen;
+			$cabecera->ind_envio  		=	0;
+			$cabecera->nombre_proyecto 	=	'MERGE';
+			$cabecera->fecha_crea 	   	=  	date('d-m-Y H:i:s');
 			$cabecera->activo 	 		= 	1;
 			$cabecera->save();
+
+
 
 	}
 
