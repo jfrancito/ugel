@@ -47,7 +47,7 @@ class GestionAdminApafaController extends Controller
     use WhatsappTraits;
 
 
-    public function actionDescargarFolioConei($idopcion,$idconei,Request $request)
+    public function actionDescargarFolioApafa($idopcion,$idconei,Request $request)
     {
 
         $idconei            =   $this->funciones->decodificarmaestra($idconei);
