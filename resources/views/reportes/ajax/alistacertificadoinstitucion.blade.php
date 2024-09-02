@@ -112,6 +112,8 @@
       <th>ITEM</th>
       <th>CODIGO.</th>
       <th>INSTITUCION</th>
+      <th>NIVEL</th>
+
       <th>PERIODO</th>
       <th>PROCEDENCIA</th>
       <th>FECHA CREA</th>
@@ -128,6 +130,8 @@
         <td>{{$index +1}}</td>
         <td>{{$item->codigo}}</td>
         <td>{{$item->institucion->nombre}}</td>
+        <td>{{$item->institucion->nivel}}</td>
+
         <td>{{$item->periodo_nombre}}</td>
         <td>{{$item->procedencia->nombre}}</td>
         <td>{{$item->fecha_crea}}</td>
