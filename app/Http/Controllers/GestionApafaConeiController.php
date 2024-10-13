@@ -228,7 +228,7 @@ class GestionApafaConeiController extends Controller
         $dni                =   $request['dni'];
         $json = array();    
         //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
-        $url = "https://merge.grupoinduamerica.com/apiisl/public/api/reniec-buscar-dni/".$dni;
+        $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
 
         header('Content-Type: text/html; charset =utf-8');
         $json = file_get_contents($url, true);
@@ -296,7 +296,7 @@ class GestionApafaConeiController extends Controller
 
         $json = array();    
         //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
-        $url = "https://merge.grupoinduamerica.com/apiisl/public/api/reniec-buscar-dni/".$dni;
+        $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
 
         header('Content-Type: text/html; charset =utf-8');
         $json = file_get_contents($url, true);
@@ -400,7 +400,7 @@ class GestionApafaConeiController extends Controller
 
         $json = array();    
         //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
-        $url = "https://merge.grupoinduamerica.com/apiisl/public/api/reniec-buscar-dni/".$dni;
+        $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
 
         header('Content-Type: text/html; charset =utf-8');
         $json = file_get_contents($url, true);
