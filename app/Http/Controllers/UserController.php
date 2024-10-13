@@ -10,6 +10,8 @@ use App\Modelos\Institucion;
 use App\Modelos\Director;
 use App\Modelos\Certificado;
 use App\Modelos\DetalleCertificado;
+use App\Modelos\Registro;
+use App\Modelos\Archivo;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -19,9 +21,382 @@ use Illuminate\Support\Facades\Redirect;
 use Session;
 use View;
 use Stdclass;
+use SplFileInfo;
+use App\Traits\GeneralesTraits;
 
 class UserController extends Controller {
 
+    use GeneralesTraits;
+
+
+    public function actionEnviarSolicitudCorreo($idopcion,$idregistro)
+    {
+
+        $registro_id = $this->funciones->decodificarmaestra($idregistro);
+
+        try{
+            DB::beginTransaction();
+            $registro                =   Registro::where('id','=',$registro_id)->first();
+            //Institucion
+            Institucion::where('id','=',$registro->institucion_id)
+                        ->update(
+                            [
+                                'tipo_institucion'=>$registro->tipoo_instituccion,
+                                'fecha_mod'=>$this->fechaactual,
+                                'usuario_mod'=>Session::get('usuario')->id
+                            ]
+                        );
+
+            //Director
+            Director::where('institucion_id','=',$registro->institucion_id)
+                        ->update(
+                            [
+                                'dni'=>$registro->dni_director,
+                                'nombres'=>$registro->nombres_director,
+                                'telefono'=>$registro->telefono_director,
+                                'correo'=>$registro->correo_director,
+                                'fecha_mod'=>$this->fechaactual,
+                                'usuario_mod'=>Session::get('usuario')->id
+                            ]
+                        );
+
+
+            User::where('institucion_id','=',$registro->institucion_id)
+                        ->update(
+                            [
+                                'password'=>$registro->password,
+                                'fecha_mod'=>$this->fechaactual,
+                                'usuario_mod'=>Session::get('usuario')->id
+                            ]
+                        );
+	        $listasolicitudes           =   Registro::where('id','=',$registro_id)
+	                                        ->get();
+
+
+            $this->envio_correo_sin_editar($listasolicitudes,$this->url_real);
+
+
+
+
+            DB::commit();
+
+            return Redirect::to('/gestion-solicitud/' . $idopcion)->with('bienhecho', 'Solicitud ' . $registro->nombre . ' enviada con exito');
+        }catch(\Exception $ex){
+            DB::rollback(); 
+            return Redirect::back()->with('errorurl', 'Ocurrio un Error '.$ex);
+
+        }
+        
+    }
+
+
+
+    public function actionActivarRegistro($token)
+	{
+		$idusuario  =   $this->funciones->decodificarmaestra($token);
+		$usuario    =   User::where('institucion_id','=',$idusuario)->first();
+		$mensaje    =   'Cuenta Activada Satisfactoriamente';
+		if(count($usuario)>0){
+			$usuario->ind_confirmacion = 1;
+			$usuario->save();
+			$mensaje    =   'Cuenta Activada Satisfactoriamente';
+		}else{
+			$mensaje    =   'Link de activacion no encontrada';
+		}
+		return View::make('usuario.activar',
+						 [
+						 	'usuario' => $usuario,
+						 	'mensaje' => $mensaje,
+						 ]);
+	}
+
+
+    public function actionDescargarArchivosResulucion($idregistro)
+    {
+
+        $registro_id = $this->funciones->decodificarmaestra($idregistro);
+
+        try{
+            // DB::beginTransaction();
+
+                        //dd($registro_id );
+
+            $archivo                =   Archivo::where('referencia_id','=',$registro_id)->where('tipo_archivo','=','resolucion')->first();
+            $storagePath            = 	storage_path('app\\'.$this->pathFilesRes.$archivo->nombre_archivo);
+
+
+            if(is_file($storagePath))
+            {       
+                    // return Response::download($rutaArchivo);
+                    return response()->download($storagePath);
+            }
+            
+            // DB::commit();
+        }catch(\Exception $ex){
+            // DB::rollback(); 
+            $sw =   1;
+            $mensaje  = $this->ge_getMensajeError($ex);
+            dd('archivo no encontrado');
+
+        }
+        
+    }
+
+
+	public function actionListarSolicitud($idopcion) {
+		/******************* validar url **********************/
+		$validarurl = $this->funciones->getUrl($idopcion, 'Ver');
+		if ($validarurl != 'true') {return $validarurl;}
+		/******************************************************/
+	    View::share('titulo','Lista de solicitud');
+		$listasolicitud = 	Registro::join('instituciones','instituciones.id','=','registros.institucion_id')
+							->join('directores','directores.institucion_id','=','instituciones.id')
+							->select('registros.*','registros.id as idreal','instituciones.tipo_institucion as tireal','directores.*')
+							->where('accion','=','EDITAR')
+							->where('ind_email','=','0')
+							->orderBy('registros.fecha_crea', 'asc')
+							->get();
+
+		return View::make('usuario/listasolicitud',
+			[
+				'listasolicitud' => $listasolicitud,
+				'idopcion' => $idopcion,
+			]);
+	}
+
+
+	public function actionAjaxBuscarDirector(Request $request) {
+
+		$codigolocal 				=   $request['codigolocal'];
+		$institucion 				= 	DB::table('instituciones')
+    									->where('codigo','=',$codigolocal)
+										->first();
+
+		$director   = array();
+		$direccion  = '';	
+		$mensaje    = 'Institucion encontrado';
+		$idactivo   = 1;
+		$combo_tipo_institucion = array(''=>'Seleccione Tipo Institucion','UNIDOCENTE'=>'UNIDOCENTE','POLIDOCENTE'=>'POLIDOCENTE','MULTIGRADO'=>'MULTIGRADO');
+		$sel_tipo_institucion = '';
+
+		if(count($institucion)>0){
+			$director 					=	Director::where('institucion_id','=',$institucion->id)
+											->first();
+			$mensaje    = 'Institucion encontrado';
+			$idactivo   = 1;
+			$sel_tipo_institucion = $institucion->tipo_institucion;
+
+		}else{
+			$idactivo   = 0;
+			$mensaje = 'Institucion no encontrado';
+		}
+
+		return View::make('usuario/form/formdirector',
+			[
+				'institucion' => $institucion,
+				'director' 	  => $director,
+				'combo_tipo_institucion' => $combo_tipo_institucion,
+				'sel_tipo_institucion' 	  => $sel_tipo_institucion,
+				'idactivo' => $idactivo,
+				'mensaje' => $mensaje,
+				'direccion' => $direccion,
+			]);
+	}
+
+
+
+	public function actionAjaxBuscarProveedor(Request $request) {
+
+		$codigolocal 				=   $request['codigolocal'];
+		$institucion 				= 	DB::table('instituciones')
+    									->where('codigo','=',$codigolocal)
+										->first();
+
+		$director   = array();
+		$direccion  = '';	
+		$mensaje    = 'Institucion encontrado';
+		$idactivo   = 1;
+		$combo_tipo_institucion = array(''=>'Seleccione Tipo Institucion','UNIDOCENTE'=>'UNIDOCENTE','POLIDOCENTE'=>'POLIDOCENTE','MULTIGRADO'=>'MULTIGRADO');
+		$sel_tipo_institucion = '';
+
+		if(count($institucion)>0){
+			$director 					=	Director::where('institucion_id','=',$institucion->id)
+											->first();
+			$mensaje    = 'Institucion encontrado';
+			$idactivo   = 1;
+			$sel_tipo_institucion = $institucion->tipo_institucion;
+
+		}else{
+			$idactivo   = 0;
+			$mensaje = 'Proveedor no encontrado';
+		}
+
+		//dd($director);
+
+		return View::make('usuario/form/formproveedor',
+			[
+				'institucion' => $institucion,
+				'director' 	  => $director,
+
+				'combo_tipo_institucion' => $combo_tipo_institucion,
+				'sel_tipo_institucion' 	  => $sel_tipo_institucion,
+
+
+				'idactivo' => $idactivo,
+				'mensaje' => $mensaje,
+				'direccion' => $direccion,
+			]);
+	}
+
+
+    public function actionRegistrate(Request $request)
+	{
+
+
+		if($_POST)
+		{
+
+            try{    
+               
+
+            DB::beginTransaction();
+
+			$accion 	 		 			= 	$request['accion'];
+			$institucion 	 		 		= 	$request['institucion'];
+			$nivel 	 		 				= 	$request['nivel'];
+			$direccion 	 					= 	$request['direccion'];
+			$tipo_institucion 	 		 	= 	$request['tipo_institucion'];
+			$lblcontrasena 					= 	$request['lblcontrasena'];
+			$lblcontrasenaconfirmar 	 	= 	$request['lblcontrasenaconfirmar'];
+			$institucion_id 	 			= 	$request['institucion_id'];
+			$dni 	 		 				= 	$request['dni'];
+			$nombre 						= 	$request['nombre'];
+			$lblcelular 					= 	$request['lblcelular'];
+			$lblemail 						= 	$request['lblemail'];
+			$lblconfirmaremail 				= 	$request['lblconfirmaremail'];
+
+			$registro  						= 	Registro::where('institucion_id','=',$institucion_id)->where('ind_email','=',0)->first();
+
+			$institucion  					= 	Institucion::where('id','=',$institucion_id)->first();
+            if(count($registro)>0){
+                return Redirect::back()->with('errorurl', 'Institucion '.$institucion->nombre.' aun tiene una solicitud de registro pendiente');
+            }
+
+			$txt_accion 					=	'REGISTRO';
+			$ind_registro 					=	0;
+			$ind_editar 					=	-1;
+
+			$mensaje 						=	'Institucion '.$institucion->nombre.' registrado con exito (Se le a enviado un email para que pueda confirmar su acceso al sitema)';
+
+			if($accion == 1){			
+				$txt_accion 					=	'EDITAR';
+				$ind_registro 					=	-1;
+				$ind_editar 					=	0;
+				$mensaje 						=	'Institucion '.$institucion->nombre.' registrado con exito (Como realizo una modificacion en el registro la administrativa estara enviandole un correo con la respuesta de solicitud)';
+
+			}
+
+			$id 				 			=   $this->funciones->getCreateIdMaestra('registros');
+            $codigo                         =   $this->funciones->generar_codigo('registros',8);
+
+			$cabecera            	 		=	new Registro;
+			$cabecera->id 	     	 		=   $id;
+			$cabecera->codigo 				=   $codigo;
+			$cabecera->institucion_id 		=   $institucion_id;
+			$cabecera->codigo_local  		=	$institucion->codigo;
+			$cabecera->accion  				=	$txt_accion;
+			$cabecera->nombre 	 			= 	$institucion->nombre;
+			$cabecera->tipoo_instituccion 	= 	$tipo_institucion;
+			$cabecera->password				= 	Crypt::encrypt($lblcontrasena);
+
+			$cabecera->dni_director			= 	$dni;
+			$cabecera->nombres_director		= 	$nombre;
+			$cabecera->telefono_director	= 	$lblcelular;
+			$cabecera->correo_director		= 	$lblemail;
+			$cabecera->ind_email			= 	0;
+			$cabecera->usuario_crea			= 	'1CIX00000001';
+			$cabecera->fecha_crea 	   		=  	$this->fechaactual;
+			$cabecera->save();
+ 
+            $files                      =   $request['resolucion'];
+
+
+
+			if($accion == 1){	
+
+	            if(!is_null($files)){
+	                foreach($files as $file){
+            			//dd($file->getRealPath());
+	                    $codigo                     =   $codigo;
+	                    $rutafile                   =   storage_path('app/').$this->pathFilesRes;
+	                    $nombre                     =   $codigo.'-'.$file->getClientOriginalName();
+	                    $rutadondeguardar           =   $this->pathFilesRes.$codigo.'/';
+	                    $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
+	                    $nombreoriginal             =   $file->getClientOriginalName();
+	                    $info                       =   new SplFileInfo($nombreoriginal);
+	                    $extension                  =   $info->getExtension();
+	                    copy($file->getRealPath(),$rutafile.$nombre);
+	                    $idarchivo                  =   $this->funciones->getCreateIdMaestra('archivos');
+
+	                    $dcontrol                   =   new Archivo;
+	                    $dcontrol->id               =   $idarchivo;
+	                    $dcontrol->size             =   filesize($file);
+	                    $dcontrol->extension        =   $extension;
+	                    $dcontrol->lote             =   $codigo;
+	                    $dcontrol->referencia_id    =   $id;
+	                    $dcontrol->nombre_archivo   =   $nombre;
+	                    $dcontrol->url_archivo      =   $urlmedio;
+	                    $dcontrol->area_id          =   '';
+	                    $dcontrol->area_nombre      =   '';
+	                    $dcontrol->periodo_id       =   '';
+	                    $dcontrol->periodo_nombre   =   '';
+	                    $dcontrol->codigo_doc       =   '';
+	                    $dcontrol->nombre_doc       =   '';
+	                    $dcontrol->usuario_nombre   =   'admin';
+	                    $dcontrol->tipo_archivo     =   'resolucion';
+	                    $dcontrol->fecha_crea       =   $this->fechaactual;
+	                    $dcontrol->usuario_crea     =   '1CIX00000001';
+	                    $dcontrol->save();
+	                }
+	            }
+
+			}
+
+
+
+			Session::forget('usuario');
+			Session::forget('listamenu');
+			Session::forget('listaopciones');
+            DB::commit();
+
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                return Redirect::to('registrate')->with('errorbd', $ex.' Ocurrio un error inesperado');
+            }
+
+ 			return Redirect::to('/login')->with('bienhecho', $mensaje);
+
+
+
+		}else{
+
+			$mensaje    = '';
+			$idactivo   = 1;
+
+			$combo_tipo_institucion = array(''=>'Seleccione Tipo Institucion','UNIDOCENTE'=>'UNIDOCENTE','POLIDOCENTE'=>'POLIDOCENTE','MULTIGRADO'=>'MULTIGRADO');
+			$sel_tipo_institucion = '';
+			return View::make('usuario.registrate',
+							 [
+							 	'sel_tipo_institucion'   => $sel_tipo_institucion,
+							 	'combo_tipo_institucion' => $combo_tipo_institucion,
+							 	'mensaje' => $mensaje,
+							 	'idactivo' => $idactivo,
+							 	'idactivo' => $idactivo,
+
+							 ]);
+		}	
+
+	}
 
 
     public function actionAcceso()
@@ -62,6 +437,9 @@ class UserController extends Controller {
 
 			if (count($tusuario) > 0) {
 
+				if($tusuario->ind_confirmacion == 0 && $tusuario->rol_id == '1CIX00000002'){
+					return Redirect::back()->withInput()->with('errorbd', 'Revise su correo electronico y confirme su registro');
+				}
 				$clavedesifrada = strtoupper(Crypt::decrypt($tusuario->password));
 
 				if ($clavedesifrada == $clave) {

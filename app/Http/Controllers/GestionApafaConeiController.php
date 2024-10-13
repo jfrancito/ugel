@@ -222,6 +222,35 @@ class GestionApafaConeiController extends Controller
     }
 
 
+    public function actionBuscardnilibre(Request $request)
+    {
+
+        $dni                =   $request['dni'];
+        $json = array();    
+        //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        $url = "https://merge.grupoinduamerica.com/apiisl/public/api/reniec-buscar-dni/".$dni;
+
+        header('Content-Type: text/html; charset =utf-8');
+        $json = file_get_contents($url, true);
+        $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
+        $persona = json_decode($json, true);
+
+
+        if($persona['coError'] == '0000'){
+            $substring = '["'.$dni.'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+        }else{
+            $substring = '[null,null,null,null]';
+        }
+
+        print_r($substring);
+
+
+
+
+
+
+    }
+
 
     public function actionBuscardni(Request $request)
     {
@@ -266,7 +295,9 @@ class GestionApafaConeiController extends Controller
 
 
         $json = array();    
-        $url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        $url = "https://merge.grupoinduamerica.com/apiisl/public/api/reniec-buscar-dni/".$dni;
+
         header('Content-Type: text/html; charset =utf-8');
         $json = file_get_contents($url, true);
         $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
@@ -368,7 +399,9 @@ class GestionApafaConeiController extends Controller
     {
 
         $json = array();    
-        $url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        $url = "https://merge.grupoinduamerica.com/apiisl/public/api/reniec-buscar-dni/".$dni;
+
         header('Content-Type: text/html; charset =utf-8');
         $json = file_get_contents($url, true);
         $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));

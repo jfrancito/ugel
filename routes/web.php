@@ -25,6 +25,13 @@ Route::group(['middleware' => ['guestaw']], function () {
 });
 
 Route::get('/cerrarsession', 'UserController@actionCerrarSesion');
+Route::any('/registrate', 'UserController@actionRegistrate');
+Route::any('/ajax-buscar-proveedor', 'UserController@actionAjaxBuscarProveedor');
+Route::any('/ajax-buscar-director', 'UserController@actionAjaxBuscarDirector');
+Route::any('/ajax-buscar-dni-ugel-libre', 'GestionApafaConeiController@actionBuscardnilibre');
+Route::any('/activar-registro/{token}', 'UserController@actionActivarRegistro');
+
+
 
 Route::group(['middleware' => ['authaw']], function () {
 
@@ -34,8 +41,16 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/agregar-usuario/{idopcion}', 'UserController@actionAgregarUsuario');
 	Route::any('/modificar-usuario/{idopcion}/{idusuario}', 'UserController@actionModificarUsuario');
 	Route::any('/ajax-activar-perfiles', 'UserController@actionAjaxActivarPerfiles');
-
 	Route::any('/gestion-de-director-ie/{idopcion}', 'UserController@actionListarIE');
+
+
+
+
+	//GESTION DE SOLICITUD
+	Route::any('/gestion-solicitud/{idopcion}', 'UserController@actionListarSolicitud');
+	Route::any('/descargar-archivo-resolucion/{idregistro}', 'UserController@actionDescargarArchivosResulucion');
+	Route::any('/enviar-correo-solicitud/{idopcion}/{idregistro}', 'UserController@actionEnviarSolicitudCorreo');
+
 
 
 	//GESTION DE ROLES

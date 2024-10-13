@@ -192,7 +192,6 @@
             initialPreviewAsData: true,
             showUpload: false,
             showRemove: false,
-
             maxFileCount: 1
       });
       var filesSelected = false;

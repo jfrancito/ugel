@@ -37,6 +37,9 @@ class Controller extends BaseController {
 	public $pathFiles='requerimiento_conei/';
 	public $pathFilesCer='certificado_conei/';
 	public $pathFilesApafa='requerimiento_apafa/';
+	public $pathFilesRes='resolucion/';
+	public $url_real='http://localhost:8080/perugel/';
+
 
 	public function __construct() {
 		$this->funciones 		= new Funcion();

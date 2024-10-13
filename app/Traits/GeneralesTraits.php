@@ -12,7 +12,7 @@ use App\Modelos\ALMProducto;
 use App\Modelos\Categoria;
 use App\Modelos\Estado;
 use App\Modelos\Conei;
-
+use App\Modelos\Registro;
 
 use App\Modelos\Requerimiento;
 use App\Modelos\Archivo;
@@ -22,13 +22,68 @@ use Session;
 use Hashids;
 Use Nexmo;
 use Keygen;
-
-
-
-
+use Mail;
 
 trait GeneralesTraits
 {
+
+	private function envio_correo_sin_editar($listasolicitudes,$url_real) {
+        foreach($listasolicitudes as $item){
+            $token                  =   substr($item->institucion_id, -8);
+            $emailfrom          	=   'alertassys@induamerica.com.pe';
+            // correos principales y  copias
+            $email              	=   $item->correo_director;
+            $url                	=   $url_real."activar-registro/".Hashids::encode($token);
+            $array      =  Array(
+                'PR'                =>  $item,
+                'token'             =>  $token,
+                'url'               =>  $url,
+            );
+            Mail::send('emails.confirmacion', $array, function($message) use ($emailfrom,$email)
+            {
+                $message->from($emailfrom, 'PERUGEL SOLICITUD REGISTRO');
+                $message->to($email);
+                $message->subject('CONFIRMACION DE REGISTRO');
+
+            });
+
+            $item->ind_email       	=   1;
+            $item->save();
+        }
+        print_r("Se envio correctamente el correo CONFIRMACION");
+	}
+
+
+
+	private function envio_correo_confirmacion() {
+        $listasolicitudes           =   Registro::where('ind_email','=',0)
+        								->where('accion','=','REGISTRO')
+                                        ->get();
+        foreach($listasolicitudes as $item){
+
+            $token                  =   substr($item->institucion_id, -8);
+            $emailfrom          	=   'alertassys@induamerica.com.pe';
+            // correos principales y  copias
+            $email              	=   $item->email;
+            $url                	=   "https://merge.grupoinduamerica.com/perugel/activar-registro/".Hashids::encode($token);
+            $array      =  Array(
+                'PR'                =>  $item,
+                'token'             =>  $token,
+                'url'               =>  $url,
+            );
+            Mail::send('emails.confirmacion', $array, function($message) use ($emailfrom,$email)
+            {
+                $message->from($emailfrom, 'PERUGEL REGISTRO INSTITUCION');
+                $message->to($email);
+                $message->subject('Confirmación de registro');
+
+            });
+
+            $item->ind_email       	=   1;
+            $item->save();
+        }
+        print_r("Se envio correctamente el correo CONFIRMACION");
+	}
 
 
 

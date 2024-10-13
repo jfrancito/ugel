@@ -19,10 +19,15 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <link rel="stylesheet" href="{{ asset('public/css/style.css?v='.$version) }}" type="text/css"/>
-
+    <link rel="stylesheet" href="{{ asset('public/css/login.css?v='.$version) }}" type="text/css"/>
 
   </head>
   <body class="be-splash-screen login-top">
+
+    @include('success.ajax-alert')
+    @include('success.bienhecho', ['bien' => Session::get('bienhecho')])
+    @include('error.erroresurl', ['error' => Session::get('errorurl')])
+    @include('error.erroresbd', ['id' => Session::get('errorbd')  , 'error' => Session::get('errorbd'), 'data' => '2'])
 
     <div class="be-wrapper be-login">
       <div class="be-content ajaxpersonal">  
@@ -44,7 +49,7 @@
 
                   <div class="form-group">
 
-                    <input id="name" name='name' type="text" required = "" value="{{ old('name') }}"  placeholder="Usuario" autocomplete="off" class="form-control" data-aw="1"/>
+                    <input id="name" name='name' type="text" required = "" value="{{ old('name') }}"  placeholder="Codigo Local" autocomplete="off" class="form-control" data-aw="1"/>
 
                     @include('error.erroresvalidate', [ 'id' => $errors->has('name')  , 
                                                         'error' => $errors->first('name', ':message') , 
@@ -65,7 +70,9 @@
                   </div>
 
                   <div class="form-group login-submit">
-                    <button data-dismiss="modal" type="submit"  class="btn btn-primary btn-xl">Inicia sesión</button>
+                    <button data-dismiss="modal" type="submit"  class="btn btn-primary btn-xl">INICIA SESION</button>
+                    <a href="{{ url('/registrate') }}" type="button"  class="btn btn-success btn-xl background-rojo color-blanco border-color-rojo" style="margin-top: 15px;"><b>REGISTRATE</b></a>
+
                   </div>
 
                   <input type='hidden' id='carpeta' value="{{$capeta}}"/>
