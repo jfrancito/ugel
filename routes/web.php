@@ -30,7 +30,7 @@ Route::any('/ajax-buscar-proveedor', 'UserController@actionAjaxBuscarProveedor')
 Route::any('/ajax-buscar-director', 'UserController@actionAjaxBuscarDirector');
 Route::any('/ajax-buscar-dni-ugel-libre', 'GestionApafaConeiController@actionBuscardnilibre');
 Route::any('/activar-registro/{token}', 'UserController@actionActivarRegistro');
-
+Route::get('/prueba-buscar-dni/{dni}', 'GestionApafaConeiController@actionPruebaBuscardnilibre');
 
 
 Route::group(['middleware' => ['authaw']], function () {

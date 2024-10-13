@@ -226,23 +226,59 @@ class GestionApafaConeiController extends Controller
     {
 
         $dni                =   $request['dni'];
-        $json = array();    
-        //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
-        $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
 
-        header('Content-Type: text/html; charset =utf-8');
-        $json = file_get_contents($url, true);
-        $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
-        $persona = json_decode($json, true);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/'.$dni,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_AUTOREFERER => true,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_FOLLOWLOCATION => true,
 
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => [
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+            'Accept: application/json'
+        ],
 
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $persona = json_decode($response, true);
         if($persona['coError'] == '0000'){
-            $substring = '["'.$dni.'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+            $substring = '["'.$persona['NUMERO_DOC'].'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
         }else{
             $substring = '[null,null,null,null]';
         }
 
+
         print_r($substring);
+
+
+
+
+        // $json = array();    
+        // //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        // $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
+        // header('Content-Type: text/html; charset =utf-8');
+        // $json = file_get_contents($url, true);
+        // $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
+        // $persona = json_decode($json, true);
+
+
+        // if($persona['coError'] == '0000'){
+        //     $substring = '["'.$dni.'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+        // }else{
+        //     $substring = '[null,null,null,null]';
+        // }
+
+        // print_r($substring);
 
 
 
@@ -294,23 +330,60 @@ class GestionApafaConeiController extends Controller
         // print_r($substring);
 
 
-        $json = array();    
-        //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
-        $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
-
-        header('Content-Type: text/html; charset =utf-8');
-        $json = file_get_contents($url, true);
-        $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
-        $persona = json_decode($json, true);
 
 
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/'.$dni,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_AUTOREFERER => true,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_FOLLOWLOCATION => true,
+
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => [
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+            'Accept: application/json'
+        ],
+
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $persona = json_decode($response, true);
         if($persona['coError'] == '0000'){
-            $substring = '["'.$dni.'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+            $substring = '["'.$persona['NUMERO_DOC'].'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
         }else{
             $substring = '[null,null,null,null]';
         }
 
+
         print_r($substring);
+
+
+
+        // $json = array();    
+        // //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        // $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
+
+        // header('Content-Type: text/html; charset =utf-8');
+        // $json = file_get_contents($url, true);
+        // $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
+        // $persona = json_decode($json, true);
+
+
+        // if($persona['coError'] == '0000'){
+        //     $substring = '["'.$dni.'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+        // }else{
+        //     $substring = '[null,null,null,null]';
+        // }
+
+        // print_r($substring);
 
 
 
@@ -320,7 +393,45 @@ class GestionApafaConeiController extends Controller
     }
 
 
+    public function actionPruebaBuscardnilibre($dni)
+    {
 
+
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/'.$dni,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_AUTOREFERER => true,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_FOLLOWLOCATION => true,
+
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => [
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+            'Accept: application/json'
+        ],
+
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $persona = json_decode($response, true);
+        if($persona['coError'] == '0000'){
+            $substring = '["'.$persona['NUMERO_DOC'].'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+        }else{
+            $substring = '[null,null,null,null]';
+        }
+
+        //echo $response;
+
+
+    }
 
 
     public function actionBuscardni01($dni)
@@ -398,16 +509,51 @@ class GestionApafaConeiController extends Controller
     public function actionBuscardni03($dni)
     {
 
-        $json = array();    
-        //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
-        $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
 
-        header('Content-Type: text/html; charset =utf-8');
-        $json = file_get_contents($url, true);
-        $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
-        $persona = json_decode($json, true);
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/'.$dni,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_AUTOREFERER => true,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_FOLLOWLOCATION => true,
 
-        dd($persona);
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => [
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+            'Accept: application/json'
+        ],
+
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $persona = json_decode($response, true);
+        if($persona['coError'] == '0000'){
+            $substring = '["'.$persona['NUMERO_DOC'].'","'.$persona['NOMBRES'].'","'.$persona['APE_PATERNO'].'","'.$persona['APE_MATERNO'].'"]';
+        }else{
+            $substring = '[null,null,null,null]';
+        }
+
+
+        print_r($substring);
+
+
+        // $json = array();    
+        // //$url = "http://app17.susalud.gob.pe:8082/webservices/ws_procesos/obtenerDatosReniec?numero=".$dni;
+        // $url = "https://merge.grupoinduamerica.com/apisunat/reniec-buscar-dni/".$dni;
+
+        // header('Content-Type: text/html; charset =utf-8');
+        // $json = file_get_contents($url, true);
+        // $json = mb_convert_encoding($json, 'UTF-8',mb_detect_encoding($json, 'UTF-8, ISO-8859-1', true));
+        // $persona = json_decode($json, true);
+
+        // dd($persona);
     }
 
 
