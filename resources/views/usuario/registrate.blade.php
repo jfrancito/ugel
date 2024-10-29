@@ -44,7 +44,9 @@
       .button.close{
         color: #fff;
       }
-
+      .alertaw{
+        top: 1px !important;
+      }
     </style>
 
 
@@ -89,16 +91,14 @@
                               <div class='inputr'>
                                 <div class="control-label">Accion <span class='requerido'>*</span>:</div>
                                 <div class="abajocaja">
-
                                   <div class="be-radio be-radio-color inline">
                                     <input type="radio" checked="" name="accion" id="rad9" class='accion' value = '0'>
-                                    <label for="rad9">Mantener Registro</label>
+                                    <label for="rad9">Registro</label>
                                   </div>
                                   <div class="be-radio be-radio-color inline">
                                     <input type="radio" name="accion" id="rad10" class='accion' value = '1'>
-                                    <label for="rad10">Editar Registro</label>
+                                    <label for="rad10">Cambio de Director</label>
                                   </div>
-
                                 </div>
                               </div>
 

@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('public/css/meta.css?v='.$version) }} "/>
 
 
-    <title>Ugel Chiclayo - Inicio Sessión</title>
+    <title>Ugel Chiclayo - Olvidaste Contraseña</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/perfect-scrollbar/css/perfect-scrollbar.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('public/lib/material-design-icons/css/material-design-iconic-font.min.css') }} "/>
 
@@ -35,21 +35,23 @@
           <div class="splash-container" style="margin: 25px auto;">
             <div class="panel panel-default panel-border-color panel-border-color-primary">
               <div class="panel-heading">
-                
-              <img src="{{ asset('public/img/ugel.jpg') }}" alt="logo" width="250" height="130" class="logo-img">
-              <!-- <strong class="splash-description" style="font-size: 23px;font-style: italic;">META</strong> -->
-              <span class="splash-description">
-                <b>PLATAFORMA PARA REGISTRO DE CONEI Y APAFA DE INSTITUCIONES EDUCATIVAS PÚBLICAS DEL ÁMBITO DE UGEL CHICLAYO</b>
-              </span>
+              <h3 >
+                <b>Recupera tu cuenta</b>
+              </h3>
+                Introduce tu correo electrónico y te enviaremos un enlace para que recuperes el acceso a tu cuenta
               </div>
               <div class="panel-body">
-
-                <form method="POST" action="{{ url('login') }}">
+                <form method="POST" action="{{ url('olvidaste-contrasenia') }}">
                   {{ csrf_field() }}
-
                   <div class="form-group">
-
-                    <input id="name" name='name' type="text" required = "" value="{{ old('name') }}"  placeholder="Codigo Local" autocomplete="off" class="form-control" data-aw="1"/>
+                    <input  type="email"
+                            id="lblemail" name='lblemail' 
+                            value=""
+                            placeholder="Ingresa tu correo electronico"
+                            required = ""
+                            autocomplete="off" 
+                            class="form-control textpucanegro fuente-recoleta-regular input-sm"
+                            data-aw="1"/>
 
                     @include('error.erroresvalidate', [ 'id' => $errors->has('name')  , 
                                                         'error' => $errors->first('name', ':message') , 
@@ -58,29 +60,14 @@
                     @include('error.erroresvalidate', [ 'id' => Session::get('errorbd')  , 
                                                         'error' => Session::get('errorbd') , 
                                                         'data' => '1'])
-
-
                   </div>
-                  <div class="form-group">
-                    <input id="password" name='password' type="password" required = ""   placeholder="Clave" class="form-control" data-aw="2"/>
-                    @include('error.erroresvalidate', ['id' => $errors->has('name')  , 'error' => $errors->first('name', ':message'), 'data' => '2'])
-                    @include('error.erroresvalidate', ['id' => Session::get('errorbd')  , 'error' => Session::get('errorbd'), 'data' => '2'])
 
-                  </div>
                   <div class="form-group login-submit">
-                    <button data-dismiss="modal" type="submit"  class="btn btn-primary btn-xl">INICIA SESION</button>
-                    <a href="{{ url('/registrate') }}" type="button"  class="btn btn-success btn-xl background-rojo color-blanco border-color-rojo" style="margin-top: 15px;"><b>REGISTRATE</b></a>
-
-
-                    <div class="center" style="text-align: center;font-size: 15px;padding-top: 15px;"><a class="center" href="{{ url('/olvidaste-contrasenia') }}">¿Olvidaste tu contraseña?</a></div>
-                    
+                    <button data-dismiss="modal" type="submit"  class="btn btn-primary btn-xl">ENVIAR ENLACE</button>
                   </div>
-
 
                   <input type='hidden' id='carpeta' value="{{$capeta}}"/>
-                  <input type="hidden" id="token"  class ="ocultar" name="_token"  value="{{ csrf_token() }}">
                 </form>
-                
               </div>
             </div>
           </div>

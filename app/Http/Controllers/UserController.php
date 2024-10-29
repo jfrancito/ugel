@@ -12,6 +12,10 @@ use App\Modelos\Certificado;
 use App\Modelos\DetalleCertificado;
 use App\Modelos\Registro;
 use App\Modelos\Archivo;
+
+
+
+
 use App\User;
 
 use Illuminate\Http\Request;
@@ -27,6 +31,117 @@ use App\Traits\GeneralesTraits;
 class UserController extends Controller {
 
     use GeneralesTraits;
+
+
+	public function actionCambioClaveGuardar($institucion_id,Request $request) {
+
+		if ($_POST) {
+
+            try{
+
+	            DB::beginTransaction();
+				$institucion_id  =   $this->funciones->decodificarmaestra($institucion_id);
+				$lblcontrasena 	 = 	 $request['lblcontrasena'];
+	            User::where('institucion_id','=',$institucion_id)
+	                        ->update(
+	                            [
+	                                'password'=>Crypt::encrypt($lblcontrasena),
+	                                'ind_cambioclave'=>'0',
+	                                'fecha_mod'=>$this->fechaactual,
+	                                'usuario_mod'=>'1CIX00000001'
+	                            ]
+	                        );
+				$mensaje    =   'Se Realizo el cambio de contraseña correctamente';
+            	DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                return Redirect::to('olvidaste-contrasenia')->with('errorbd', $ex.' Ocurrio un error inesperado');
+            }
+ 			return Redirect::to('/login')->with('bienhecho', $mensaje);
+
+		} 
+	}
+
+
+
+	public function actionCambioClave($institucion_id) {
+
+		$institucion_cr = 	 $institucion_id;
+		$institucion_id  =   $this->funciones->decodificarmaestra($institucion_id);
+		//ya se realizo el cambio de clave
+		$institucion  					= 	Institucion::where('id','=',$institucion_id)->first();
+	    $user 							=	User::where('institucion_id','=',$institucion->id)->where('ind_cambioclave','=','1')->first();
+		$mensaje    					=   'Ya fue realizado el cambio de clave';
+	    if(count($user)<=0){
+ 			return Redirect::to('/login')->with('errorurl', $mensaje);
+	    }
+
+		return View::make('usuario.cambioclave',
+						 [
+						 	'institucion_cr' => $institucion_cr,
+						 	'user' => $user,
+						 ]);
+	}
+
+
+
+	public function actionOlvidasteContrasenia(Request $request) {
+
+		if ($_POST) {
+
+            try{
+
+	            DB::beginTransaction();
+
+				$lblemail 		= 	$request['lblemail'];
+
+				$director 		= 	Director::where('correo','=',$lblemail)
+									->where('activo', '=', 1)
+									->first();
+	            if(count($director)<=0){
+	                return Redirect::back()->with('errorbd', 'Correo Electronico '.$director.' no se encuentra registrado');
+	            }
+
+				$institucion  					= 	Institucion::where('id','=',$director->institucion_id)->first();
+				$registro  						= 	Registro::where('institucion_id','=',$director->institucion_id)->where('activo','=','1')->first();
+	            if(count($registro)<=0){
+	                return Redirect::back()->with('errorbd', 'Institucion Educativa '.$institucion->nombre.' aun no se a registrado');
+	            }
+	            $userv 							=	User::where('institucion_id','=',$director->institucion_id)->where('ind_cambioclave','=','1')->first();
+	            if(count($userv)>0){
+	                return Redirect::back()->with('errorbd', 'Institucion Educativa '.$institucion->nombre.' tiene una solicitud pendiente');
+	            }
+
+	            //1 : SOLICITA CAMBIO DE CLAVE
+	            //0 O NULL : CUANDO NO TIENE NINGUNA SOLICITUD DE CAMBIO
+
+	            $user 							=	User::where('institucion_id','=',$director->institucion_id)->first();
+	            $user->ind_cambioclave 			= 	1;
+				$user->usuario_mod			= 	'1CIX00000001';
+				$user->fecha_mod 	   		=  	$this->fechaactual;
+	            $user->save();
+
+	            //dd($user);
+
+           		$this->envio_correo_cambio_clave($director,$this->url_real);
+				$mensaje    =   'Solicitud de Cambio de contraseña se realizo correctamente';
+            	DB::commit();
+            }catch(\Exception $ex){
+                DB::rollback(); 
+                return Redirect::to('olvidaste-contrasenia')->with('errorbd', $ex.' Ocurrio un error inesperado');
+            }
+ 			return Redirect::to('/login')->with('bienhecho', $mensaje);
+
+		} else {
+
+
+
+			return view('usuario.olvidastecontrasenia');
+		}
+	}
+
+
+
 
 
     public function actionEnviarSolicitudCorreo($idopcion,$idregistro)
@@ -69,6 +184,8 @@ class UserController extends Controller {
                                 'usuario_mod'=>Session::get('usuario')->id
                             ]
                         );
+
+
 	        $listasolicitudes           =   Registro::where('id','=',$registro_id)
 	                                        ->get();
 
@@ -274,26 +391,39 @@ class UserController extends Controller {
 			$lblcelular 					= 	$request['lblcelular'];
 			$lblemail 						= 	$request['lblemail'];
 			$lblconfirmaremail 				= 	$request['lblconfirmaremail'];
-
-			$registro  						= 	Registro::where('institucion_id','=',$institucion_id)->where('ind_email','=',0)->first();
-
 			$institucion  					= 	Institucion::where('id','=',$institucion_id)->first();
-            if(count($registro)>0){
-                return Redirect::back()->with('errorurl', 'Institucion '.$institucion->nombre.' aun tiene una solicitud de registro pendiente');
-            }
-
+			if($accion == 0){
+				$registro  						= 	Registro::where('institucion_id','=',$institucion_id)->where('activo','=','1')->where('accion','=','REGISTRO')->first();
+	            if(count($registro)>0){
+	                return Redirect::back()->with('errorurl', 'Institucion Educativa '.$institucion->nombre.' ya tiene un registro valido (realize un cambio de contraseña o cambio de director)');
+	            }
+        	}else{
+				$registro  						= 	Registro::where('institucion_id','=',$institucion_id)->where('activo','=','1')->where('accion','=','EDITAR')->where('ind_email','=',0)->first();
+	            if(count($registro)>0){
+	                return Redirect::back()->with('errorurl', 'Institucion Educativa '.$institucion->nombre.' aun no confirma su registro anterior');
+	            }
+        	}
+            //desctivamos el registro
+	        Registro::where('institucion_id','=',$institucion_id)->where('activo','=','1')
+            ->update(
+                [
+                    'activo'=>'0',
+                    'fecha_mod'=>$this->fechaactual,
+                    'usuario_mod'=>'1CIX00000001'
+                ]
+            );
 			$txt_accion 					=	'REGISTRO';
 			$ind_registro 					=	0;
 			$ind_editar 					=	-1;
-
 			$mensaje 						=	'Institucion '.$institucion->nombre.' registrado con exito (Se le a enviado un email para que pueda confirmar su acceso al sitema)';
+            $ind_email       				=   1;
 
 			if($accion == 1){			
 				$txt_accion 					=	'EDITAR';
 				$ind_registro 					=	-1;
 				$ind_editar 					=	0;
-				$mensaje 						=	'Institucion '.$institucion->nombre.' registrado con exito (Como realizo una modificacion en el registro la administrativa estara enviandole un correo con la respuesta de solicitud)';
-
+				$mensaje 						=	'Institucion '.$institucion->nombre.' registrado con exito (Como realizo un cambio de director en el registro el administrador le estara enviando un correo con la respuesta de solicitud)';
+            	$ind_email       				=   0;
 			}
 
 			$id 				 			=   $this->funciones->getCreateIdMaestra('registros');
@@ -308,17 +438,15 @@ class UserController extends Controller {
 			$cabecera->nombre 	 			= 	$institucion->nombre;
 			$cabecera->tipoo_instituccion 	= 	$tipo_institucion;
 			$cabecera->password				= 	Crypt::encrypt($lblcontrasena);
-
 			$cabecera->dni_director			= 	$dni;
 			$cabecera->nombres_director		= 	$nombre;
 			$cabecera->telefono_director	= 	$lblcelular;
 			$cabecera->correo_director		= 	$lblemail;
-			$cabecera->ind_email			= 	0;
+			$cabecera->ind_email			= 	$ind_email;
 			$cabecera->usuario_crea			= 	'1CIX00000001';
 			$cabecera->fecha_crea 	   		=  	$this->fechaactual;
 			$cabecera->save();
- 
-            $files                      =   $request['resolucion'];
+            $files                      	=   $request['resolucion'];
 
 
 
@@ -360,9 +488,38 @@ class UserController extends Controller {
 	                }
 	            }
 
+
+	            User::where('institucion_id','=',$institucion_id)
+	                        ->update(
+	                            [
+	                                'ind_confirmacion'=>0,
+	                                'fecha_mod'=>$this->fechaactual,
+	                                'usuario_mod'=>'1CIX00000001'
+	                            ]
+	                        );
+
+
+			}else{
+
+		        Institucion::where('id','=',$institucion_id)
+                ->update(
+                    [
+                        'tipo_institucion'=>$tipo_institucion,
+                        'fecha_mod'=>$this->fechaactual,
+                        'usuario_mod'=>'1CIX00000001'
+                    ]
+                );
+	            User::where('institucion_id','=',$institucion_id)
+	                        ->update(
+	                            [
+	                                'password'=>Crypt::encrypt($lblcontrasena),
+	                                'fecha_mod'=>$this->fechaactual,
+	                                'usuario_mod'=>'1CIX00000001'
+	                            ]
+	                        );
+
+            	$this->envio_correo_registro($cabecera,$this->url_real);
 			}
-
-
 
 			Session::forget('usuario');
 			Session::forget('listamenu');

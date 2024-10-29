@@ -26,6 +26,11 @@ Route::group(['middleware' => ['guestaw']], function () {
 
 Route::get('/cerrarsession', 'UserController@actionCerrarSesion');
 Route::any('/registrate', 'UserController@actionRegistrate');
+Route::any('/olvidaste-contrasenia', 'UserController@actionOlvidasteContrasenia');
+Route::any('/cambio-clave/{institucion_id}', 'UserController@actionCambioClave');
+Route::any('/cambio-clave-guardar/{institucion_cr}', 'UserController@actionCambioClaveGuardar');
+
+
 Route::any('/ajax-buscar-proveedor', 'UserController@actionAjaxBuscarProveedor');
 Route::any('/ajax-buscar-director', 'UserController@actionAjaxBuscarDirector');
 Route::any('/ajax-buscar-dni-ugel-libre', 'GestionApafaConeiController@actionBuscardnilibre');

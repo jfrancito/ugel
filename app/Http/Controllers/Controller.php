@@ -38,7 +38,7 @@ class Controller extends BaseController {
 	public $pathFilesCer='certificado_conei/';
 	public $pathFilesApafa='requerimiento_apafa/';
 	public $pathFilesRes='resolucion/';
-	public $url_real='http://localhost:8080/perugel/';
+	public $url_real='https://merge.grupoinduamerica.com/perugel/';
 
 
 	public function __construct() {

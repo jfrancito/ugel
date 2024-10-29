@@ -53,6 +53,48 @@ trait GeneralesTraits
         print_r("Se envio correctamente el correo CONFIRMACION");
 	}
 
+	private function envio_correo_registro($item,$url_real) {
+
+            $token                  =   substr($item->institucion_id, -8);
+            $emailfrom          	=   'alertassys@induamerica.com.pe';
+            // correos principales y  copias
+            $email              	=   $item->correo_director;
+            $url                	=   $url_real."activar-registro/".Hashids::encode($token);
+            $array      =  Array(
+                'PR'                =>  $item,
+                'token'             =>  $token,
+                'url'               =>  $url,
+            );
+            Mail::send('emails.confirmacion', $array, function($message) use ($emailfrom,$email)
+            {
+                $message->from($emailfrom, 'PERUGEL SOLICITUD REGISTRO');
+                $message->to($email);
+                $message->subject('CONFIRMACION DE REGISTRO');
+
+            });
+	}
+
+
+	private function envio_correo_cambio_clave($director,$url_real) {
+
+            $token                  =   substr($director->institucion_id, -8);
+            $emailfrom          	=   'alertassys@induamerica.com.pe';
+            $email              	=   $director->correo;
+            $url                	=   $url_real."cambio-clave/".Hashids::encode($token);
+            $array      =  Array(
+                'PR'                =>  $director,
+                'token'             =>  $token,
+                'url'               =>  $url,
+            );
+            Mail::send('emails.cambioclave', $array, function($message) use ($emailfrom,$email)
+            {
+                $message->from($emailfrom, 'PERUGEL SOLICITUD CAMBIO DE CLAVE');
+                $message->to($email);
+                $message->subject('CAMBIO DE CLAVE');
+
+            });
+	}
+
 
 
 	private function envio_correo_confirmacion() {
