@@ -165,6 +165,21 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/gestion-de-instituciones-sin-certificado/{idopcion}', 'ReporteCertificadoController@actionListarSinCertificadosInstituciones');
 	Route::any('/ajax-lista-instituciones-sin-certificado', 'ReporteCertificadoController@actionAjaxListarInstitucionSinCertificado');
 
+	/* GESTION INGRESOS */
+	Route::any('/gestion-de-ingresos/{idopcion}', 'GestionIngresoController@actionListarIngresos');	
+	Route::any('/agregar-ingreso/{idopcion}', 'GestionIngresoController@actionAgregarIngreso');
+	Route::any('/modificar-ingreso/{idopcion}/{idingreso}', 'GestionIngresoController@actionModificarIngreso');
+	Route::any('/descargar-archivo-ingreso/{idopcion}/{idarchivo}', 'GestionIngresoController@actionDescargarArchivosIngreso');
+	Route::any('/emitir-ingreso/{idopcion}/{idingreso}', 'GestionIngresoController@actionEmitirIngreso');
+
+	/* GESTION EGRESOS */
+	Route::any('/gestion-de-egresos/{idopcion}', 'GestionEgresoController@actionListarEgresos');	
+	Route::any('/agregar-egreso/{idopcion}', 'GestionEgresoController@actionAgregarEgreso');
+	Route::any('/ajax-cargar-tipo-concepto', 'GestionEgresoController@actionAjaxTipoConcepto');
+	Route::any('/modificar-egreso/{idopcion}/{idegreso}', 'GestionEgresoController@actionModificarEgreso');
+	Route::any('/descargar-archivo-egreso/{idopcion}/{idarchivo}', 'GestionEgresoController@actionDescargarArchivosEgreso');
+	Route::any('/emitir-egreso/{idopcion}/{idegreso}', 'GestionEgresoController@actionEmitirEgreso');
+
 
 
 

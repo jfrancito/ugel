@@ -38,6 +38,8 @@ class Controller extends BaseController {
 	public $pathFilesCer='certificado_conei/';
 	public $pathFilesApafa='requerimiento_apafa/';
 	public $pathFilesRes='resolucion/';
+	public $pathFilesIng='ingreso/';
+	public $pathFilesEgr='egreso/';
 	public $url_real='https://merge.grupoinduamerica.com/perugel/';
 
 
