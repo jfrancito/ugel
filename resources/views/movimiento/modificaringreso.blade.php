@@ -21,6 +21,9 @@
             <form method="POST" action="{{ url('/modificar-ingreso/'.$idopcion.'/'.Hashids::encode(substr($ingreso->id, -8))) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
+              <div class="trimestre">
+                @include('movimiento.ajax.atrimestre')              
+              </div>
 
               <div class="form-group">
                   <label class="col-sm-3 control-label">Fecha de Comprobante : </label>                  
@@ -186,7 +189,7 @@
                   <label class="col-sm-3 control-label">Sustento :</label>
                   <div class="col-sm-6">
                       <div class="file-loading">
-                          <input id="file-es" name="ingreso[]" class="file-es" type="file" multiple required = "" data-max-file-count="1">
+                          <input id="file-es" name="ingreso[]" class="file-es" type="file" multiple data-max-file-count="1">
                       </div>
                   </div>
               </div>              

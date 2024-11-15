@@ -20,6 +20,10 @@
             <form method="POST" action="{{ url('/agregar-ingreso/'.$idopcion) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
+              <div class="trimestre">
+                @include('movimiento.ajax.atrimestre')              
+              </div>
+
               <div class="form-group">
                   <label class="col-sm-3 control-label">Fecha de Comprobante : </label>                  
                   <div class="col-sm-6"> 
@@ -42,7 +46,7 @@
                                     [
                                       'class'       => 'form-control control select2' ,
                                       'id'          => 'tipo_comprobante_id',
-                                      'required'    => '',
+                                      'required'    => '',                                      
                                       'data-aw'     => '2'
                                     ]) !!}
                 </div>

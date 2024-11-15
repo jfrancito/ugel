@@ -22,6 +22,11 @@
                     {{ csrf_field() }}
 
 
+              <div class="trimestre">
+                @include('movimiento.ajax.atrimestre')              
+              </div>
+
+
               <div class="form-group">
                   <label class="col-sm-3 control-label">Fecha de Comprobante : </label>                  
                   <div class="col-sm-6"> 
@@ -187,7 +192,7 @@
                   <label class="col-sm-3 control-label">Sustento :</label>
                   <div class="col-sm-6">
                       <div class="file-loading">
-                          <input id="file-es" name="egreso[]" class="file-es" type="file" multiple required = "" data-max-file-count="1">
+                          <input id="file-es" name="egreso[]" class="file-es" type="file" multiple data-max-file-count="1">
                       </div>
                   </div>
               </div>              

@@ -10,6 +10,7 @@ use App\Modelos\RolOpcion;
 use App\Modelos\Ingreso;
 use App\Modelos\Estado;
 use App\Modelos\Archivo;
+use App\Modelos\Trimestre;
 
 
 use App\User;
@@ -86,12 +87,19 @@ class GestionIngresoController extends Controller
                     $tipo_documento                     =   Estado::where('id','=',$tipo_documento_id)->first();
                     $tipo_concepto                      =   Estado::where('id','=',$tipo_concepto_id)->first();
 
+                    $trimestre                          =   Trimestre::where('fecha_ini', '<=', $fecha_comprobante)
+                                                            ->where('fecha_fin', '>=', $fecha_comprobante)
+                                                            ->where('activo','=',1)
+                                                            ->first();                    
+
                     $idingreso                          =   $this->funciones->getCreateIdMaestra('ingresos');
                     $codigo                             =   $this->funciones->generar_codigo('ingresos',8);
 
                     $cabecera                           =   new Ingreso();
                     $cabecera->id                       =   $idingreso;
                     $cabecera->codigo                   =   $codigo;
+                    $cabecera->trimestre_id             =   $trimestre->id;
+                    $cabecera->trimestre_nombre         =   $trimestre->nombre;
                     $cabecera->fecha_comprobante        =   $fecha_comprobante;
                     $cabecera->tipo_comprobante_id      =   $tipo_comprobante_id;
                     $cabecera->tipo_comprobante_nombre  =   $tipo_comprobante->nombre;
@@ -231,6 +239,13 @@ class GestionIngresoController extends Controller
                     $tipo_documento                     =   Estado::where('id','=',$tipo_documento_id)->first();
                     $tipo_concepto                      =   Estado::where('id','=',$tipo_concepto_id)->first();
 
+                    $trimestre                          =   Trimestre::where('fecha_ini', '<=', $fecha_comprobante)
+                                                            ->where('fecha_fin', '>=', $fecha_comprobante)
+                                                            ->where('activo','=',1)
+                                                            ->first();
+
+                    $ingreso->trimestre_id              =   $trimestre->id;
+                    $ingreso->trimestre_nombre          =   $trimestre->nombre;
                     $ingreso->fecha_comprobante         =   $fecha_comprobante;
                     $ingreso->tipo_comprobante_id       =   $tipo_comprobante_id;
                     $ingreso->tipo_comprobante_nombre   =   $tipo_comprobante->nombre;
@@ -300,6 +315,8 @@ class GestionIngresoController extends Controller
         }else{
                 View::share('titulo','Modificar Ingreso');
 
+                $trimestre_nombre                   =   $ingreso->trimestre_nombre;
+
                 $arraytipocomprobante               =   array('TICO00000001','TIcO00000002');            
                 $combo_tipo_comprobante             =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione tipo comprobante','','TIPO_COMPROBANTE',$arraytipocomprobante);
                 $select_tipo_comprobante            =   $ingreso->tipo_comprobante_id;
@@ -321,6 +338,7 @@ class GestionIngresoController extends Controller
                                 [
                                     'ingreso'                   =>  $ingreso,
                                     'idopcion'                  =>  $idopcion,
+                                    'trimestre_nombre'          =>  $trimestre_nombre,
                                     'combo_tipo_comprobante'    =>  $combo_tipo_comprobante, 
                                     'select_tipo_comprobante'   =>  $select_tipo_comprobante,
                                     'combo_tipo_documento'      =>  $combo_tipo_documento, 
@@ -385,5 +403,36 @@ class GestionIngresoController extends Controller
         /******************************/
 
         return Redirect::to('/gestion-de-ingresos/'.$idopcion)->with('bienhecho', 'Ingreso emitido con exito');
+    }
+
+    public function actionAjaxTrimestre(Request $request)
+    {
+        $fecha_comprobante           =   $request['fecha_comprobante'];
+
+        if($fecha_comprobante == NULL){
+            $trimestre_nombre     =   '';
+
+        }else{
+
+
+            $trimestre            = Trimestre::where('fecha_ini', '<=', $fecha_comprobante)
+                                    ->where('fecha_fin', '>=', $fecha_comprobante)
+                                    ->where('activo','=',1)
+                                    ->first();            
+
+            if(isset($trimestre)){
+                $trimestre_nombre     = $trimestre->nombre;
+            }else{
+                $trimestre_nombre     =   '';
+            }                        
+            
+            
+        }        
+        
+        return View::make('movimiento/ajax/atrimestre',
+                        [
+                            'trimestre_nombre'       => $trimestre_nombre,                            
+                            'ajax'                   =>  true,
+                        ]);
     }
 }

@@ -31,7 +31,7 @@ $(document).ready(function(){
     });*/
 
     $(".formegreso").on('change','#tipo_gasto_id', function() {
-debugger;
+
         var _token                  =   $('#token').val();
 
         var tipogasto               =   $('#tipo_gasto_id').select2('data');
@@ -63,5 +63,26 @@ debugger;
                     }
             });
         }              
+    });
+
+    $('.egreso').on('change','#fecha_comprobante', function() {
+        var _token                  =   $('#token').val();
+        debugger;
+        var fecha_comprobante = $('#fecha_comprobante').val();        
+        
+        $.ajax({
+                    type    :   "POST",
+                    url     :   carpeta+"/ajax-cargar-trimestre-egreso",
+                    data    :   {
+                                    _token  : _token,
+                                    fecha_comprobante : fecha_comprobante,
+                                },
+                    success: function (data) {
+                        $(".egreso .trimestre").html(data);
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+            });
     });
 });
