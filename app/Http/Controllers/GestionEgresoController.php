@@ -10,6 +10,7 @@ use App\Modelos\RolOpcion;
 use App\Modelos\Egreso;
 use App\Modelos\Estado;
 use App\Modelos\Archivo;
+use App\Modelos\Trimestre;
 
 
 use App\User;
@@ -98,12 +99,19 @@ class GestionEgresoController extends Controller
 
                     $tipo_concepto                      =   Estado::where('id','=',$tipo_concepto_id)->first();
 
+                    $trimestre                          =   Trimestre::where('fecha_ini', '<=', $fecha_comprobante)
+                                                            ->where('fecha_fin', '>=', $fecha_comprobante)
+                                                            ->where('activo','=',1)
+                                                            ->first(); 
+
                     $idegreso                          =   $this->funciones->getCreateIdMaestra('egresos');
                     $codigo                             =   $this->funciones->generar_codigo('egresos',8);
 
                     $cabecera                           =   new Egreso();
                     $cabecera->id                       =   $idegreso;
                     $cabecera->codigo                   =   $codigo;
+                    $cabecera->trimestre_id             =   $trimestre->id;
+                    $cabecera->trimestre_nombre         =   $trimestre->nombre;
                     $cabecera->fecha_comprobante        =   $fecha_comprobante;
                     $cabecera->tipo_comprobante_id      =   $tipo_comprobante_id;
                     $cabecera->tipo_comprobante_nombre  =   $tipo_comprobante->nombre;
@@ -300,6 +308,13 @@ class GestionEgresoController extends Controller
 
                     $tipo_concepto                      =   Estado::where('id','=',$tipo_concepto_id)->first();
 
+                    $trimestre                          =   Trimestre::where('fecha_ini', '<=', $fecha_comprobante)
+                                                            ->where('fecha_fin', '>=', $fecha_comprobante)
+                                                            ->where('activo','=',1)
+                                                            ->first();
+
+                    $egreso->trimestre_id              =   $trimestre->id;
+                    $egreso->trimestre_nombre          =   $trimestre->nombre;
                     $egreso->fecha_comprobante         =   $fecha_comprobante;
                     $egreso->tipo_comprobante_id       =   $tipo_comprobante_id;
                     $egreso->tipo_comprobante_nombre   =   $tipo_comprobante->nombre;
@@ -378,6 +393,8 @@ class GestionEgresoController extends Controller
         }else{
                 View::share('titulo','Modificar Egreso');
 
+                $trimestre_nombre                   =   $egreso->trimestre_nombre;
+
                 $arraytipocomprobante               =   array('TICO00000001','TICO00000003','TICO00000004','TICO00000005');            
                 $combo_tipo_comprobante             =   $this->gn_generacion_combo_tabla_in_array('estados','id','nombre','Seleccione tipo comprobante','','TIPO_COMPROBANTE',$arraytipocomprobante);
                 $select_tipo_comprobante            =   $egreso->tipo_comprobante_id;
@@ -415,6 +432,7 @@ class GestionEgresoController extends Controller
                                 [
                                     'egreso'                    =>  $egreso,
                                     'idopcion'                  =>  $idopcion,
+                                    'trimestre_nombre'          =>  $trimestre_nombre,
                                     'combo_tipo_comprobante'    =>  $combo_tipo_comprobante, 
                                     'select_tipo_comprobante'   =>  $select_tipo_comprobante,
                                     'combo_tipo_documento'      =>  $combo_tipo_documento, 
@@ -483,5 +501,36 @@ class GestionEgresoController extends Controller
         /******************************/
 
         return Redirect::to('/gestion-de-egresos/'.$idopcion)->with('bienhecho', 'Egreso emitido con exito');
+    }
+
+    public function actionAjaxTrimestre(Request $request)
+    {
+        $fecha_comprobante           =   $request['fecha_comprobante'];
+
+        if($fecha_comprobante == NULL){
+            $trimestre_nombre     =   '';
+
+        }else{
+
+
+            $trimestre            = Trimestre::where('fecha_ini', '<=', $fecha_comprobante)
+                                    ->where('fecha_fin', '>=', $fecha_comprobante)
+                                    ->where('activo','=',1)
+                                    ->first();            
+
+            if(isset($trimestre)){
+                $trimestre_nombre     = $trimestre->nombre;
+            }else{
+                $trimestre_nombre     =   '';
+            }                        
+            
+            
+        }        
+        
+        return View::make('movimiento/ajax/atrimestre',
+                        [
+                            'trimestre_nombre'       => $trimestre_nombre,                            
+                            'ajax'                   =>  true,
+                        ]);
     }
 }

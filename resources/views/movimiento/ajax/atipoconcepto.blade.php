@@ -16,7 +16,7 @@
 	$(document).ready(function(){
 		$(".select3").select2({
           width: '100%'
-    });
+        });
 	});
 	</script>
 @endif

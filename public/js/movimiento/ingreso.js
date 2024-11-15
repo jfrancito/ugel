@@ -21,6 +21,27 @@ $(document).ready(function(){
 
     });
 
+    $('.ingreso').on('change','#fecha_comprobante', function() {
+        var _token                  =   $('#token').val();
+        debugger;
+        var fecha_comprobante = $('#fecha_comprobante').val();        
+        
+        $.ajax({
+                    type    :   "POST",
+                    url     :   carpeta+"/ajax-cargar-trimestre-ingreso",
+                    data    :   {
+                                    _token  : _token,
+                                    fecha_comprobante : fecha_comprobante,
+                                },
+                    success: function (data) {
+                        $(".ingreso .trimestre").html(data);
+                    },
+                    error: function (data) {
+                        console.log('Error:', data);
+                    }
+            });
+    });
+
     // $(".ingreso").on('click','.btn-agregar-ingreso', function() {
     //     console.log(filesSelected);
     //     if (!filesSelected) {alerterrorajax("Ingrese un Archivo PDF de Sustento.");return false;}

@@ -171,6 +171,7 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/modificar-ingreso/{idopcion}/{idingreso}', 'GestionIngresoController@actionModificarIngreso');
 	Route::any('/descargar-archivo-ingreso/{idopcion}/{idarchivo}', 'GestionIngresoController@actionDescargarArchivosIngreso');
 	Route::any('/emitir-ingreso/{idopcion}/{idingreso}', 'GestionIngresoController@actionEmitirIngreso');
+	Route::any('/ajax-cargar-trimestre-ingreso', 'GestionIngresoController@actionAjaxTrimestre');
 
 	/* GESTION EGRESOS */
 	Route::any('/gestion-de-egresos/{idopcion}', 'GestionEgresoController@actionListarEgresos');	
@@ -179,6 +180,7 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/modificar-egreso/{idopcion}/{idegreso}', 'GestionEgresoController@actionModificarEgreso');
 	Route::any('/descargar-archivo-egreso/{idopcion}/{idarchivo}', 'GestionEgresoController@actionDescargarArchivosEgreso');
 	Route::any('/emitir-egreso/{idopcion}/{idegreso}', 'GestionEgresoController@actionEmitirEgreso');
+	Route::any('/ajax-cargar-trimestre-egreso', 'GestionEgresoController@actionAjaxTrimestre');
 
 
 

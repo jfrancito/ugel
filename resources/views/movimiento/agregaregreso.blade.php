@@ -20,6 +20,11 @@
             <form method="POST" action="{{ url('/agregar-egreso/'.$idopcion) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed formegreso" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
+              <div class="trimestre">
+                @include('movimiento.ajax.atrimestre')              
+              </div>
+
+
               <div class="form-group">
                   <label class="col-sm-3 control-label">Fecha de Comprobante : </label>                  
                   <div class="col-sm-6"> 
