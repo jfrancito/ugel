@@ -237,7 +237,7 @@ class GestionCertificadoController extends Controller
         try{
             // DB::beginTransaction();
             $archivo                =   Archivo::where('id','=',$registro_id)->first();
-            $storagePath            = storage_path('app\\'.$this->pathFilesCer.$archivo->lote.'\\'.$archivo->nombre_archivo);
+            $storagePath            =   storage_path($archivo->url_archivo);
             if(is_file($storagePath))
             {       
                     // return Response::download($rutaArchivo);
@@ -320,18 +320,19 @@ class GestionCertificadoController extends Controller
                                     ]
                                 );
 
-                    $files                      =   $request['certificado'];
+                    $codigo_institucion                 =   Session::get('institucion')->codigo;         
+                    $files                              =   $request['certificado'];
                     if(!is_null($files)){
                         foreach($files as $file){
 
                             $codigo                     =   $certificado->codigo;
 
-                            $rutafile                   =   storage_path('app/').$this->pathFilesCer.$codigo.'/';
+                            $rutafile                   =   storage_path('app/').$codigo_institucion.'/'.$this->pathFilesCer;
                             $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
                             $numero                     =   $certificado->periodo_id;
                             $nombre                     =   $codigo.'-'.$file->getClientOriginalName();
 
-                            $rutadondeguardar           =   $this->pathFilesCer.$codigo.'/';
+                            $rutadondeguardar           =   $codigo_institucion.'/'.$this->pathFilesCer;
                             $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                             $nombreoriginal             =   $file->getClientOriginalName();
@@ -389,7 +390,7 @@ class GestionCertificadoController extends Controller
                 $multimedia         =   Archivo::where('referencia_id','=',$certificado->id)->where('tipo_archivo','=','certificado')->where('activo','=',1)->first();
 
                 
-                $rutafoto           =   !empty($multimedia) ? asset('storage/app/certificado_conei/'.$multimedia->lote.'/'.$multimedia->nombre_archivo) : asset('public/img/no-foto.png');
+                $rutafoto           =   !empty($multimedia) ? asset('storage/'.$multimedia->url_archivo) : asset('public/img/no-foto.png');
 
 
                 if($certificado->estado_id == 'CEES00000003'){
@@ -538,16 +539,18 @@ class GestionCertificadoController extends Controller
                         
                     }
 
+                    $codigo_institucion                 =   Session::get('institucion')->codigo;         
+
                     $files                      =   $request['certificado'];
                     if(!is_null($files)){
                         foreach($files as $file){
 
-                            $rutafile                   =   storage_path('app/').$this->pathFilesCer.$codigo.'/';
+                            $rutafile                   =   storage_path('app/').$codigo_institucion.'/'.$this->pathFilesCer;
                             $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
                             $numero                     =   $periodo_id;
                             $nombre                     =   $codigo.'-'.$file->getClientOriginalName();
 
-                            $rutadondeguardar           =   $this->pathFilesCer.$codigo.'/';
+                            $rutadondeguardar           =   $codigo_institucion.'/'.$this->pathFilesCer;
                             $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                             $nombreoriginal             =   $file->getClientOriginalName();

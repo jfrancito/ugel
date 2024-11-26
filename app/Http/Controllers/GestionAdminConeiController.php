@@ -55,7 +55,8 @@ class GestionAdminConeiController extends Controller
                                 //->where('id','<>','1CIX00000380')
                                 ->where('activo','=','1')->get();
 
-        $filefolio = storage_path('app/requerimiento_conei/'.$conei->codigo.'/folio-'.$conei->codigo.'.pdf');
+        //$filefolio = storage_path('app/requerimiento_conei/'.$conei->codigo.'/folio-'.$conei->codigo.'.pdf');
+        $storagePath            =   storage_path($archivo->url_archivo);
         if (file_exists($filefolio)) {
             return response()->download($filefolio);
         }else{

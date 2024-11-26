@@ -51,7 +51,7 @@ class GestionConeiController extends Controller
         try{
             // DB::beginTransaction();
             $archivo                =   Archivo::where('id','=',$registro_id)->first();
-            $storagePath            = storage_path('app\\'.$this->pathFiles.$archivo->lote.'\\'.$archivo->nombre_archivo);
+            $storagePath            =   storage_path($archivo->url_archivo);
             if(is_file($storagePath))
             {       
                     // return Response::download($rutaArchivo);
@@ -623,6 +623,7 @@ class GestionConeiController extends Controller
             }
 
             $tarchivos                                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000002')->get();
+            $codigo_institucion                         =   Session::get('institucion')->codigo;         
 
             foreach($tarchivos as $index=>$item){
                 //01
@@ -633,12 +634,12 @@ class GestionConeiController extends Controller
                         $listadetalledoc            =   Archivo::where('referencia_id','=',$idrequerimiento)
                                                         ->get();
 
-                        $rutafile                   =   storage_path('app/').$this->pathFiles.$codigo.'/';
+                        $rutafile                   =   storage_path('app/').$codigo_institucion.'/'.$this->pathFiles;
                         $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
                         $numero                     =   count($listadetalledoc)+1;
                         $nombre                     =   $codigo.'-'.$numero.'-'.$file->getClientOriginalName();
 
-                        $rutadondeguardar           =   $this->pathFiles.$codigo.'/';
+                        $rutadondeguardar           =   $codigo_institucion.'/'.$this->pathFiles;
                         $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                         $nombreoriginal             =   $file->getClientOriginalName();

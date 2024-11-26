@@ -170,8 +170,12 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/agregar-ingreso/{idopcion}', 'GestionIngresoController@actionAgregarIngreso');
 	Route::any('/modificar-ingreso/{idopcion}/{idingreso}', 'GestionIngresoController@actionModificarIngreso');
 	Route::any('/descargar-archivo-ingreso/{idopcion}/{idarchivo}', 'GestionIngresoController@actionDescargarArchivosIngreso');
+	Route::any('/descargar-archivo-contrato/{idopcion}/{idarchivo}', 'GestionIngresoController@actionDescargarArchivosContrato');
 	Route::any('/emitir-ingreso/{idopcion}/{idingreso}', 'GestionIngresoController@actionEmitirIngreso');
 	Route::any('/ajax-cargar-trimestre-ingreso', 'GestionIngresoController@actionAjaxTrimestre');
+	Route::any('/ajax-comparar-serie-numero', 'GestionIngresoController@actionCompararSerieNumero');
+	Route::any('/ajax-modal-contrato-anterior', 'GestionIngresoController@actionAjaxListarContratosAnteriores');
+
 
 	/* GESTION EGRESOS */
 	Route::any('/gestion-de-egresos/{idopcion}', 'GestionEgresoController@actionListarEgresos');	
@@ -181,6 +185,7 @@ Route::group(['middleware' => ['authaw']], function () {
 	Route::any('/descargar-archivo-egreso/{idopcion}/{idarchivo}', 'GestionEgresoController@actionDescargarArchivosEgreso');
 	Route::any('/emitir-egreso/{idopcion}/{idegreso}', 'GestionEgresoController@actionEmitirEgreso');
 	Route::any('/ajax-cargar-trimestre-egreso', 'GestionEgresoController@actionAjaxTrimestre');
+	Route::any('/ajax-buscar-ruc-ugel', 'GestionEgresoController@actionBuscarRuc');
 
 
 

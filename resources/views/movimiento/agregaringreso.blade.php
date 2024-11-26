@@ -17,8 +17,11 @@
           <div class="panel-heading panel-heading-divider">{{ $titulo }}<span class="panel-subtitle">Crear un nuevo Ingreso</span></div>
           <div class="panel-body">
 
-            <form method="POST" action="{{ url('/agregar-ingreso/'.$idopcion) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
+            <form method="POST" action="{{ url('/agregar-ingreso/'.$idopcion) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed formingreso" enctype="multipart/form-data">
                 {{ csrf_field() }}
+
+              <input type="hidden" name="registro_id" id = 'registro_id' value=''>
+              <input type="hidden" name="idopcion" id = 'idopcion' value="{{ $idopcion }}">
 
               <div class="trimestre">
                 @include('movimiento.ajax.atrimestre')              
@@ -92,7 +95,7 @@
                   {!! Form::select( 'tipo_documento_id', $combo_tipo_documento, array($select_tipo_documento),
                                     [
                                       'class'       => 'form-control control select2' ,
-                                      'id'          => 'procedencia_id',
+                                      'id'          => 'tipo_documento_id',
                                       'required'    => '',
                                       'data-aw'     => '5'
                                     ]) !!}
@@ -102,6 +105,7 @@
               <div class="form-group" >
                 <label class="col-sm-3 control-label">Número de Documento : </label>
                 <div class="col-sm-6">
+                  <div class="input-group my-group">                                      
                     <input  type="text"
                             id="dni" name='dni' 
                             value="@if(isset($ingreso)){{old('dni' ,$ingreso->dni)}}@else{{old('dni')}}@endif"
@@ -110,6 +114,30 @@
                             required = ""
                             maxlength="11"                     
                             autocomplete="off" class="form-control input-sm nro_tramite" data-aw="6"/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary btn_buscar_dni"
+                              data_dni_m = 'dni'
+                              data_nombre_m = 'razon_social'
+                              type="button" 
+                              style="height: 37px;">
+                              Buscar Reniec</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label class="col-sm-3 control-label">Cliente : </label>
+                <div class="col-sm-6">
+                    <input  type="text"
+                            id="razon_social" name='razon_social' 
+                            value="@if(isset($ingreso)){{old('razon_social' ,$ingreso->razon_social)}}@else{{old('razon_social')}}@endif"
+                            value="{{ old('razon_social') }}"                                 
+                            placeholder="Cliente"                 
+                            required = ""
+                            readonly 
+                            maxlength="200"                     
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="7"/>
                 </div>
               </div>
 
@@ -121,7 +149,7 @@
                                       'class'       => 'form-control control select2' ,
                                       'id'          => 'tipo_concepto_id',
                                       'required'    => '',
-                                      'data-aw'     => '7'
+                                      'data-aw'     => '8'
                                     ]) !!}
                 </div>
               </div>
@@ -136,8 +164,30 @@
                             placeholder="Detalle"                 
                             required = ""
                             maxlength="500"                     
-                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="8"/>
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="9"/>
                 </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Contrato : </label>
+                <div class="col-sm-6">                  
+                    {!! Form::select( 'contrato_id', $combo_contrato, array($select_contrato),
+                                      [
+                                        'class'       => 'form-control control select2' ,
+                                        'id'          => 'contrato_id',
+                                        'required'    => '',
+                                        'data-aw'     => '5'
+                                      ]) !!}                                      
+                </div>                
+              </div>
+
+              <div class="ajaxcontrato">
+                @include('movimiento.ajax.acontrato')              
+              </div>
+
+              <input type="hidden" name="contrato_anterior_id" id = 'contrato_anterior_id' value=''>
+              <div class="ajaxcontratoanterior">
+                @include('movimiento.ajax.acontratoanterior')              
               </div>
 
               <div class="form-group" >
@@ -149,7 +199,7 @@
                             value="{{ old('numero_deposito_bancario') }}"                                 
                             placeholder="Número de Depósito Bancario"                                             
                             maxlength="50"                     
-                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="9"/>
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="10"/>
                 </div>                
               </div>
               <span class="obligatorio" style="margin-left: 11px">Nota: Este campo es opcional</span>
@@ -163,7 +213,7 @@
                             value="@if(isset($ingreso)){{old('total' ,$ingreso->total)}}@endif" 
                             placeholder="Total"
                             required = ""
-                            autocomplete="off" class="form-control input-sm importe" data-aw="10"/>
+                            autocomplete="off" class="form-control input-sm importe" data-aw="11"/>
                 </div>
               </div>
 
@@ -177,7 +227,7 @@
                       placeholder="Observacion"                      
                       rows="5" 
                       cols="50"    
-                      data-aw="11"></textarea>
+                      data-aw="12"></textarea>
                 </div>
               </div>
               <span class="obligatorio" style="margin-left: 11px">Nota: Este campo es opcional</span>
@@ -187,8 +237,8 @@
       				<div class="form-group sectioncargarimagen iaprobado">
       						<label class="col-sm-3 control-label">Sustento :</label>
       						<div class="col-sm-6">
-      								<div class="file-loading">
-      				        		<input id="file-es" name="ingreso[]" class="file-es" type="file" required = "" multiple data-parsley-max-file-size="10" data-max-file-count="1">
+      								<div class="file-ingreso">
+      				        		<input id="file-ingreso" name="ingreso[]" class="file-es" type="file" required = "" multiple data-parsley-max-file-size="10" data-max-file-count="1">
       				        </div>
       						</div>
       				</div>
@@ -215,8 +265,7 @@
       </div>
     </div>
   </div>
-
-
+@include('movimiento.modal.mcontratoanterior')
 </div>  
 @stop
 
@@ -261,10 +310,12 @@
         'digitsOptional': false, 
         'prefix': '', 
         'placeholder': '0'});
+        $('.ingreso .ajaxcontrato').hide();
+        $('.ingreso .ajaxcontratoanterior').hide();
 
       });
 
-      var fileInput = $('#file-es').fileinput({
+      var fileInput = $('#file-ingreso').fileinput({
             theme: 'fa5',
             language: 'es',
             allowedFileExtensions: ['pdf'],
@@ -283,6 +334,28 @@
 
       // Evento cuando se limpia la selección de archivos
       fileInput.on('fileclear', function(event) {
+          filesSelected = false;
+      });
+
+      var fileInputContrato = $('#file-contrato').fileinput({
+            theme: 'fa5',
+            language: 'es',
+            allowedFileExtensions: ['pdf'],
+            initialPreviewAsData: true,
+            showUpload: false,
+            showRemove: false,
+            maxFileCount: 1,
+            maxFileSize: 10240  // Limita el tamaño del archivo a 10 MB (10240 KB)
+      });
+      var filesSelected = false;
+
+      // Evento de cambio en el input de archivo
+      fileInputContrato.on('fileselect', function(event, numFiles, label) {
+          filesSelected = true;
+      });
+
+      // Evento cuando se limpia la selección de archivos
+      fileInputContrato.on('fileclear', function(event) {
           filesSelected = false;
       });
 

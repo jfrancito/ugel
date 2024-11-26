@@ -40,6 +40,7 @@ class Controller extends BaseController {
 	public $pathFilesRes='resolucion/';
 	public $pathFilesIng='ingreso/';
 	public $pathFilesEgr='egreso/';
+	public $pathFilesCon='contrato/';
 	public $url_real='https://merge.grupoinduamerica.com/perugel/';
 
 

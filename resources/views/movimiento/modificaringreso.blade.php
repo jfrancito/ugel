@@ -18,8 +18,11 @@
         <div class="panel panel-default panel-border-color panel-border-color-primary">
           <div class="panel-heading panel-heading-divider">{{ $titulo }}<span class="panel-subtitle">Modificar Ingreso : {{$ingreso->serie}}-{{$ingreso->numero}}</span></div>
           <div class="panel-body">
-            <form method="POST" action="{{ url('/modificar-ingreso/'.$idopcion.'/'.Hashids::encode(substr($ingreso->id, -8))) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed" enctype="multipart/form-data">
+            <form method="POST" action="{{ url('/modificar-ingreso/'.$idopcion.'/'.Hashids::encode(substr($ingreso->id, -8))) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed formingreso" enctype="multipart/form-data">
                     {{ csrf_field() }}
+
+              <input type="hidden" name="registro_id" id = 'registro_id' value='{{$ingreso->id}}'>
+              <input type="hidden" name="idopcion" id = 'idopcion' value="{{ $idopcion }}">
 
               <div class="trimestre">
                 @include('movimiento.ajax.atrimestre')              
@@ -93,7 +96,7 @@
                   {!! Form::select( 'tipo_documento_id', $combo_tipo_documento, array($select_tipo_documento),
                                     [
                                       'class'       => 'form-control control select2' ,
-                                      'id'          => 'procedencia_id',
+                                      'id'          => 'tipo_documento_id',
                                       'required'    => '',
                                       'data-aw'     => '5'
                                     ]) !!}
@@ -103,6 +106,7 @@
               <div class="form-group" >
                 <label class="col-sm-3 control-label">Número de Documento : </label>
                 <div class="col-sm-6">
+                  <div class="input-group my-group">                                      
                     <input  type="text"
                             id="dni" name='dni' 
                             value="@if(isset($ingreso)){{old('dni' ,$ingreso->dni)}}@else{{old('dni')}}@endif"
@@ -111,6 +115,31 @@
                             required = ""
                             maxlength="11"                     
                             autocomplete="off" class="form-control input-sm nro_tramite" data-aw="6"/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary btn_buscar_dni"
+                              data_dni_m = 'dni'
+                              data_nombre_m = 'razon_social'
+                              type="button" 
+                              style="height: 37px;">
+                              Buscar Reniec</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="form-group" >
+                <label class="col-sm-3 control-label">Cliente : </label>
+                <div class="col-sm-6">
+                    <input  type="text"
+                            id="razon_social" name='razon_social' 
+                            value="@if(isset($ingreso)){{old('razon_social' ,$ingreso->razon_social)}}@else{{old('razon_social')}}@endif"
+                            value="{{ old('razon_social') }}"                                 
+                            placeholder="Cliente"                 
+                            required = ""
+                            readonly 
+                            maxlength="200"                     
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="7"/>
                 </div>
               </div>
 
@@ -139,6 +168,28 @@
                             maxlength="500"                     
                             autocomplete="off" class="form-control input-sm nro_tramite" data-aw="8"/>
                 </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Contrato : </label>
+                <div class="col-sm-6">
+                  {!! Form::select( 'contrato_id', $combo_contrato, array($select_contrato),
+                                    [
+                                      'class'       => 'form-control control select2' ,
+                                      'id'          => 'contrato_id',
+                                      'required'    => '',
+                                      'data-aw'     => '5'
+                                    ]) !!}
+                </div>
+              </div>
+
+              <div class="ajaxcontrato">
+                @include('movimiento.ajax.acontrato')              
+              </div>
+
+              <input type="hidden" name="contrato_anterior_id" id = 'contrato_anterior_id' value=''>
+              <div class="ajaxcontratoanterior">
+                @include('movimiento.ajax.acontratoanterior')              
               </div>
 
               <div class="form-group" >
@@ -188,8 +239,8 @@
               <div class="form-group sectioncargarimagen" >
                   <label class="col-sm-3 control-label">Sustento :</label>
                   <div class="col-sm-6">
-                      <div class="file-loading">
-                          <input id="file-es" name="ingreso[]" class="file-es" type="file" multiple data-max-file-count="1">
+                      <div class="file-ingreso">
+                          <input id="file-ingreso" name="ingreso[]" class="file-es" type="file" multiple data-max-file-count="1">
                       </div>
                   </div>
               </div>              
@@ -215,10 +266,8 @@
         </div>
       </div>
     </div>
-  </div>
-
-  
-
+  </div>  
+@include('movimiento.modal.mcontratoanterior')
 </div>  
 @stop
 
@@ -263,14 +312,28 @@
         'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 
         'digitsOptional': false, 
         'prefix': '', 
-        'placeholder': '0'});       
+        'placeholder': '0'});    
+
+        var contrato   = $('#contrato_id').select2('data');
+        contrato_id   =   contrato[0].id;
+        if(contrato_id=='1'){
+            $('.ingreso .ajaxcontrato').show(200);
+            $('.ingreso .ajaxcontratoanterior').hide(200);                             
+        }else if(contrato_id=='3'){
+            $('.ingreso .ajaxcontrato').hide(200);             
+            $('.ingreso .ajaxcontratoanterior').show(200);                
+        }else{
+            $('.ingreso .ajaxcontrato').hide(200);             
+            $('.ingreso .ajaxcontratoanterior').hide(200);                             
+        }
+   
 
       });
     </script> 
 
     @if($rutafoto=='')
       <script type="text/javascript">    
-           $('#file-es').fileinput({
+           $('#file-ingreso').fileinput({
               theme: 'fa5',
               language: 'es',
               allowedFileExtensions: ['pdf'],
@@ -279,7 +342,7 @@
       </script>
     @else
       <script type="text/javascript">    
-        $('#file-es').fileinput({
+        $('#file-ingreso').fileinput({
             theme: 'fa5',
             language: 'es',
             allowedFileExtensions: ['pdf'],
@@ -288,7 +351,35 @@
               '{{$rutafoto}}'
             ],
             initialPreviewConfig: [
-              {type: "pdf", description: "<h5>PDF File</h5> This is a representative description number ten for this file.", size: 8000, caption: "About.pdf", url: "/file-upload-batch/2", key: 10, downloadUrl: false},
+              {type: "pdf", description: "<h5>PDF File</h5> This is a representative description number ten for this file.", size: 8000, caption: "{{$multimedia->nombre_archivo}}", url: "/file-upload-batch/2", key: 10, downloadUrl: false},
+            ],
+            maxFileSize: 10240  // Limita el tamaño del archivo a 10 MB (10240 KB)
+
+        });
+      </script>
+    @endif
+
+    @if($rutafoto_contrato=='')
+      <script type="text/javascript">    
+           $('#file-contrato').fileinput({
+              theme: 'fa5',
+              language: 'es',
+              allowedFileExtensions: ['pdf'],
+              maxFileSize: 10240  // Limita el tamaño del archivo a 10 MB (10240 KB)
+        });
+      </script>
+    @else
+      <script type="text/javascript">    
+        $('#file-contrato').fileinput({
+            theme: 'fa5',
+            language: 'es',
+            allowedFileExtensions: ['pdf'],
+            initialPreviewAsData: true,
+            initialPreview: [
+              '{{$rutafoto_contrato}}'
+            ],
+            initialPreviewConfig: [
+              {type: "pdf", description: "<h5>PDF File</h5> This is a representative description number ten for this file.", size: 8000, caption: "@if(isset($multimedia_contrato)){{$multimedia_contrato->nombre_archivo}}@endif", url: "/file-upload-batch/2", key: 10, downloadUrl: false},
             ],
             maxFileSize: 10240  // Limita el tamaño del archivo a 10 MB (10240 KB)
 
