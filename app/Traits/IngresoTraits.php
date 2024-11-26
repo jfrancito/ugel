@@ -23,7 +23,9 @@ trait IngresoTraits
 
 	private function con_lista_ingresos() {
 
-		$listadatos 	= 	Ingreso::orderby('id','desc')->get();
+		$listadatos 	= 	Ingreso::orderby('id','desc')
+							->where('institucion_id','=',Session::get('institucion')->id)
+							->get();
 	 	return  $listadatos;
 
 	}

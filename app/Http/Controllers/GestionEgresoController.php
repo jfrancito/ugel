@@ -77,6 +77,7 @@ class GestionEgresoController extends Controller
                     $numero                             =   $request['numero'];
                     $tipo_documento_id                  =   $request['tipo_documento_id'];
                     $dni                                =   $request['dni'];
+                    $razon_social                       =   $request['razon_social'];
                     $tipo_gasto_id                      =   $request['tipo_gasto_id'];
 
                     if($tipo_gasto_id == 'TGEG00000001'){
@@ -110,6 +111,8 @@ class GestionEgresoController extends Controller
                     $cabecera                           =   new Egreso();
                     $cabecera->id                       =   $idegreso;
                     $cabecera->codigo                   =   $codigo;
+                    $cabecera->institucion_id           =   Session::get('institucion')->id;
+                    $cabecera->institucion_nombre       =   Session::get('institucion')->nombre;
                     $cabecera->trimestre_id             =   $trimestre->id;
                     $cabecera->trimestre_nombre         =   $trimestre->nombre;
                     $cabecera->fecha_comprobante        =   $fecha_comprobante;
@@ -120,6 +123,7 @@ class GestionEgresoController extends Controller
                     $cabecera->tipo_documento_id        =   $tipo_documento_id;
                     $cabecera->tipo_documento_nombre    =   $tipo_documento->nombre;
                     $cabecera->dni                      =   $dni;         
+                    $cabecera->razon_social             =   $razon_social;         
                     $cabecera->tipo_gasto_id            =   $tipo_gasto_id;
                     $cabecera->tipo_gasto_nombre        =   $tipo_gasto->nombre;
 
@@ -137,17 +141,19 @@ class GestionEgresoController extends Controller
                     $cabecera->estado_nombre            =   'GENERADO';                   
                     $cabecera->fecha_crea               =   $this->fechaactual;
                     $cabecera->usuario_crea             =   Session::get('usuario')->id;
-                    $cabecera->save();                    
+                    $cabecera->save();           
+
+                    $codigo_institucion                 =   Session::get('institucion')->codigo;         
 
                     $files                              =   $request['egreso'];
                     if(!is_null($files)){
                         foreach($files as $file){
 
-                            $rutafile                   =   storage_path('app/').$this->pathFilesEgr.$codigo.'/';
+                            $rutafile                   =   storage_path('app/').$codigo_institucion.'/'.$this->pathFilesEgr;
                             $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);                            
                             $nombre                     =   $codigo.'-'.$file->getClientOriginalName();
 
-                            $rutadondeguardar           =   $this->pathFilesEgr.$codigo.'/';
+                            $rutadondeguardar           =   $codigo_institucion.'/'.$this->pathFilesEgr;
                             $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                             $nombreoriginal             =   $file->getClientOriginalName();
@@ -285,6 +291,7 @@ class GestionEgresoController extends Controller
                     $numero                             =   $request['numero'];
                     $tipo_documento_id                  =   $request['tipo_documento_id'];
                     $dni                                =   $request['dni'];
+                    $razon_social                       =   $request['razon_social'];
                     $tipo_gasto_id                      =   $request['tipo_gasto_id'];
 
                     if($tipo_gasto_id == 'TGEG00000001'){
@@ -323,8 +330,9 @@ class GestionEgresoController extends Controller
                     $egreso->tipo_documento_id         =   $tipo_documento_id;
                     $egreso->tipo_documento_nombre     =   $tipo_documento->nombre;
                     $egreso->dni                       =   $dni;      
-                    $egreso->tipo_gasto_id            =   $tipo_gasto_id;
-                    $egreso->tipo_gasto_nombre        =   $tipo_gasto->nombre;
+                    $egreso->razon_social              =   $razon_social;      
+                    $egreso->tipo_gasto_id             =   $tipo_gasto_id;
+                    $egreso->tipo_gasto_nombre         =   $tipo_gasto->nombre;
 
                     if($tipo_gasto_id == 'TGEG00000001'){
                         $egreso->tipo_compra_id         =   $tipo_compra_id;
@@ -341,18 +349,19 @@ class GestionEgresoController extends Controller
                     $egreso->fecha_mod                 =   $this->fechaactual;
                     $egreso->usuario_mod               =   Session::get('usuario')->id;
                     $egreso->save();        
-                    
+
                     $files                      =   $request['egreso'];
                     if(!is_null($files)){
                         foreach($files as $file){
 
                             $codigo                     =   $egreso->codigo;
+                            $codigo_institucion         =   Session::get('institucion')->codigo;
 
-                            $rutafile                   =   storage_path('app/').$this->pathFilesEgr.$codigo.'/';
+                            $rutafile                   =   storage_path('app/').$codigo_institucion.'/'.$this->pathFilesEgr;
                             $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);                            
                             $nombre                     =   $codigo.'-'.$file->getClientOriginalName();
 
-                            $rutadondeguardar           =   $this->pathFilesEgr.$codigo.'/';
+                            $rutadondeguardar           =   $codigo_institucion.'/'.$this->pathFilesEgr;
                             $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                             $nombreoriginal             =   $file->getClientOriginalName();
@@ -426,7 +435,7 @@ class GestionEgresoController extends Controller
                 $multimedia         =   Archivo::where('referencia_id','=',$egreso->id)->where('tipo_archivo','=','egreso')->where('activo','=',1)->first();
                 
 
-                $rutafoto           =   !empty($multimedia) ? asset('storage/app/egreso/'.$multimedia->lote.'/'.$multimedia->nombre_archivo) : asset('public/img/no-foto.png');               
+                $rutafoto           =   !empty($multimedia) ? asset('storage/'.$multimedia->url_archivo) : asset('public/img/no-foto.png');
                 
                 return View::make('movimiento/modificaregreso', 
                                 [
@@ -459,7 +468,7 @@ class GestionEgresoController extends Controller
 
         try{            
             $archivo                =   Archivo::where('id','=',$archivo_id)->first();
-            $storagePath            = storage_path('app\\'.$this->pathFilesEgr.$archivo->lote.'\\'.$archivo->nombre_archivo);
+            $storagePath            =   storage_path($archivo->url_archivo);
 
             if(is_file($storagePath)){
                 return response()->download($storagePath);
@@ -532,5 +541,44 @@ class GestionEgresoController extends Controller
                             'trimestre_nombre'       => $trimestre_nombre,                            
                             'ajax'                   =>  true,
                         ]);
+    }
+
+
+    public function actionBuscarRuc(Request $request)
+    {
+
+        $dni                =   $request['dni'];
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://dniruc.apisperu.com/api/v1/ruc/'.$dni.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhlbnJyeWluZHVAZ21haWwuY29tIn0.m3cyXSejlDWl0BLcphHPUTfPNqpa5kXWoBcmQ6WvkII',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_AUTOREFERER => true,
+          CURLOPT_SSL_VERIFYPEER => false,
+          CURLOPT_SSL_VERIFYHOST => false,
+          CURLOPT_FOLLOWLOCATION => true,
+
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => [
+            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36',
+            'Accept: application/json'
+        ],
+
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        $persona = json_decode($response, true);
+
+
+        if(isset($persona['razonSocial'])){            
+            print_r($persona['razonSocial']);
+        }else{
+            print_r(null);
+        }
+
     }
 }

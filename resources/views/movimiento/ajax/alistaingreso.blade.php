@@ -21,6 +21,7 @@
         <td>{{$index +1}}</td>
 
         <td class="cell-detail sorting_1" style="position: relative;"> 
+          <span><b>TRIMESTRE  : </b>{{$item->trimestre_nombre}}</span>
           <span><b>FECHA : </b>{{date_format(date_create($item->fecha_comprobante), 'd-m-Y')}} </span> 
           <span><b>TIPO  : </b>{{$item->tipo_comprobante_nombre}}</span>
           <span><b>NUMERO  : </b>{{$item->serie}}-{{$item->numero}}</span>
@@ -29,6 +30,7 @@
         <td class="cell-detail sorting_1" style="position: relative;"> 
           <span><b>TIPO : </b>{{$item->tipo_documento_nombre}} </span> 
           <span><b>NUMERO  : </b>{{$item->dni}}</span>
+          <span><b>RAZON SOCIAL  : </b>{{$item->razon_social}}</span>
         </td>
 
 

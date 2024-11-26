@@ -20,6 +20,8 @@
             <form method="POST" action="{{ url('/agregar-egreso/'.$idopcion) }}" style="border-radius: 0px;" class="form-horizontal group-border-dashed formegreso" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
+              <input type="hidden" name="registro_id" id = 'registro_id' value=''>
+
               <div class="trimestre">
                 @include('movimiento.ajax.atrimestre')              
               </div>
@@ -93,7 +95,7 @@
                   {!! Form::select( 'tipo_documento_id', $combo_tipo_documento, array($select_tipo_documento),
                                     [
                                       'class'       => 'form-control control select2' ,
-                                      'id'          => 'procedencia_id',
+                                      'id'          => 'tipo_documento_id',
                                       'required'    => '',
                                       'data-aw'     => '5'
                                     ]) !!}
@@ -103,6 +105,7 @@
               <div class="form-group" >
                 <label class="col-sm-3 control-label">Número de Documento : </label>
                 <div class="col-sm-6">
+                  <div class="input-group my-group">     
                     <input  type="text"
                             id="dni" name='dni' 
                             value="@if(isset($egreso)){{old('dni' ,$egreso->dni)}}@else{{old('dni')}}@endif"
@@ -111,6 +114,31 @@
                             required = ""
                             maxlength="11"                     
                             autocomplete="off" class="form-control input-sm nro_tramite" data-aw="6"/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary btn_buscar_dni"
+                              data_dni_m = 'dni'
+                              data_nombre_m = 'razon_social'
+                              type="button" 
+                              style="height: 37px;">
+                              Buscar Reniec</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="form-group" >
+                <label class="col-sm-3 control-label">Proveedor : </label>
+                <div class="col-sm-6">
+                    <input  type="text"
+                            id="razon_social" name='razon_social' 
+                            value="@if(isset($egreso)){{old('razon_social' ,$egreso->razon_social)}}@else{{old('razon_social')}}@endif"
+                            value="{{ old('razon_social') }}"                                 
+                            placeholder="Proveedor"                 
+                            required = ""
+                            readonly 
+                            maxlength="200"                     
+                            autocomplete="off" class="form-control input-sm nro_tramite" data-aw="7"/>
                 </div>
               </div>
 

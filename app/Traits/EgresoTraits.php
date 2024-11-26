@@ -23,7 +23,9 @@ trait EgresoTraits
 
 	private function con_lista_egresos() {
 
-		$listadatos 	= 	Egreso::orderby('id','desc')->get();
+		$listadatos 	= 	Egreso::orderby('id','desc')
+							->where('institucion_id','=',Session::get('institucion')->id)
+							->get();
 	 	return  $listadatos;
 
 	}

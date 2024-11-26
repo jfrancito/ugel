@@ -167,6 +167,7 @@ class GestionApafaController extends Controller
 
 
             $tarchivos                                  =  DocumentosAsociado::where('activo','=','1')->where('id','=','APCN00000001')->get();
+            $codigo_institucion                         =   Session::get('institucion')->codigo;         
 
             foreach($tarchivos as $index=>$item){
                 //01
@@ -177,12 +178,13 @@ class GestionApafaController extends Controller
                         $listadetalledoc            =   Archivo::where('referencia_id','=',$idrequerimiento)
                                                         ->get();
 
-                        $rutafile                   =   storage_path('app/').$this->pathFilesApafa.$codigo.'/';
+                        $rutafile                   =   storage_path('app/').$codigo_institucion.'/'.$this->pathFilesApafa;
+
                         $valor                      =   $this->ge_crearCarpetaSiNoExiste($rutafile);
                         $numero                     =   count($listadetalledoc)+1;
                         $nombre                     =   $codigo.'-'.$numero.'-'.$file->getClientOriginalName();
 
-                        $rutadondeguardar           =   $this->pathFilesApafa.$codigo.'/';
+                        $rutadondeguardar           =   $codigo_institucion.'/'.$this->pathFilesApafa;
                         $urlmedio                   =   'app/'.$rutadondeguardar.$nombre;
 
                         $nombreoriginal             =   $file->getClientOriginalName();
